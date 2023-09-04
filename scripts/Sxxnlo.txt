@@ -1,0 +1,269 @@
+import /home/yoxara/smodels/SmodelSSMS/2MDM/Feynrules/2MDM/2MDMNLO -modelname
+define p = g u c d s b u~ c~ d~ s~ b~
+generate p  p > h2 [noborn=QCD] > chi chi @1
+output Sxxnlo
+launch Sxxnlo
+analysis = MadAnalysis4
+shower Pythia8
+set  nevents 15000
+set  ebeam1 6500
+set  ebeam2 6500
+set  lpp1 1
+set  lpp2 1
+set  pdlabel lhapdf
+set  lhaid 303600
+set  scale 91.188
+set  dsqrt_q2fact1 91.188
+set  dsqrt_q2fact2 91.188
+set  scalefact 1.0
+set  nhel 0
+set  sde_strategy 2
+set  bwcutoff 15.0
+set  maxjetflavor 5
+set param_card gZp 1
+set param_card gchi 1
+set param_card MZp 2000
+set param_card Mchi 250
+set param_card ychi 1
+set param_card MH2 250
+set param_card Sa 0.005
+done
+launch
+set param_card MH2 250
+set param_card Sa 0.05
+done
+launch
+set param_card MH2 250
+set param_card Sa 0.1
+done
+launch
+set param_card MH2 250
+set param_card Sa 0.5
+done
+launch
+set param_card MH2 500
+set param_card Sa 0.005
+done
+launch
+set param_card MH2 500
+set param_card Sa 0.05
+done
+launch
+set param_card MH2 500
+set param_card Sa 0.1
+done
+launch
+set param_card MH2 500
+set param_card Sa 0.5
+done
+launch
+set param_card MH2 750
+set param_card Sa 0.005
+done
+launch
+set param_card MH2 750
+set param_card Sa 0.05
+done
+launch
+set param_card MH2 750
+set param_card Sa 0.1
+done
+launch
+set param_card MH2 750
+set param_card Sa 0.5
+done
+launch
+set param_card MH2 1000
+set param_card Sa 0.005
+done
+launch
+set param_card MH2 1000
+set param_card Sa 0.05
+done
+launch
+set param_card MH2 1000
+set param_card Sa 0.1
+done
+launch
+set param_card MH2 1000
+set param_card Sa 0.5
+done
+launch
+set param_card MH2 1250
+set param_card Sa 0.005
+done
+launch
+set param_card MH2 1250
+set param_card Sa 0.05
+done
+launch
+set param_card MH2 1250
+set param_card Sa 0.1
+done
+launch
+set param_card MH2 1250
+set param_card Sa 0.5
+done
+launch
+set param_card MH2 1500
+set param_card Sa 0.005
+done
+launch
+set param_card MH2 1500
+set param_card Sa 0.05
+done
+launch
+set param_card MH2 1500
+set param_card Sa 0.1
+done
+launch
+set param_card MH2 1500
+set param_card Sa 0.5
+done
+launch
+set param_card MH2 1750
+set param_card Sa 0.005
+done
+launch
+set param_card MH2 1750
+set param_card Sa 0.05
+done
+launch
+set param_card MH2 1750
+set param_card Sa 0.1
+done
+launch
+set param_card MH2 1750
+set param_card Sa 0.5
+done
+launch
+set param_card MH2 2000
+set param_card Sa 0.005
+done
+launch
+set param_card MH2 2000
+set param_card Sa 0.05
+done
+launch
+set param_card MH2 2000
+set param_card Sa 0.1
+done
+launch
+set param_card MH2 2000
+set param_card Sa 0.5
+done
+launch
+set param_card MH2 2250
+set param_card Sa 0.005
+done
+launch
+set param_card MH2 2250
+set param_card Sa 0.05
+done
+launch
+set param_card MH2 2250
+set param_card Sa 0.1
+done
+launch
+set param_card MH2 2250
+set param_card Sa 0.5
+done
+launch
+set param_card MH2 2500
+set param_card Sa 0.005
+done
+launch
+set param_card MH2 2500
+set param_card Sa 0.05
+done
+launch
+set param_card MH2 2500
+set param_card Sa 0.1
+done
+launch
+set param_card MH2 2500
+set param_card Sa 0.5
+done
+launch
+set param_card MH2 2750
+set param_card Sa 0.005
+done
+launch
+set param_card MH2 2750
+set param_card Sa 0.05
+done
+launch
+set param_card MH2 2750
+set param_card Sa 0.1
+done
+launch
+set param_card MH2 2750
+set param_card Sa 0.5
+done
+launch
+set param_card MH2 3000
+set param_card Sa 0.005
+done
+launch
+set param_card MH2 3000
+set param_card Sa 0.05
+done
+launch
+set param_card MH2 3000
+set param_card Sa 0.1
+done
+launch
+set param_card MH2 3000
+set param_card Sa 0.5
+done
+launch
+set param_card MH2 3250
+set param_card Sa 0.005
+done
+launch
+set param_card MH2 3250
+set param_card Sa 0.05
+done
+launch
+set param_card MH2 3250
+set param_card Sa 0.1
+done
+launch
+set param_card MH2 3250
+set param_card Sa 0.5
+done
+launch
+set param_card MH2 3500
+set param_card Sa 0.005
+done
+launch
+set param_card MH2 3500
+set param_card Sa 0.05
+done
+launch
+set param_card MH2 3500
+set param_card Sa 0.1
+done
+launch
+set param_card MH2 3500
+set param_card Sa 0.5
+done
+launch
+set param_card MH2 3750
+set param_card Sa 0.005
+done
+launch
+set param_card MH2 3750
+set param_card Sa 0.05
+done
+launch
+set param_card MH2 3750
+set param_card Sa 0.1
+done
+launch
+set param_card MH2 3750
+set param_card Sa 0.5
+done
+launch Sxxnlo -i
+print_results --path=/home/yoxara/smodels/SmodelSSMS/2MDM/data/Sxxnlo.txt --format=short
+exit
