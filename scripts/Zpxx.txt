@@ -1,12 +1,12 @@
-import /home/yoxara/2MDM/Feynrules/2MDM/2MDM -modelname
+import /home/yoxara/2MDM/Feynrules/2MDM/2MDMNLO -modelname
 define p = g u c d s b u~ c~ d~ s~ b~
 generate p p > zp > chi chi @1
 output Zpxx
 launch Zpxx
+shower pythia8
 analysis = MadAnalysis4
-shower Pythia8
 set run_card nevents 50000
-set run_cardebeam1 6500
+set run_card ebeam1 6500
 set run_card ebeam2 6500
 set run_card lpp1 1
 set run_card lpp2 1
