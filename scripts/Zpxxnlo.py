@@ -4,8 +4,8 @@
 base_path = "/home/yoxara/smodels/SmodelSSMS/2MDM"
 file_path = f"{base_path}/scripts/Zpxx.txt"
 
-MZp_values = list(range(250, 4000, 250))
-gq_values = [0.005,0.05, 0.1, 0.5]
+MZp_values = [2000] #list(range(250, 4000, 250))
+gq_values = [2.5] #[0.005,0.05, 0.1, 0.5]
 
 with open(file_path, "w") as f:
     # Initial setup
@@ -35,8 +35,9 @@ with open(file_path, "w") as f:
     f.write("set param_card gZp 1\n")
     f.write("set param_card gchi 1\n")
     f.write("set param_card MZp 2000\n")
-    f.write("set param_card Mchi 250\n")
+    f.write("set param_card MchiT 250\n")
     f.write("set param_card ychi 1\n")
+    f.write("set param_card gqA 0\n")
     
     for i in MZp_values:
         for j in gq_values:
