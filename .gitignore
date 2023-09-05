@@ -1,0 +1,7 @@
+# ignores all the following files:
+
+2mdm_*
+*.DS_Store
+*.ipynb_checkpoints
+*__pycache__
+nohup.out

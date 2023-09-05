@@ -43,5 +43,5 @@ define vl~ = ve~ vm~ vt~
 import model /home/camila/SmodelSSMS/2MDM/models/DMsimp_Spin0
 define p = 21 2 4 1 3 -2 -4 -1 -3 5 -5 # pass to 5 flavors
 define j = p
-generate p p > y0 [noborn=QCD]
+generate p p > y0 j [noborn=QCD]
 output 2mdm_y0_test
