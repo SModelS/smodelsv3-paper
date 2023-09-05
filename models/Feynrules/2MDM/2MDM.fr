@@ -13,7 +13,7 @@
 (* *****  Information   ***** *)
 (* ************************** *)
 
-M$ModelName = "2MDMnlo";
+M$ModelName = "2MDM";
 
 M$Information = { Authors      -> {"Yoxara Villamizar"}, 
                   Emails       ->{"yoxarasv@sprace,org.br"},
@@ -49,7 +49,6 @@ M$InteractionOrderHierarchy = {
   {QED, 2},
   {NP, 1}    
 };
-
 
 
 (* ************************** *)
@@ -181,7 +180,7 @@ M$ClassesDescription = {
     Unphysical      -> True,
     SelfConjugate   -> False,
     QuantumNumbers  -> {Y -> 0, QB -> -2 gchi},
-    Definitions     -> { Phi2 -> (vev2 + Sa*h + Ca*Sd + I phip)/Sqrt[2]
+    Definitions     -> { Phi2 -> (vevs + Sa*h + Ca*Sd + I phip)/Sqrt[2]
     }
   },
   S[5]  == {
@@ -233,9 +232,9 @@ M$Parameters = {
     Value -> 1.0,
     Description -> "gauge coupling of Zprime with the DM"
   },   
-  vev2 == {
+  vevs == {
     ParameterType    -> Internal,
-    Value            -> MZp/(2*gZp*gchi),
+    Value            -> MZp/(2*gchi),
     InteractionOrder -> {QED, -1},
     Description      -> "Sd VEV"
   },
@@ -265,8 +264,8 @@ M$Parameters = {
     ParameterType -> Internal,
     InteractionOrder -> {NP, 1},
     BlockName -> ZPRIME,
-    TeX              -> Subscript[g,q],
-    Value -> gqV - gqA,
+    TeX              -> Subscript[g,qL],
+    Value -> gqV + gqA,
     Description -> "Left coupling of Zprime with the quarks"
   },  
   gqR == {
@@ -274,7 +273,7 @@ M$Parameters = {
     InteractionOrder -> {NP, 1},
     BlockName        -> ZPRIME,
     TeX              -> Subscript[g,qA],
-    Value            -> gqV + gqA,
+    Value            -> gqV - gqA,
     Description      -> "Right coupling of Zprime with the quarks"
   }, 
   gSd == {
@@ -318,20 +317,20 @@ M$Parameters = {
   },
   lam3 == {
     ParameterType    -> Internal,
-    Value            -> gchi*2*Sa*Ca*(-MSd^2 + Mh^2)/(MZp * vev),
+    Value            -> gchi*2*Sa*Ca*(MSd^2 - Mh^2)/(MZp * vev),
     ParameterName    -> lam3,
     InteractionOrder -> {QED, 2},
     Description      -> "Mixing part"
   },
   mu2h == {
     ParameterType -> Internal,
-    Value         -> -lam1 * vev^2 - lam3 /2 * vev2^2, 
+    Value         -> lam1 * vev^2 + (lam3 /2) * vevs^2, 
     TeX           -> \[Mu],
     Description   -> "Coefficient of the quadratic piece of the h potential"
   },
   mu2Sd == {
     ParameterType   -> Internal,
-    Value           -> (lam3 * vev^2 /2)  + lam2 * vev2^2,
+    Value           -> (lam3 * vev^2 /2)  + lam2 * vevs^2,
     TeX             -> \[Mu]prime,
     Description     -> "Coefficient of the quadratic piece of the Sd potential"
   }
@@ -355,7 +354,7 @@ LFermions := Block[{mu},
 LHiggs := Block[{ii,mu, feynmangaugerules},
   feynmangaugerules = If[Not[FeynmanGauge], {G0|GP|GPbar|phip ->0}, {}];
  
-  ExpandIndices[DC[Phibar[ii],mu] DC[Phi[ii],mu] - mu2h Phibar[ii] Phi[ii] - lam1 Phibar[ii] Phi[ii] Phibar[jj] Phi[jj]
+  ExpandIndices[DC[Phibar[ii],mu] DC[Phi[ii],mu] + mu2h Phibar[ii] Phi[ii] - lam1 Phibar[ii] Phi[ii] Phibar[jj] Phi[jj]
 (*******************B****************************)
 + DC[Phi2bar,mu] DC[Phi2,mu] + mu2Sd Phi2bar Phi2 - lam2 Phi2bar Phi2 Phi2bar Phi2- lam3 Phibar[ii]Phi[ii] Phi2bar Phi2
 (*******************END****************************)
