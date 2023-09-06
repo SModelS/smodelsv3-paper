@@ -82,14 +82,69 @@ def getModelDict(inputFile):
     events = pylhe.read_lhe_with_attributes(lheFile)
 
     totalweight = 0
+    totalweight_cut = 0
+
+    ## jets
+    pTj1min = 100.
+    pTjmin = 20.
+    etamax = 2.4
+    ## MET
+    minMET = 250.
+
+
 
     for evts in [events]:
         modelDict['Events'] = nevts
         for event in evts:
+
+            particles = event.particles
+
+            jets = [p for p in particles if abs(p.id) in [1,2,3,4,5,21] and p.status == 1]
+            dm = [p for p in particles if abs(p.id) in [9000006, 52] and p.status == 1]
+            med = [p for p in particles if abs(p.id) in [9900032, 9900026] and p.status == 1]
+
+            if len(med) != 1:
+                continue
+
             weight = event.eventinfo.weight/nevts
+
+            if weight < 0:
+                continue
+
             totalweight += weight
 
+            # Filter jets
+            jetList = []
+            for j in jets:
+                pT = np.sqrt(j.px**2+j.py**2)
+                p = np.sqrt(j.px**2+j.py**2+j.pz**2)
+                pL = j.pz
+                eta = 0.5*np.log((p+pL)/(p-pL))
+            
+                if pT < pTjmin:
+                    continue
+                if np.abs(eta) > etamax:
+                    continue
+                jetList.append(j)
+            jetList = sorted(jetList, key = lambda j: np.sqrt(j.px**2+j.py**2), reverse=True) 
+
+            # Compute MET
+            # MET = np.sqrt((dm[0].px+dm[1].px)**2 + (dm[0].py+dm[1].py)**2)
+            MET = np.sqrt((med[0].px)**2 + (med[0].py)**2)
+
+            if len(jetList) == 0:
+                continue
+
+            pT1 = np.sqrt(jetList[0].px**2+jetList[0].py**2)
+            if MET < minMET:
+                continue
+            if pT1 < pTj1min:
+                continue
+
+            totalweight_cut += weight
+
     modelDict['x-sec (pb)'] = totalweight
+    modelDict['x-sec pT-250 (pb)'] = totalweight_cut
 
     print('Total cross section = %1.4f (pb)' %totalweight)
 
