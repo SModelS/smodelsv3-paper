@@ -180,7 +180,7 @@ M$ClassesDescription = {
     Unphysical      -> True,
     SelfConjugate   -> False,
     QuantumNumbers  -> {Y -> 0, QB -> -2 gchi},
-    Definitions     -> { Phi2 -> (vevs + Sa*h + Ca*Sd + I phip)/Sqrt[2]
+    Definitions     -> { Phi2 -> (vev2 + Sa*h + Ca*Sd + I phip)/Sqrt[2]
     }
   },
   S[5]  == {
@@ -197,7 +197,6 @@ M$ClassesDescription = {
     FullName        -> "Phip"
   }
 };
-
 
 
 (* ************************** *)
@@ -232,7 +231,7 @@ M$Parameters = {
     Value -> 1.0,
     Description -> "gauge coupling of Zprime with the DM"
   },   
-  vevs == {
+  vev2 == {
     ParameterType    -> Internal,
     Value            -> MZp/(2*gchi),
     InteractionOrder -> {QED, -1},
@@ -303,36 +302,43 @@ M$Parameters = {
   (**************Higgs Potential*******************)
   lam1 == {
     ParameterType    -> Internal,
-    Value            ->  (Mh^2 + MSd^2 +(Mh^2 - MSd^2)*(Ca^2 -Sa^2))/(4*vev^2),
+    Value            ->  Mh^2/(2*vev^2)*Ca^2 + MSd^2/(2*vev^2)*Sa^2,
     ParameterName    -> lam1,
     InteractionOrder -> {QED, 2},
     Description      -> "Higgs quartic coupling piece for h"
   },
   lam2 == {
     ParameterType    -> Internal,
-    Value            -> gchi^2 * (Mh^2 + MSd^2 +(MSd^2 - Mh^2)*(Ca^2 -Sa^2))/(MZp^2),
+    Value            ->  Mh^2/(2*vevs^2)*Sa^2 + MSd^2/(2*vevs^2)*Ca^2,
     ParameterName    -> lam2,
     InteractionOrder -> {QED,2},
     Description      -> "Higgs quartic coupling piece for Sd"
   },
   lam3 == {
     ParameterType    -> Internal,
-    Value            -> gchi*2*Sa*Ca*(MSd^2 - Mh^2)/(MZp * vev),
+    Value            -> (MSd^2 - Mh^2)/(vevs*vev)*Sa*Ca,
     ParameterName    -> lam3,
     InteractionOrder -> {QED, 2},
     Description      -> "Mixing part"
   },
   mu2h == {
     ParameterType -> Internal,
-    Value         -> lam1 * vev^2 + (lam3 /2) * vevs^2, 
+    Value         -> lam1 * vev^2 + (lam3 /2) * vev2^2, 
     TeX           -> \[Mu],
     Description   -> "Coefficient of the quadratic piece of the h potential"
   },
   mu2Sd == {
     ParameterType   -> Internal,
-    Value           -> (lam3 * vev^2 /2)  + lam2 * vevs^2,
+    Value           -> (lam3 * vev^2 /2)  + lam2 * vev2^2,
     TeX             -> \[Mu]prime,
     Description     -> "Coefficient of the quadratic piece of the Sd potential"
+  },
+  Mnew == {
+    ParameterType    -> Internal,
+    Value            -> Mchi + ychi * vev / Sqrt[2],
+    ParameterName    -> Mnew,
+    InteractionOrder -> {QED, 2},
+    Description      -> "Mass of the new scalar"
   }
 };
 
@@ -341,22 +347,22 @@ M$Parameters = {
 (* *****   Lagrangian   ***** *)
 (* ************************** *)
 
-LGauge2 := Block[{mu,nu,ii,aa}, 
+LGauge := Block[{mu,nu,ii,aa}, 
   ExpandIndices[-1/4 FS[Bp,mu,nu] FS[Bp,mu,nu] -Se/2  FS[Bp,mu,nu] FS[B,mu,nu], FlavorExpand->SU2W]];
 
 LFermions := Block[{mu}, 
   ExpandIndices[I*(
-    QLbar.Ga[mu].DC[QL, mu] + uRbar.Ga[mu].DC[uR, mu] + dRbar.Ga[mu].DC[dR, mu] + (1/2)*chibar.Ga[mu].Ga[5].DC[chi, mu]), 
+    QLbar.Ga[mu].DC[QL, mu] + uRbar.Ga[mu].DC[uR, mu] + dRbar.Ga[mu].DC[dR, mu]), 
   FlavorExpand->{SU2W,SU2D}]/.{CKM[a_,b_] Conjugate[CKM[a_,c_]]->IndexDelta[b,c], CKM[b_,a_] Conjugate[CKM[c_,a_]]->IndexDelta[b,c]}];
-(*+ (1/2)*chibar.Ga[mu].Ga[5].DC[chi, mu]*)
-(*Lchi := (gchi/2) Zp[mu] chibar.Ga[5].Ga[mu].chi  - (I/2) chibar.Ga[mu].del[chi,mu] *)
+(*+ (1/2)*chibar.Ga[mu].Ga[5].DC[chi, mu]                         + (1/2)*chibar.Ga[mu].Ga[5].DC[chi, mu]*)
+Lchi := (gchi/2) Zp[mu] chibar.Ga[5].Ga[mu].chi  - (I/2) chibar.Ga[mu].del[chi,mu];
 
 LHiggs := Block[{ii,mu, feynmangaugerules},
   feynmangaugerules = If[Not[FeynmanGauge], {G0|GP|GPbar|phip ->0}, {}];
  
-  ExpandIndices[DC[Phibar[ii],mu] DC[Phi[ii],mu] + mu2h Phibar[ii] Phi[ii] - lam1 Phibar[ii] Phi[ii] Phibar[jj] Phi[jj]
+  ExpandIndices[DC[Phibar[ii],mu] DC[Phi[ii],mu] - mu2h Phibar[ii] Phi[ii] - lam1 Phibar[ii] Phi[ii] Phibar[jj] Phi[jj]
 (*******************B****************************)
-+ DC[Phi2bar,mu] DC[Phi2,mu] + mu2Sd Phi2bar Phi2 - lam2 Phi2bar Phi2 Phi2bar Phi2- lam3 Phibar[ii]Phi[ii] Phi2bar Phi2
++ DC[Phi2bar,mu] DC[Phi2,mu] - mu2Sd Phi2bar Phi2 - lam2 Phi2bar Phi2 Phi2bar Phi2- lam3 Phibar[ii]Phi[ii] Phi2bar Phi2
 (*******************END****************************)
   , FlavorExpand->{SU2D,SU2W}]/.feynmangaugerules
  ];
@@ -373,7 +379,7 @@ LYukawaSM := Block[{sp,ii,jj,cc,ff1,ff2,ff3,yuk,feynmangaugerules},
   yuk+HC[yuk]/.feynmangaugerules
   ];
   
-LYukawanew := - 1/4 ychi (chibar.ProjM.Phi2.chi) - 1/4 ychi (chibar.ProjP.Phi2bar.chi)  + (1/2) Mx (chibar.chi);
+LYukawanew := - 1/4 ychi (chibar.ProjM.Phi2.chi) - 1/4 ychi (chibar.ProjP.Phi2bar.chi) + (1/2) Mnew (chibar.chi);
 (**********************END***************************)
 LYukawa := LYukawaSM + LYukawanew;
 
@@ -398,8 +404,6 @@ LGhost := Block[{LGh,LGhw,LGhs,LGhphi,mu, generators,gh,ghbar,Vectorize,phi1,phi
 
 ExpandIndices[ LGhs + If[FeynmanGauge, LGh + LGhw + LGhphi,0], FlavorExpand->SU2W]];
 
-
-
 (*******************Eqn.(2.44) from 1106.4691******************************)
 (*****************B is an abelian group, DC->del, https://en.wikipedia.org/wiki/Faddeev%E2%80%93Popov_ghost**********)
 LGhost := Block[{LGh,LGhw,LGhs,LGhphi,LGhBp, LGhphiBL, mu, generators,gh,ghbar,Vectorize,phi1,phi2,togoldstones,doublet,doublet0},
@@ -409,7 +413,7 @@ LGhost := Block[{LGh,LGhw,LGhs,LGhphi,LGhBp, LGhphiBL, mu, generators,gh,ghbar,V
   LGhs = -ghGbar[ii].del[DC[ghG[ii],mu],mu];
 (******************B***********************)
   LGhBp = - ghBpbar.del[del[ghBp, mu],mu];
-  LGhphiBL = -2*gp MZp (xev-Sa*h+Ca*Sd) ghZpbar.ghZp;
+  LGhphiBL = -2*gZp MZp (vev2-Sa*h+Ca*Sd) ghZpbar.ghZp;
 (**********************END***************************)
   (* Scalar pieces: see Peskin pages 739-742 *)
   (* phi1 and phi2 are the real degrees of freedom of GP *)
@@ -423,43 +427,6 @@ LGhost := Block[{LGh,LGhw,LGhs,LGhphi,LGhBp, LGhphiBL, mu, generators,gh,ghbar,V
   togoldstones := {phi1 -> (GP + GPbar)/Sqrt[2], phi2 -> (-GP + GPbar)/(I Sqrt[2])};
   LGhphi=Plus@@Flatten[Table[-ghbar[[kkk]].gh[[lll]] Vectorize[generators[[kkk]].doublet0].Vectorize[generators[[lll]].(doublet+doublet0)],{kkk,4},{lll,4}]] /.togoldstones;
 
-ExpandIndices[ LGhs + If[FeynmanGauge, LGh + LGhw + LGhphi, 0], FlavorExpand->SU2W]]; (*LGhBp + LGhphiBL,*)
+ExpandIndices[ LGhs + If[FeynmanGauge, LGh + LGhw + LGhphi, + LGhBp + LGhphiBL, 0], FlavorExpand->SU2W]]; (*LGhBp + LGhphiBL*)
 
 L2MDM:= LGauge + LFermions + LHiggs + LYukawa + LGhost + Lchi;
-
-
-
-
-
-
-
-
-  F[13] == { 
-    ClassName      -> QL, 
-    Unphysical     -> True, 
-    Indices        -> {Index[SU2D], Index[Generation], Index[Colour]},
-    FlavorIndex    -> SU2D,
-    SelfConjugate  -> False,
-    QuantumNumbers -> {Y -> 1/6, QB -> gqL},
-    Definitions    -> { 
-      QL[sp1_,1,ff_,cc_] :> Module[{sp2}, ProjM[sp1,sp2] uq[sp2,ff,cc]], 
-      QL[sp1_,2,ff_,cc_] :> Module[{sp2,ff2}, CKM[ff,ff2] ProjM[sp1,sp2] dq[sp2,ff2,cc]] }
-  },
-  F[14] == { 
-    ClassName      -> uR, 
-    Unphysical     -> True, 
-    Indices        -> {Index[Generation], Index[Colour]},
-    FlavorIndex    -> Generation,
-    SelfConjugate  -> False,
-    QuantumNumbers -> {Y -> 2/3, QB -> gqR},
-    Definitions    -> { uR[sp1_,ff_,cc_] :> Module[{sp2}, ProjP[sp1,sp2] uq[sp2,ff,cc]] }
-  },
-  F[15] == { 
-    ClassName      -> dR, 
-    Unphysical     -> True, 
-    Indices        -> {Index[Generation], Index[Colour]},
-    FlavorIndex    -> Generation,
-    SelfConjugate  -> False,
-    QuantumNumbers -> {Y -> -1/3, QB -> gqR},
-    Definitions    -> { dR[sp1_,ff_,cc_] :> Module[{sp2}, ProjP[sp1,sp2] dq[sp2,ff,cc]] }
-  },
