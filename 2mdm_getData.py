@@ -101,7 +101,7 @@ def getModelDict(inputFile):
 
             jets = [p for p in particles if abs(p.id) in [1,2,3,4,5,21] and p.status == 1]
             dm = [p for p in particles if abs(p.id) in [9000006, 52] and p.status == 1]
-            med = [p for p in particles if abs(p.id) in [9900032, 9900026] and p.status == 1]
+            med = [p for p in particles if abs(p.id) in [9900032, 9900026, 54] and p.status == 1]
 
             if len(med) != 1:
                 continue
