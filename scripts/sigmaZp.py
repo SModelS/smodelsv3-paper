@@ -1,20 +1,19 @@
 #!/usr/bin/env python3
 #/home/yoxara/2MDM/xsecZp.py
-
 base_path = "/home/yoxara/2MDM"
 file_path = f"{base_path}/scripts/sigmaZp.txt"
-
-MZp_values = list(range(500, 4000, 500))
+MZp_values = list(range(500, 3500, 500))
 gqV_values = [0.1,0.2]
-
 with open(file_path, "w") as f:
-    # Initial setup
     f.write(f"import {base_path}/Feynrules/2MDM/2MDM -modelname\n")
     f.write("define p = g u c d s b u~ c~ d~ s~ b~\n")
-    f.write("generate p p > zp\n")
+    f.write("define j = g u c d s b u~ c~ d~ s~ b~\n")
+    f.write("generate p p > zp j\n")
     f.write(f"output sigmaZp\n")
     f.write(f"launch sigmaZp\n")
-    f.write("analysis = MadAnalysis4\n")
+    f.write(f"shower = Pythia8\n")
+    f.write(f"detector = Delphes\n")
+    f.write("analysis = ExRoot\n")
     f.write("set run_card nevents 15000\n")
     f.write("set run_card ebeam1 6500\n")
     f.write("set run_card ebeam2 6500\n")
@@ -34,6 +33,7 @@ with open(file_path, "w") as f:
     f.write("set param_card gqA 0\n")
     f.write("set param_card ychi 1\n")
     f.write("set param_card Mchi 200\n")
+    f.write("set param_card gchi 0.5\n")
 
     for i in MZp_values:
         for j in gqV_values:
@@ -43,7 +43,7 @@ with open(file_path, "w") as f:
             f.write("done\n")
             if i !=  MZp_values[-1] or j != gqV_values[-1] :
                 f.write("launch\n")
-
+                
     f.write(f"launch sigmaZp -i\n")
     f.write(f"print_results --path={base_path}/data/sigmaZp.txt --format=short\n")
     f.write("exit\n")
