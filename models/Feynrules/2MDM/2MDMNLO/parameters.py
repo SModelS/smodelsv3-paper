@@ -1,6 +1,6 @@
 # This file was automatically created by FeynRules 2.3.49
 # Mathematica version: 13.2.1 for Linux x86 (64-bit) (January 28, 2023)
-# Date: Wed 6 Sep 2023 09:08:25
+# Date: Sat 9 Sep 2023 05:02:22
 
 
 
@@ -255,13 +255,13 @@ G = Parameter(name = 'G',
 gqL = Parameter(name = 'gqL',
                 nature = 'internal',
                 type = 'real',
-                value = 'gqA + gqV',
+                value = '(gqA + gqV)/2.',
                 texname = 'g_{\\text{qL}}')
 
 gqR = Parameter(name = 'gqR',
                 nature = 'internal',
                 type = 'real',
-                value = '-gqA + gqV',
+                value = '(-gqA + gqV)/2.',
                 texname = 'g_{\\text{qA}}')
 
 gsd = Parameter(name = 'gsd',
@@ -293,6 +293,12 @@ lam2 = Parameter(name = 'lam2',
                  type = 'real',
                  value = '(Ca**2*MSd**2)/(2.*vev2**2) + (Mh**2*Sa**2)/(2.*vev2**2)',
                  texname = '\\text{lam2}')
+
+Mnew = Parameter(name = 'Mnew',
+                 nature = 'internal',
+                 type = 'real',
+                 value = 'Mchi + (vev2*ychi)/(2.*cmath.sqrt(2))',
+                 texname = '\\text{Mnew}')
 
 sw2 = Parameter(name = 'sw2',
                 nature = 'internal',
@@ -341,12 +347,6 @@ lam3 = Parameter(name = 'lam3',
                  type = 'real',
                  value = '(Ca*(-Mh**2 + MSd**2)*Sa)/(vev*vev2)',
                  texname = '\\text{lam3}')
-
-Mnew = Parameter(name = 'Mnew',
-                 nature = 'internal',
-                 type = 'real',
-                 value = 'Mchi + (vev*ychi)/cmath.sqrt(2)',
-                 texname = '\\text{Mnew}')
 
 yt = Parameter(name = 'yt',
                nature = 'internal',

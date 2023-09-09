@@ -1,6 +1,6 @@
 # This file was automatically created by FeynRules 2.3.49
 # Mathematica version: 13.2.1 for Linux x86 (64-bit) (January 28, 2023)
-# Date: Wed 6 Sep 2023 09:08:25
+# Date: Sat 9 Sep 2023 05:02:22
 
 
 from object_library import all_decays, Decay
@@ -9,8 +9,8 @@ import particles as P
 
 Decay_Sd = Decay(name = 'Decay_Sd',
                  particle = P.Sd,
-                 partial_widths = {(P.h,P.h):'((36*Ca**4*lam1**2*Sa**2*vev**2 - 24*Ca**4*lam1*lam3*Sa**2*vev**2 + 4*Ca**4*lam3**2*Sa**2*vev**2 + 12*Ca**2*lam1*lam3*Sa**4*vev**2 - 4*Ca**2*lam3**2*Sa**4*vev**2 + lam3**2*Sa**6*vev**2 - 12*Ca**5*lam1*lam3*Sa*vev*vev2 + 4*Ca**5*lam3**2*Sa*vev*vev2 - 72*Ca**3*lam1*lam2*Sa**3*vev*vev2 + 24*Ca**3*lam1*lam3*Sa**3*vev*vev2 + 24*Ca**3*lam2*lam3*Sa**3*vev*vev2 - 10*Ca**3*lam3**2*Sa**3*vev*vev2 - 12*Ca*lam2*lam3*Sa**5*vev*vev2 + 4*Ca*lam3**2*Sa**5*vev*vev2 + Ca**6*lam3**2*vev2**2 + 12*Ca**4*lam2*lam3*Sa**2*vev2**2 - 4*Ca**4*lam3**2*Sa**2*vev2**2 + 36*Ca**2*lam2**2*Sa**4*vev2**2 - 24*Ca**2*lam2*lam3*Sa**4*vev2**2 + 4*Ca**2*lam3**2*Sa**4*vev2**2)*cmath.sqrt(-4*Mh**2*MSd**2 + MSd**4))/(32.*cmath.pi*abs(MSd)**3)',
-                                   (P.chi,P.chi):'((-(Ca**2*Mchi**2*ychi**2) + (Ca**2*MSd**2*ychi**2)/4.)*cmath.sqrt(-4*Mchi**2*MSd**2 + MSd**4))/(32.*cmath.pi*abs(MSd)**3)',
+                 partial_widths = {(P.h,P.h):'((36*Ca**4*lam1**2*Sa**2*vev**2 - 24*Ca**4*lam1*lam3*Sa**2*vev**2 + 4*Ca**4*lam3**2*Sa**2*vev**2 + 12*Ca**2*lam1*lam3*Sa**4*vev**2 - 4*Ca**2*lam3**2*Sa**4*vev**2 + lam3**2*Sa**6*vev**2 + 12*Ca**5*lam1*lam3*Sa*vev*vev2 - 4*Ca**5*lam3**2*Sa*vev*vev2 + 72*Ca**3*lam1*lam2*Sa**3*vev*vev2 - 24*Ca**3*lam1*lam3*Sa**3*vev*vev2 - 24*Ca**3*lam2*lam3*Sa**3*vev*vev2 + 10*Ca**3*lam3**2*Sa**3*vev*vev2 + 12*Ca*lam2*lam3*Sa**5*vev*vev2 - 4*Ca*lam3**2*Sa**5*vev*vev2 + Ca**6*lam3**2*vev2**2 + 12*Ca**4*lam2*lam3*Sa**2*vev2**2 - 4*Ca**4*lam3**2*Sa**2*vev2**2 + 36*Ca**2*lam2**2*Sa**4*vev2**2 - 24*Ca**2*lam2*lam3*Sa**4*vev2**2 + 4*Ca**2*lam3**2*Sa**4*vev2**2)*cmath.sqrt(-4*Mh**2*MSd**2 + MSd**4))/(32.*cmath.pi*abs(MSd)**3)',
+                                   (P.chi,P.chi):'((-4*Ca**2*Mchi**2*ychi**2 + Ca**2*MSd**2*ychi**2)*cmath.sqrt(-4*Mchi**2*MSd**2 + MSd**4))/(32.*cmath.pi*abs(MSd)**3)',
                                    (P.ta__minus__,P.ta__plus__):'((MSd**2*Sa**2*ytau**2 - 4*MTA**2*Sa**2*ytau**2)*cmath.sqrt(MSd**4 - 4*MSd**2*MTA**2))/(16.*cmath.pi*abs(MSd)**3)',
                                    (P.t,P.t__tilde__):'((3*MSd**2*Sa**2*yt**2 - 12*MT**2*Sa**2*yt**2)*cmath.sqrt(MSd**4 - 4*MSd**2*MT**2))/(16.*cmath.pi*abs(MSd)**3)',
                                    (P.W__minus__,P.W__plus__):'(((3*ee**4*Sa**2*vev**2)/(4.*sw**4) + (ee**4*MSd**4*Sa**2*vev**2)/(16.*MW**4*sw**4) - (ee**4*MSd**2*Sa**2*vev**2)/(4.*MW**2*sw**4))*cmath.sqrt(MSd**4 - 4*MSd**2*MW**2))/(16.*cmath.pi*abs(MSd)**3)',
@@ -19,8 +19,8 @@ Decay_Sd = Decay(name = 'Decay_Sd',
 
 Decay_h = Decay(name = 'Decay_h',
                 particle = P.h,
-                partial_widths = {(P.Sd,P.Sd):'((Ca**6*lam3**2*vev**2 + 12*Ca**4*lam1*lam3*Sa**2*vev**2 - 4*Ca**4*lam3**2*Sa**2*vev**2 + 36*Ca**2*lam1**2*Sa**4*vev**2 - 24*Ca**2*lam1*lam3*Sa**4*vev**2 + 4*Ca**2*lam3**2*Sa**4*vev**2 + 12*Ca**5*lam2*lam3*Sa*vev*vev2 - 4*Ca**5*lam3**2*Sa*vev*vev2 + 72*Ca**3*lam1*lam2*Sa**3*vev*vev2 - 24*Ca**3*lam1*lam3*Sa**3*vev*vev2 - 24*Ca**3*lam2*lam3*Sa**3*vev*vev2 + 10*Ca**3*lam3**2*Sa**3*vev*vev2 + 12*Ca*lam1*lam3*Sa**5*vev*vev2 - 4*Ca*lam3**2*Sa**5*vev*vev2 + 36*Ca**4*lam2**2*Sa**2*vev2**2 - 24*Ca**4*lam2*lam3*Sa**2*vev2**2 + 4*Ca**4*lam3**2*Sa**2*vev2**2 + 12*Ca**2*lam2*lam3*Sa**4*vev2**2 - 4*Ca**2*lam3**2*Sa**4*vev2**2 + lam3**2*Sa**6*vev2**2)*cmath.sqrt(Mh**4 - 4*Mh**2*MSd**2))/(32.*cmath.pi*abs(Mh)**3)',
-                                  (P.chi,P.chi):'((-(Mchi**2*Sa**2*ychi**2) + (Mh**2*Sa**2*ychi**2)/4.)*cmath.sqrt(-4*Mchi**2*Mh**2 + Mh**4))/(32.*cmath.pi*abs(Mh)**3)',
+                partial_widths = {(P.Sd,P.Sd):'((Ca**6*lam3**2*vev**2 + 12*Ca**4*lam1*lam3*Sa**2*vev**2 - 4*Ca**4*lam3**2*Sa**2*vev**2 + 36*Ca**2*lam1**2*Sa**4*vev**2 - 24*Ca**2*lam1*lam3*Sa**4*vev**2 + 4*Ca**2*lam3**2*Sa**4*vev**2 - 12*Ca**5*lam2*lam3*Sa*vev*vev2 + 4*Ca**5*lam3**2*Sa*vev*vev2 - 72*Ca**3*lam1*lam2*Sa**3*vev*vev2 + 24*Ca**3*lam1*lam3*Sa**3*vev*vev2 + 24*Ca**3*lam2*lam3*Sa**3*vev*vev2 - 10*Ca**3*lam3**2*Sa**3*vev*vev2 - 12*Ca*lam1*lam3*Sa**5*vev*vev2 + 4*Ca*lam3**2*Sa**5*vev*vev2 + 36*Ca**4*lam2**2*Sa**2*vev2**2 - 24*Ca**4*lam2*lam3*Sa**2*vev2**2 + 4*Ca**4*lam3**2*Sa**2*vev2**2 + 12*Ca**2*lam2*lam3*Sa**4*vev2**2 - 4*Ca**2*lam3**2*Sa**4*vev2**2 + lam3**2*Sa**6*vev2**2)*cmath.sqrt(Mh**4 - 4*Mh**2*MSd**2))/(32.*cmath.pi*abs(Mh)**3)',
+                                  (P.chi,P.chi):'((-4*Mchi**2*Sa**2*ychi**2 + Mh**2*Sa**2*ychi**2)*cmath.sqrt(-4*Mchi**2*Mh**2 + Mh**4))/(32.*cmath.pi*abs(Mh)**3)',
                                   (P.ta__minus__,P.ta__plus__):'((Ca**2*Mh**2*ytau**2 - 4*Ca**2*MTA**2*ytau**2)*cmath.sqrt(Mh**4 - 4*Mh**2*MTA**2))/(16.*cmath.pi*abs(Mh)**3)',
                                   (P.t,P.t__tilde__):'((3*Ca**2*Mh**2*yt**2 - 12*Ca**2*MT**2*yt**2)*cmath.sqrt(Mh**4 - 4*Mh**2*MT**2))/(16.*cmath.pi*abs(Mh)**3)',
                                   (P.W__minus__,P.W__plus__):'(((3*Ca**2*ee**4*vev**2)/(4.*sw**4) + (Ca**2*ee**4*Mh**4*vev**2)/(16.*MW**4*sw**4) - (Ca**2*ee**4*Mh**2*vev**2)/(4.*MW**2*sw**4))*cmath.sqrt(Mh**4 - 4*Mh**2*MW**2))/(16.*cmath.pi*abs(Mh)**3)',

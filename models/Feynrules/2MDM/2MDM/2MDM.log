@@ -1,10 +1,10 @@
 # This file was automatically created by FeynRules 2.3.49
 # Mathematica version: 13.2.1 for Linux x86 (64-bit) (January 28, 2023)
-# Date: Tue 5 Sep 2023 11:42:35
+# Date: Sat 9 Sep 2023 03:21:58
 
 
 # 
-# This is the logfile for the model 2MDMnlo
+# This is the logfile for the model 2MDM
 
 # Authors: Yoxara Villamizar
 # Model version: 1
@@ -41,8 +41,8 @@
 
 # Vertices
    * Calling FeynmanRules for 1 Lagrangians.
-   * Number of classes vertices: 153
-   * Number of flavored vertices: 227
+   * Number of classes vertices: 147
+   * Number of flavored vertices: 211
    * Saved vertices in InterfaceRun[ 1 ].
    * Checked QNumber conservation.
       - Quantum number GhostNumber conserved in all vertices.
@@ -56,7 +56,7 @@
 # Vertex definitions
 #
 
-   * 227 vertices written.
+   * 211 vertices written.
    * vertices.py written.
 #
 # Lorentz structure definitions
@@ -68,7 +68,7 @@
 # Coupling definitions
 #
 
-   * 214 couplings written.
+   * 189 couplings written.
    * couplings.py written.
 #
 # Coupling order definitions

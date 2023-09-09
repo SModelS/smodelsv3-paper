@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-#/home/yoxara/smodels/SmodelSSMS/2MDM/xsecZp.py
+#/home/yoxara/2MDM/xsecZp.py
 
-base_path = "/home/yoxara/smodels/SmodelSSMS/2MDM"
+base_path = "/home/yoxara/2MDM"
 file_path = f"{base_path}/scripts/sigmaZp.txt"
 
-MZp_values = list(range(250, 4000, 250))
-gq_values = [0.005,0.05, 0.1, 0.5]
+MZp_values = list(range(500, 4000, 500))
+gqV_values = [0.1,0.2]
 
 with open(file_path, "w") as f:
     # Initial setup
@@ -31,13 +31,17 @@ with open(file_path, "w") as f:
     f.write("set run_card bwcutoff 15.0\n")    
     f.write("set run_card maxjetflavor 5\n")
     f.write("set param_card gZp 1\n")
+    f.write("set param_card gqA 0\n")
+    f.write("set param_card ychi 1\n")
+    f.write("set param_card Mchi 200\n")
 
     for i in MZp_values:
-        for j in gq_values:
+        for j in gqV_values:
             f.write(f"set param_card MZp {i}\n")
-            f.write(f"set param_card gq {j}\n")
+            f.write(f"set param_card WZp auto\n")
+            f.write(f"set param_card gqV {j}\n")
             f.write("done\n")
-            if i !=  MZp_values[-1] or j != gq_values[-1] :
+            if i !=  MZp_values[-1] or j != gqV_values[-1] :
                 f.write("launch\n")
 
     f.write(f"launch sigmaZp -i\n")

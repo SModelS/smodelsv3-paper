@@ -1,6 +1,6 @@
 # This file was automatically created by FeynRules 2.3.49
 # Mathematica version: 13.2.1 for Linux x86 (64-bit) (January 28, 2023)
-# Date: Wed 6 Sep 2023 09:08:25
+# Date: Sat 9 Sep 2023 05:02:22
 
 
 from object_library import all_couplings, Coupling
@@ -18,7 +18,7 @@ R2GC_131_2 = Coupling(name = 'R2GC_131_2',
                       order = {'QCD':2,'QED':1})
 
 R2GC_132_3 = Coupling(name = 'R2GC_132_3',
-                      value = '(complex(0,1)*G**2*MT*Sa*yt)/(8.*cmath.pi**2*cmath.sqrt(2))',
+                      value = '-0.125*(complex(0,1)*G**2*MT*Sa*yt)/(cmath.pi**2*cmath.sqrt(2))',
                       order = {'QCD':2,'QED':1})
 
 R2GC_133_4 = Coupling(name = 'R2GC_133_4',
@@ -30,7 +30,7 @@ R2GC_134_5 = Coupling(name = 'R2GC_134_5',
                       order = {'QCD':2,'QED':2})
 
 R2GC_135_6 = Coupling(name = 'R2GC_135_6',
-                      value = '(Ca*complex(0,1)*G**2*Sa*yt**2)/(16.*cmath.pi**2)',
+                      value = '-0.0625*(Ca*complex(0,1)*G**2*Sa*yt**2)/cmath.pi**2',
                       order = {'QCD':2,'QED':2})
 
 R2GC_136_7 = Coupling(name = 'R2GC_136_7',
@@ -302,7 +302,7 @@ R2GC_240_73 = Coupling(name = 'R2GC_240_73',
                        order = {'QCD':2,'QED':1})
 
 R2GC_241_74 = Coupling(name = 'R2GC_241_74',
-                       value = '-0.3333333333333333*(complex(0,1)*G**2*Sa*yt)/(cmath.pi**2*cmath.sqrt(2))',
+                       value = '(complex(0,1)*G**2*Sa*yt)/(3.*cmath.pi**2*cmath.sqrt(2))',
                        order = {'QCD':2,'QED':1})
 
 UVGC_170_1 = Coupling(name = 'UVGC_170_1',
@@ -630,6 +630,6 @@ UVGC_240_81 = Coupling(name = 'UVGC_240_81',
                        order = {'QCD':2,'QED':1})
 
 UVGC_241_82 = Coupling(name = 'UVGC_241_82',
-                       value = {-1:'( -0.16666666666666666*(complex(0,1)*G**2*Sa*yt)/(cmath.pi**2*cmath.sqrt(2)) if MT else (complex(0,1)*G**2*Sa*yt)/(12.*cmath.pi**2*cmath.sqrt(2)) ) - (complex(0,1)*G**2*Sa*yt)/(3.*cmath.pi**2*cmath.sqrt(2))',0:'( (-3*complex(0,1)*G**2*Sa*yt)/(4.*cmath.pi**2*cmath.sqrt(2)) + (complex(0,1)*G**2*Sa*yt*reglog(MT/MU_R))/(cmath.pi**2*cmath.sqrt(2)) if MT else -0.08333333333333333*(complex(0,1)*G**2*Sa*yt)/(cmath.pi**2*cmath.sqrt(2)) ) + (complex(0,1)*G**2*Sa*yt)/(12.*cmath.pi**2*cmath.sqrt(2))'},
+                       value = {-1:'( (complex(0,1)*G**2*Sa*yt)/(6.*cmath.pi**2*cmath.sqrt(2)) if MT else -0.08333333333333333*(complex(0,1)*G**2*Sa*yt)/(cmath.pi**2*cmath.sqrt(2)) ) + (complex(0,1)*G**2*Sa*yt)/(3.*cmath.pi**2*cmath.sqrt(2))',0:'( (3*complex(0,1)*G**2*Sa*yt)/(4.*cmath.pi**2*cmath.sqrt(2)) - (complex(0,1)*G**2*Sa*yt*reglog(MT/MU_R))/(cmath.pi**2*cmath.sqrt(2)) if MT else (complex(0,1)*G**2*Sa*yt)/(12.*cmath.pi**2*cmath.sqrt(2)) ) - (complex(0,1)*G**2*Sa*yt)/(12.*cmath.pi**2*cmath.sqrt(2))'},
                        order = {'QCD':2,'QED':1})
 

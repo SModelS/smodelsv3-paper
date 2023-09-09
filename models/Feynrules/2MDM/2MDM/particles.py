@@ -1,6 +1,6 @@
 # This file was automatically created by FeynRules 2.3.49
 # Mathematica version: 13.2.1 for Linux x86 (64-bit) (January 28, 2023)
-# Date: Tue 5 Sep 2023 11:42:48
+# Date: Sat 9 Sep 2023 03:22:11
 
 
 from __future__ import division
@@ -392,7 +392,7 @@ b = Particle(pdg_code = 5,
 
 b__tilde__ = b.anti()
 
-h = Particle(pdg_code = 9900025,
+h = Particle(pdg_code = 25,
              name = 'h',
              antiname = 'h',
              spin = 1,
@@ -441,30 +441,15 @@ G__plus__ = Particle(pdg_code = 251,
 
 G__minus__ = G__plus__.anti()
 
-chi = Particle(pdg_code = 9000006,
-               name = 'chi',
-               antiname = 'chi',
-               spin = 2,
-               color = 1,
-               mass = Param.Mchi,
-               width = Param.Wchi,
-               texname = 'chi',
-               antitexname = 'chi',
-               charge = 0,
-               GhostNumber = 0,
-               LeptonNumber = 0,
-               QB = 0,
-               Y = 0)
-
-sd = Particle(pdg_code = 9900026,
-              name = 'sd',
-              antiname = 'sd',
+Sd = Particle(pdg_code = 9900026,
+              name = 'Sd',
+              antiname = 'Sd',
               spin = 1,
               color = 1,
-              mass = Param.Msd,
-              width = Param.Wsd,
-              texname = 'sd',
-              antitexname = 'sd',
+              mass = Param.MSd,
+              width = Param.WSd,
+              texname = 'Sd',
+              antitexname = 'Sd',
               charge = 0,
               GhostNumber = 0,
               LeptonNumber = 0,
@@ -486,4 +471,19 @@ phi0p = Particle(pdg_code = 9900252,
                  LeptonNumber = 0,
                  QB = 0,
                  Y = 0)
+
+chi = Particle(pdg_code = 9000006,
+               name = 'chi',
+               antiname = 'chi',
+               spin = 2,
+               color = 1,
+               mass = Param.Mchi,
+               width = Param.ZERO,
+               texname = 'chi',
+               antitexname = 'chi',
+               charge = 0,
+               GhostNumber = 0,
+               LeptonNumber = 0,
+               QB = 0,
+               Y = 0)
 

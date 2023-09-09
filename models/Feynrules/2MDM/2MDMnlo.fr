@@ -12,7 +12,7 @@
 (* ************************** *)
 (* *****  Information   ***** *)
 (* ************************** *)
-M$ModelName = "2MDMnlo";
+M$ModelName = "2MDM";
 
 M$Information = { Authors      -> {"Yoxara Villamizar"}, 
                   Emails       ->{"yoxarasv@sprace,org.br"},
@@ -472,7 +472,7 @@ M$ClassesDescription = {
     FlavorIndex    -> SU2D,
     SelfConjugate  -> False,
     QuantumNumbers -> {Y -> 1/2},
-    Definitions    -> { Phi[1] -> -I GP, Phi[2] -> (vev + Ca*h - Sa*Sd + I G0)/Sqrt[2]  }
+    Definitions    -> { Phi[1] -> -I GP, Phi[2] -> (vev + Ca*h + Sa*Sd + I G0)/Sqrt[2]  }
   },
   S[4]  == {
     ClassName       -> Sd,
@@ -491,7 +491,7 @@ M$ClassesDescription = {
     Unphysical      -> True,
     SelfConjugate   -> False,
     QuantumNumbers  -> {Y -> 0, QB -> -2*gchi},
-    Definitions     -> { Phi2 -> (vev2 + Sa*h + Ca*Sd + I phip)/Sqrt[2]
+    Definitions     -> { Phi2 -> (vev2 - Sa*h + Ca*Sd + I phip)/Sqrt[2]
     }
   },
   S[5]  == {
@@ -778,7 +778,7 @@ M$Parameters = {
     InteractionOrder -> {NP, 1},
     BlockName -> ZPRIME,
     TeX              -> Subscript[g,qL],
-    Value -> gqV + gqA,
+    Value       -> (gqV + gqA)/2,
     Description -> "Left coupling of Zprime with the quarks"
   },  
   gqR == {
@@ -786,7 +786,7 @@ M$Parameters = {
     InteractionOrder -> {NP, 1},
     BlockName        -> ZPRIME,
     TeX              -> Subscript[g,qA],
-    Value            -> gqV - gqA,
+    Value            -> (gqV - gqA)/2,
     Description      -> "Right coupling of Zprime with the quarks"
   },  
   gsd == {
@@ -794,7 +794,7 @@ M$Parameters = {
     InteractionOrder -> {NP, 1},
     BlockName -> ZPRIME,
     TeX              -> Subscript[g,sd],
-    Value -> -2*gchi,
+    Value       -> -2*gchi,
     Description -> "gauge coupling of Zprime with the leptons"
   },  
   ychi == {
@@ -849,7 +849,7 @@ M$Parameters = {
   },
   Mnew == {
     ParameterType    -> Internal,
-    Value            -> Mchi + ychi * vev / Sqrt[2],
+    Value            -> Mchi + (ychi * vev2 )/ (2*Sqrt[2]),
     ParameterName    -> Mnew,
     InteractionOrder -> {QED, 2},
     Description      -> "Mass of the new scalar"
@@ -916,7 +916,7 @@ LFermions := Block[{mu},
   FlavorExpand->{SU2W,SU2D}]/.{CKM[a_,b_] Conjugate[CKM[a_,c_]]->IndexDelta[b,c], CKM[b_,a_] Conjugate[CKM[c_,a_]]->IndexDelta[b,c]}];
 (*+ (1/2)*chibar.Ga[mu].Ga[5].DC[chi, mu]*)
 
-Lchi := (gchi/2) Zp[mu] chibar.Ga[5].Ga[mu].chi  - (I/2) chibar.Ga[mu].del[chi,mu] ;
+Lchi := (gchi/2) Zp[mu] chibar.Ga[5].Ga[mu].chi  + (I/2) chibar.Ga[mu].del[chi,mu] ;
 LHiggs := Block[{ii,mu, feynmangaugerules},
   feynmangaugerules = If[Not[FeynmanGauge], {G0|GP|GPbar|phip ->0}, {}];
  
@@ -939,7 +939,7 @@ LYukawaSM := Block[{sp,ii,jj,cc,ff1,ff2,ff3,yuk,feynmangaugerules},
   yuk+HC[yuk]/.feynmangaugerules
   ];
 (**********************B***************************)
-LYukawanew := - 1/4 ychi (chibar.ProjM.Phi2.chi) - 1/4 ychi (chibar.ProjP.Phi2bar.chi) + (1/2) Mnew (chibar.chi);
+LYukawanew := - 1/2 ychi (chibar.ProjM.Phi2.chi) - 1/2 ychi (chibar.ProjP.Phi2bar.chi) + (1/2) Mnew (chibar.chi);
 (**********************END***************************)
 LYukawa := LYukawaSM + LYukawanew;
 (**********************END***************************)
