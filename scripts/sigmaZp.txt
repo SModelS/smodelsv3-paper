@@ -1,9 +1,9 @@
-import /home/yoxara/2MDM/Feynrules/2MDM/2MDM -modelname
+import /home/yoxara/2MDM/models/Feynrules/2MDM/2MDM -modelname
 define p = g u c d s b u~ c~ d~ s~ b~
 define j = g u c d s b u~ c~ d~ s~ b~
-generate p p > zp j
-output sigmaZp
-launch sigmaZp
+generate p p > zp > chi chi j
+output sigmaZpchichi
+launch sigmaZpchichi -n MZp500
 shower = Pythia8
 detector = Delphes
 analysis = ExRoot
@@ -25,67 +25,38 @@ set run_card maxjetflavor 5
 set param_card gZp 1
 set param_card gqA 0
 set param_card ychi 1
-set param_card Mchi 200
+set param_card Mchi 65
 set param_card gchi 0.5
 set param_card MZp 500
 set param_card WZp auto
+set param_card WZp auto
 set param_card gqV 0.1
 done
-launch
-set param_card MZp 500
-set param_card WZp auto
-set param_card gqV 0.2
-done
-launch
+launch -n MZp1000
 set param_card MZp 1000
 set param_card WZp auto
 set param_card gqV 0.1
 done
-launch
-set param_card MZp 1000
-set param_card WZp auto
-set param_card gqV 0.2
-done
-launch
+launch-n MZp1500
 set param_card MZp 1500
 set param_card WZp auto
 set param_card gqV 0.1
 done
-launch
-set param_card MZp 1500
-set param_card WZp auto
-set param_card gqV 0.2
-done
-launch
+launch -n MZp2000
 set param_card MZp 2000
 set param_card WZp auto
 set param_card gqV 0.1
 done
-launch
-set param_card MZp 2000
-set param_card WZp auto
-set param_card gqV 0.2
-done
-launch
+launch -n MZp2500
 set param_card MZp 2500
 set param_card WZp auto
 set param_card gqV 0.1
 done
-launch
-set param_card MZp 2500
-set param_card WZp auto
-set param_card gqV 0.2
-done
-launch
+launch -n MZp3000
 set param_card MZp 3000
 set param_card WZp auto
 set param_card gqV 0.1
 done
-launch
-set param_card MZp 3000
-set param_card WZp auto
-set param_card gqV 0.2
-done
-launch sigmaZp -i
-print_results --path=/home/yoxara/2MDM/data/sigmaZp.txt --format=short
+launch sigmaZpchichi -i
+print_results --path=/home/yoxara/2MDM/data/sigmaZpchichi.txt --format=short
 exit

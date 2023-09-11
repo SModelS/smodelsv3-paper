@@ -642,7 +642,7 @@ LGauge1 := Block[{mu,nu,ii,aa},
 
 LFermions1 := Block[{mu}, 
   ExpandIndices[I*(
-    QLbar.Ga[mu].DC[QL, mu] + LLbar.Ga[mu].DC[LL, mu] + uRbar.Ga[mu].DC[uR, mu] + dRbar.Ga[mu].DC[dR, mu] + lRbar.Ga[mu].DC[lR, mu]), 
+  LLbar.Ga[mu].DC[LL, mu] + lRbar.Ga[mu].DC[lR, mu]), 
   FlavorExpand->{SU2W,SU2D}]/.{CKM[a_,b_] Conjugate[CKM[a_,c_]]->IndexDelta[b,c], CKM[b_,a_] Conjugate[CKM[c_,a_]]->IndexDelta[b,c]}];
 
 LSM:= LGauge1 + LFermions1;
