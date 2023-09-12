@@ -40,7 +40,7 @@ define l+ = e+ mu+
 define l- = e- mu-
 define vl = ve vm vt
 define vl~ = ve~ vm~ vt~
-import model /home/camila/SmodelSSMS/2MDM/models/2MDM_Zp
+import model /home/camila/2MDM/models/Feynrules/2MDM/2MDMNLO
 define p = 21 2 4 1 3 -2 -4 -1 -3 5 -5 # pass to 5 flavors
 define j = p
 generate p p > zp j
