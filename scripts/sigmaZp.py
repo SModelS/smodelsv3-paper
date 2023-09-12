@@ -5,7 +5,7 @@ file_path = f"{base_path}/scripts/sigmaZp.txt"
 MZp_values = list(range(500, 3500, 500))
 gqV_values = [0.1,0.2]
 with open(file_path, "w") as f:
-    f.write(f"import {base_path}/Feynrules/2MDM/2MDM -modelname\n")
+    f.write(f"import {base_path}/models/Feynrules/2MDM/2MDM -modelname\n")
     f.write("define p = g u c d s b u~ c~ d~ s~ b~\n")
     f.write("define j = g u c d s b u~ c~ d~ s~ b~\n")
     f.write("generate p p > zp j\n")

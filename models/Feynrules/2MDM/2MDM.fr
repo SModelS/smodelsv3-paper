@@ -55,7 +55,6 @@ M$InteractionOrderHierarchy = {
 (* **** Particle classes **** *)
 (* ************************** *)
 M$ClassesDescription = {
-
   V[5] == {
     ClassName        -> Zp,
     SelfConjugate    -> True,
@@ -97,20 +96,7 @@ M$ClassesDescription = {
     Unphysical      -> True,
     Ghost           -> Bp
   },
-  F[16] == {
-    ClassName        -> chi,
-    SelfConjugate    -> True,
-    Unphysical       -> False,
-    Mass             -> {Mchi, 50},
-    Width            -> {Wchi, 0.0},
-    PropagatorLabel  -> {"chi"},
-    PropagatorType   -> Straight,
-    PropagatorArrow  -> None
-    PDG              -> {9910012},
-    ParticleName     -> {"chi"},
-    FullName         -> {"dark matter fermion"}
-    },
-  (* Higgs: physical scalars  *)
+(* Higgs: physical scalars  *)
   S[1] == {
     ClassName       -> h,
     SelfConjugate   -> True,
@@ -161,7 +147,7 @@ M$ClassesDescription = {
     FlavorIndex    -> SU2D,
     SelfConjugate  -> False,
     QuantumNumbers -> {Y -> 1/2},
-    Definitions    -> { Phi[1] -> -I GP, Phi[2] -> (vev + Ca*h - Sa*Sd + I G0)/Sqrt[2]  }
+    Definitions    -> { Phi[1] -> -I GP, Phi[2] -> (vev + Ca*h + Sa*Sd + I G0)/Sqrt[2]  }
   },
   S[4]  == {
     ClassName       -> Sd,
@@ -179,8 +165,8 @@ M$ClassesDescription = {
     ClassName       -> Phi2,
     Unphysical      -> True,
     SelfConjugate   -> False,
-    QuantumNumbers  -> {Y -> 0, QB -> -2 gchi},
-    Definitions     -> { Phi2 -> (vev2 + Sa*h + Ca*Sd + I phip)/Sqrt[2]
+    QuantumNumbers  -> {Y -> 0, QB -> -2*gchi},
+    Definitions     -> { Phi2 -> (vev2 - Sa*h + Ca*Sd + I phip)/Sqrt[2]
     }
   },
   S[5]  == {
@@ -195,7 +181,22 @@ M$ClassesDescription = {
     PDG             -> 9900252,
     ParticleName    -> "phi0p",
     FullName        -> "Phip"
-  }
+  },
+ (***************B*****************)
+  F[16] == {
+    ClassName        -> chi,
+    SelfConjugate    -> True,
+    Unphysical       -> False,
+    Mass             -> {Mchi, 50},
+    Width            -> {Wchi, 0.0},
+    PropagatorLabel  -> {"chi"},
+    (*QuantumNumbers -> {Y -> 0, QB-> gchi},    *)
+    PropagatorType   -> Straight,
+    PropagatorArrow  -> None
+    PDG              -> {9910012},
+    ParticleName     -> {"chi"},
+    FullName         -> {"dark matter fermion"}
+    }
 };
 
 
@@ -215,7 +216,7 @@ M$Parameters = {
     ParameterType -> External,
     BlockName -> BLINPUTS,
     Value -> 450.00,
-    Description -> "Sd mass"
+    Description -> "sd mass"
   },
   Sa == {
     ParameterType -> External,
@@ -235,7 +236,7 @@ M$Parameters = {
     ParameterType    -> Internal,
     Value            -> MZp/(2*gchi),
     InteractionOrder -> {QED, -1},
-    Description      -> "Sd VEV"
+    Description      -> "sd VEV"
   },
   Ca == {
     ParameterType    -> Internal,
@@ -264,7 +265,7 @@ M$Parameters = {
     InteractionOrder -> {NP, 1},
     BlockName -> ZPRIME,
     TeX              -> Subscript[g,qL],
-    Value -> gqV + gqA,
+    Value       -> (gqV + gqA)/2,
     Description -> "Left coupling of Zprime with the quarks"
   },  
   gqR == {
@@ -272,15 +273,15 @@ M$Parameters = {
     InteractionOrder -> {NP, 1},
     BlockName        -> ZPRIME,
     TeX              -> Subscript[g,qA],
-    Value            -> gqV - gqA,
+    Value            -> (gqV - gqA)/2,
     Description      -> "Right coupling of Zprime with the quarks"
-  }, 
-  gSd == {
+  },  
+  gsd == {
     ParameterType -> Internal,
     InteractionOrder -> {NP, 1},
     BlockName -> ZPRIME,
-    TeX              -> Subscript[g,Sd],
-    Value -> -2*gchi,
+    TeX              -> Subscript[g,sd],
+    Value       -> -2*gchi,
     Description -> "gauge coupling of Zprime with the leptons"
   },  
   ychi == {
@@ -309,14 +310,14 @@ M$Parameters = {
   },
   lam2 == {
     ParameterType    -> Internal,
-    Value            ->  Mh^2/(2*vevs^2)*Sa^2 + MSd^2/(2*vevs^2)*Ca^2,
+    Value            ->  Mh^2/(2*vev2^2)*Sa^2 + MSd^2/(2*vev2^2)*Ca^2,
     ParameterName    -> lam2,
     InteractionOrder -> {QED,2},
     Description      -> "Higgs quartic coupling piece for Sd"
   },
   lam3 == {
     ParameterType    -> Internal,
-    Value            -> (MSd^2 - Mh^2)/(vevs*vev)*Sa*Ca,
+    Value            -> (MSd^2 - Mh^2)/(vev2*vev)*Sa*Ca,
     ParameterName    -> lam3,
     InteractionOrder -> {QED, 2},
     Description      -> "Mixing part"
@@ -335,7 +336,7 @@ M$Parameters = {
   },
   Mnew == {
     ParameterType    -> Internal,
-    Value            -> Mchi + ychi * vev / Sqrt[2],
+    Value            -> Mchi + (ychi * vev2 )/ (2*Sqrt[2]),
     ParameterName    -> Mnew,
     InteractionOrder -> {QED, 2},
     Description      -> "Mass of the new scalar"
@@ -354,7 +355,7 @@ LFermions := Block[{mu},
   ExpandIndices[I*(
     QLbar.Ga[mu].DC[QL, mu] + uRbar.Ga[mu].DC[uR, mu] + dRbar.Ga[mu].DC[dR, mu]), 
   FlavorExpand->{SU2W,SU2D}]/.{CKM[a_,b_] Conjugate[CKM[a_,c_]]->IndexDelta[b,c], CKM[b_,a_] Conjugate[CKM[c_,a_]]->IndexDelta[b,c]}];
-(*+ (1/2)*chibar.Ga[mu].Ga[5].DC[chi, mu]                         + (1/2)*chibar.Ga[mu].Ga[5].DC[chi, mu]*)
+
 Lchi := (gchi/2) Zp[mu] chibar.Ga[5].Ga[mu].chi  - (I/2) chibar.Ga[mu].del[chi,mu];
 
 LHiggs := Block[{ii,mu, feynmangaugerules},
@@ -382,27 +383,6 @@ LYukawaSM := Block[{sp,ii,jj,cc,ff1,ff2,ff3,yuk,feynmangaugerules},
 LYukawanew := - 1/4 ychi (chibar.ProjM.Phi2.chi) - 1/4 ychi (chibar.ProjP.Phi2bar.chi) + (1/2) Mnew (chibar.chi);
 (**********************END***************************)
 LYukawa := LYukawaSM + LYukawanew;
-
-
-LGhost := Block[{LGh,LGhw,LGhs,LGhphi,mu, generators,gh,ghbar,Vectorize,phi1,phi2,togoldstones,doublet,doublet0},
-  (* Pure gauge piece *) 	
-  LGh = -ghBbar.del[DC[ghB,mu],mu];
-  LGhw = -ghWibar[ii].del[DC[ghWi[ii],mu],mu];
-  LGhs = -ghGbar[ii].del[DC[ghG[ii],mu],mu];
-
-  (* Scalar pieces: see Peskin pages 739-742 *)
-  (* phi1 and phi2 are the real degrees of freedom of GP *)
-  (* Vectorize transforms a doublet in a vector in the phi-basis, i.e. the basis of real degrees of freedom *)
-  gh    = {ghB, ghWi[1], ghWi[2], ghWi[3]};
-  ghbar = {ghBbar, ghWibar[1], ghWibar[2], ghWibar[3]};
-  generators = {-I/2 g1 IdentityMatrix[2], -I/2 gw PauliSigma[1], -I/2 gw PauliSigma[2], -I/2 gw PauliSigma[3]};
-  doublet = Expand[{(-I phi1 - phi2)/Sqrt[2], Phi[2]} /. MR$Definitions /. vev -> 0]; 
-  doublet0 = {0, vev/Sqrt[2]};
-  Vectorize[{a_, b_}]:= Simplify[{Sqrt[2] Re[Expand[a]], Sqrt[2] Im[Expand[a]], Sqrt[2] Re[Expand[b]], Sqrt[2] Im[Expand[b]]}/.{Im[_]->0, Re[num_]->num}];
-  togoldstones := {phi1 -> (GP + GPbar)/Sqrt[2], phi2 -> (-GP + GPbar)/(I Sqrt[2])};
-  LGhphi=Plus@@Flatten[Table[-ghbar[[kkk]].gh[[lll]] Vectorize[generators[[kkk]].doublet0].Vectorize[generators[[lll]].(doublet+doublet0)],{kkk,4},{lll,4}]] /.togoldstones;
-
-ExpandIndices[ LGhs + If[FeynmanGauge, LGh + LGhw + LGhphi,0], FlavorExpand->SU2W]];
 
 (*******************Eqn.(2.44) from 1106.4691******************************)
 (*****************B is an abelian group, DC->del, https://en.wikipedia.org/wiki/Faddeev%E2%80%93Popov_ghost**********)

@@ -2,19 +2,22 @@
 #/home/yoxara/2MDM/xsecSdnlo.py
 
 base_path = "/home/yoxara/2MDM"
-file_path = f"{base_path}/scripts/sigma_Sdnlo.txt"
+file_path = f"{base_path}/scripts/sigmaSdnlo.txt"
 
-MSd_values = list(range(250, 4000, 250))
-Sa_values = [0.005,0.05, 0.1, 0.5]
+MSd_values = [140, 300, 500, 1000, 2000, 2500]
+Sa_values = [0.1]
 
 with open(file_path, "w") as f:
     # Initial setup
-    f.write(f"import {base_path}/models/2MDMnlo -modelname\n") 
+    f.write(f"import {base_path}/models/Feynrules/2MDM/2MDM -modelname\n")
     f.write("define p = g u c d s b u~ c~ d~ s~ b~\n")
-    f.write("generate p p > Sd [noborn=QCD]\n")
+    f.write("define j = g u c d s b u~ c~ d~ s~ b~\n")
+    f.write("generate p p > Sd j [noborn=QCD]\n")
     f.write(f"output sigmaSdnlo\n")
     f.write(f"launch sigmaSdnlo\n")
-    f.write("analysis = MadAnalysis4\n")
+    f.write(f"shower = Pythia8\n")
+    f.write(f"detector = Delphes\n")
+    f.write("analysis = ExRoot\n")
     f.write("set run_card nevents 15000\n")
     f.write("set run_card ebeam1 6500\n")
     f.write("set run_card ebeam2 6500\n")
@@ -30,8 +33,10 @@ with open(file_path, "w") as f:
     f.write("set run_card sde_strategy 2\n")    
     f.write("set run_card bwcutoff 15.0\n")    
     f.write("set run_card maxjetflavor 5\n")
-    #f.write("set run_card ptj 30\n")
-    f.write("set param_card gZp 1\n")
+    f.write("set param_card ychi 1\n")
+    f.write("set param_card Mchi 65\n")
+    f.write("set param_card gchi 0.5\n")
+    f.write("set param_card MZp 1000\n")
 
     for i in MSd_values:
         for j in Sa_values:
