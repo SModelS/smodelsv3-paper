@@ -50,14 +50,17 @@ def getModelDict(inputFile):
     if process == 'pp->zp':
         mChi = pars.blocks['MASS'][9000006] # DM mass
         sTheta = pars.blocks['BLINPUTS'][3] # sin theta
-        gchi = pars.blocks['ZPRIME'][1] # coupling of mediators to DM
-        gq = pars.blocks['ZPRIME'][2] # coupling of mediators to SM
+        gchi = pars.blocks['ZPRIME'][1] # coupling of zp to DM
+        gq = pars.blocks['ZPRIME'][2] # coupling of zp to SM
+        ychi = pars.blocks['FRBLOCK'][1] # coupling of sd to DM
         gammaZp = pars.decays[9900032].totalwidth # zp total width
         gammaS = pars.decays[9900026].totalwidth # s total width
+    
 
         modelDict['$m_{med}$'] = mMed
         modelDict['$m_{s}$'] = mH2
         modelDict['$\Gamma_{zp}$'] = gammaZp
+        modelDict['$y_{\chi}$'] = ychi
 
 
 
@@ -100,7 +103,7 @@ def getModelDict(inputFile):
             particles = event.particles
 
             jets = [p for p in particles if abs(p.id) in [1,2,3,4,5,21] and p.status == 1]
-            dm = [p for p in particles if abs(p.id) in [9000006, 52] and p.status == 1]
+            # dm = [p for p in particles if abs(p.id) in [9000006, 52] and p.status == 1]
             med = [p for p in particles if abs(p.id) in [9900032, 9900026, 54] and p.status == 1]
 
             if len(med) != 1:
@@ -147,6 +150,7 @@ def getModelDict(inputFile):
     modelDict['x-sec pT-250 (pb)'] = totalweight_cut
 
     print('Total cross section = %1.4f (pb)' %totalweight)
+    print('Total cross section (after cut) = %1.4f (pb)' %totalweight_cut)
 
     return modelDict
 
