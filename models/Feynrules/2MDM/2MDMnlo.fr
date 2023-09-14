@@ -778,7 +778,7 @@ M$Parameters = {
     InteractionOrder -> {NP, 1},
     BlockName -> ZPRIME,
     TeX              -> Subscript[g,qL],
-    Value       -> (gqV + gqA)/2,
+    Value       -> (gqV + gqA),
     Description -> "Left coupling of Zprime with the quarks"
   },  
   gqR == {
@@ -786,7 +786,7 @@ M$Parameters = {
     InteractionOrder -> {NP, 1},
     BlockName        -> ZPRIME,
     TeX              -> Subscript[g,qA],
-    Value            -> (gqV - gqA)/2,
+    Value            -> (gqV - gqA),
     Description      -> "Right coupling of Zprime with the quarks"
   },  
   gsd == {

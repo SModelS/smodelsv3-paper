@@ -1,6 +1,6 @@
 # This file was automatically created by FeynRules 2.3.49
 # Mathematica version: 13.2.1 for Linux x86 (64-bit) (January 28, 2023)
-# Date: Sat 9 Sep 2023 05:02:22
+# Date: Thu 14 Sep 2023 17:02:36
 
 
 
@@ -255,13 +255,13 @@ G = Parameter(name = 'G',
 gqL = Parameter(name = 'gqL',
                 nature = 'internal',
                 type = 'real',
-                value = '(gqA + gqV)/2.',
+                value = 'gqA + gqV',
                 texname = 'g_{\\text{qL}}')
 
 gqR = Parameter(name = 'gqR',
                 nature = 'internal',
                 type = 'real',
-                value = '(-gqA + gqV)/2.',
+                value = '-gqA + gqV',
                 texname = 'g_{\\text{qA}}')
 
 gsd = Parameter(name = 'gsd',
