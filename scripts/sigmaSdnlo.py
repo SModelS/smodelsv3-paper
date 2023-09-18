@@ -4,21 +4,20 @@
 base_path = "/home/yoxara/2MDM"
 file_path = f"{base_path}/scripts/sigmaSdnlo.txt"
 
-MSd_values = [140, 300, 500, 1000, 2000, 2500]
-Sa_values = [0.1]
+MSd_values = [140, 300, 500, 700, 900, 1100, 1300, 1500, 1700, 1900, 2100, 2400]
+Sa_values = [0.2]
 
 with open(file_path, "w") as f:
-    # Initial setup
-    f.write(f"import {base_path}/models/Feynrules/2MDM/2MDM -modelname\n")
+    f.write(f"import {base_path}/models/Feynrules/2MDM/2MDMNLO -modelname\n")
     f.write("define p = g u c d s b u~ c~ d~ s~ b~\n")
-    f.write("define j = g u c d s b u~ c~ d~ s~ b~\n")
-    f.write("generate p p > Sd j [noborn=QCD]\n")
-    f.write(f"output sigmaSdnlo\n")
-    f.write(f"launch sigmaSdnlo\n")
-    f.write(f"shower = Pythia8\n")
-    f.write(f"detector = Delphes\n")
+    f.write("define j = p \n")
+    f.write("generate p p > Sd > chi chi j [noborn=QCD]\n")
+    f.write(f"output sigmaSdXdXdjnlo\n")
+    f.write(f"launch sigmaSdXdXdjnlo\n")
+    #f.write(f"shower = Pythia8\n")
+    #f.write(f"detector = Delphes\n")
     f.write("analysis = ExRoot\n")
-    f.write("set run_card nevents 15000\n")
+    f.write("set run_card nevents 10000\n")
     f.write("set run_card ebeam1 6500\n")
     f.write("set run_card ebeam2 6500\n")
     f.write("set run_card lpp1 1\n")
@@ -35,17 +34,18 @@ with open(file_path, "w") as f:
     f.write("set run_card maxjetflavor 5\n")
     f.write("set param_card ychi 1\n")
     f.write("set param_card Mchi 65\n")
-    f.write("set param_card gchi 0.5\n")
-    f.write("set param_card MZp 1000\n")
+    f.write("set param_card gchi 1\n")
+    f.write("set param_card MZp 2000\n")
 
-    for i in MSd_values:
-        for j in Sa_values:
+    for j in Sa_values:
+        for i in MSd_values:
             f.write(f"set param_card MSd {i}\n")
+            f.write(f"set param_card WSd auto \n")
             f.write(f"set param_card Sa {j}\n")
             f.write("done\n")
             if i !=  MSd_values[-1] or j != Sa_values[-1] :
                 f.write("launch\n")
 
-    f.write(f"launch sigmaSdnlo -i\n")
-    f.write(f"print_results --path={base_path}/data/sigmaSdnlo.txt --format=short\n")
+    f.write(f"launch sigmaSdXdXdjnlo -i\n")
+    f.write(f"print_results --path={base_path}/data/sigmaSdXdXdjnlo.txt --format=short\n")
     f.write("exit\n")
