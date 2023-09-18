@@ -1,13 +1,11 @@
-import /home/yoxara/2MDM/models/Feynrules/2MDM/2MDM -modelname
+import /home/yoxara/2MDM/models/Feynrules/2MDM/2MDMNLO -modelname
 define p = g u c d s b u~ c~ d~ s~ b~
-define j = g u c d s b u~ c~ d~ s~ b~
+define j = p 
 generate p p > zp > chi chi j
-output sigmaZpchichi
-launch sigmaZpchichi -n MZp500
-shower = Pythia8
-detector = Delphes
+output sigmaZpXdXdj
+launch sigmaZpXdXdj
 analysis = ExRoot
-set run_card nevents 15000
+set run_card nevents 10000
 set run_card ebeam1 6500
 set run_card ebeam2 6500
 set run_card lpp1 1
@@ -25,38 +23,79 @@ set run_card maxjetflavor 5
 set param_card gZp 1
 set param_card gqA 0
 set param_card ychi 1
-set param_card Mchi 65
-set param_card gchi 0.5
+set param_card Mchi 200
+set param_card gchi 1
+set run_cards tag_1 MZp500_gqV0.1
 set param_card MZp 500
-set param_card WZp auto
 set param_card WZp auto
 set param_card gqV 0.1
 done
-launch -n MZp1000
+launch
+set run_cards tag_1 MZp1000_gqV0.1
 set param_card MZp 1000
 set param_card WZp auto
 set param_card gqV 0.1
 done
-launch-n MZp1500
+launch
+set run_cards tag_1 MZp1500_gqV0.1
 set param_card MZp 1500
 set param_card WZp auto
 set param_card gqV 0.1
 done
-launch -n MZp2000
+launch
+set run_cards tag_1 MZp2000_gqV0.1
 set param_card MZp 2000
 set param_card WZp auto
 set param_card gqV 0.1
 done
-launch -n MZp2500
+launch
+set run_cards tag_1 MZp2500_gqV0.1
 set param_card MZp 2500
 set param_card WZp auto
 set param_card gqV 0.1
 done
-launch -n MZp3000
+launch
+set run_cards tag_1 MZp3000_gqV0.1
 set param_card MZp 3000
 set param_card WZp auto
 set param_card gqV 0.1
 done
-launch sigmaZpchichi -i
-print_results --path=/home/yoxara/2MDM/data/sigmaZpchichi.txt --format=short
+launch
+set run_cards tag_1 MZp500_gqV0.25
+set param_card MZp 500
+set param_card WZp auto
+set param_card gqV 0.25
+done
+launch
+set run_cards tag_1 MZp1000_gqV0.25
+set param_card MZp 1000
+set param_card WZp auto
+set param_card gqV 0.25
+done
+launch
+set run_cards tag_1 MZp1500_gqV0.25
+set param_card MZp 1500
+set param_card WZp auto
+set param_card gqV 0.25
+done
+launch
+set run_cards tag_1 MZp2000_gqV0.25
+set param_card MZp 2000
+set param_card WZp auto
+set param_card gqV 0.25
+done
+launch
+set run_cards tag_1 MZp2500_gqV0.25
+set param_card MZp 2500
+set param_card WZp auto
+set param_card gqV 0.25
+done
+launch
+set run_cards tag_1 MZp3000_gqV0.25
+set param_card MZp 3000
+set param_card WZp auto
+set param_card gqV 0.25
+done
+launch sigmaZpXdXdj -i
+print_results --path=/home/yoxara/2MDM/data/sigmaZpXdXdj.txt --format=short
 exit
