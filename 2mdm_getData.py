@@ -35,43 +35,41 @@ def getModelDict(inputFile):
     pars = pyslha.readSLHA(slha)
 
     if 9900032 in pars.blocks['MASS']:
-        process = 'pp->zp'
-        modelDict['process'] = process
-        mMed = pars.blocks['MASS'][9900032] # Z prime mass
-        mH2 = pars.blocks['BLINPUTS'][2] # dark Higgs mass
+        model = '2mdm'
+        mZp = pars.blocks['MASS'][9900032] # Z prime mass
+        mS = pars.blocks['BLINPUTS'][2] # dark Higgs (S) mass
         
 
     if 54 in pars.blocks['MASS']:
-        process = 'pp->y0'
-        modelDict['process'] = process
-        mMed = pars.blocks['MASS'][54]  # modified Y0 mass
+        model = 'dmsimp'
+        mS = pars.blocks['MASS'][54]  # modified Y0 mass
         
 
-    if process == 'pp->zp':
+    if model == '2mdm':
         mChi = pars.blocks['MASS'][9000006] # DM mass
         sTheta = pars.blocks['BLINPUTS'][3] # sin theta
         gchi = pars.blocks['ZPRIME'][1] # coupling of zp to DM
         gq = pars.blocks['ZPRIME'][2] # coupling of zp to SM
-        ychi = pars.blocks['FRBLOCK'][1] # coupling of sd to DM
+        ychi = pars.blocks['FRBLOCK'][1] # coupling of s to DM
         gammaZp = pars.decays[9900032].totalwidth # zp total width
         gammaS = pars.decays[9900026].totalwidth # s total width
     
 
-        modelDict['$m_{med}$'] = mMed
-        modelDict['$m_{s}$'] = mH2
+        modelDict['$m_{Z^{\prime}}$'] = mZp
+        modelDict['$m_{s}$'] = mS
         modelDict['$\Gamma_{zp}$'] = gammaZp
         modelDict['$y_{\chi}$'] = ychi
 
 
 
-    if process == 'pp->y0':
+    if model == 'dmsimp':
         mChi = pars.blocks['MASS'][52] # DM mass
         sTheta = pars.blocks['DMINPUTS'][10] # sin theta
         gchi = pars.blocks['DMINPUTS'][3]
         gq = pars.blocks['DMINPUTS'][6]
         gammaS = pars.decays[54].totalwidth
 
-        modelDict['$m_{med}$'] = mMed
+        modelDict['$m_{s}$'] = mS
 
     modelDict['$\Gamma_{s}$'] = gammaS
     modelDict['$m_{\chi}$'] = mChi
@@ -94,8 +92,6 @@ def getModelDict(inputFile):
     ## MET
     minMET = 250.
 
-
-
     for evts in [events]:
         modelDict['Events'] = nevts
         for event in evts:
@@ -103,10 +99,10 @@ def getModelDict(inputFile):
             particles = event.particles
 
             jets = [p for p in particles if abs(p.id) in [1,2,3,4,5,21] and p.status == 1]
-            # dm = [p for p in particles if abs(p.id) in [9000006, 52] and p.status == 1]
+            dm = [p for p in particles if abs(p.id) in [9000006, 52] and p.status == 1]
             med = [p for p in particles if abs(p.id) in [9900032, 9900026, 54] and p.status == 1]
 
-            if len(med) != 1:
+            if (len(med) != 1) and (len(dm) != 2):
                 continue
 
             weight = event.eventinfo.weight/nevts
@@ -115,6 +111,7 @@ def getModelDict(inputFile):
                 continue
 
             totalweight += weight
+
 
             # Filter jets
             jetList = []
@@ -132,8 +129,10 @@ def getModelDict(inputFile):
             jetList = sorted(jetList, key = lambda j: np.sqrt(j.px**2+j.py**2), reverse=True) 
 
             # Compute MET
-            # MET = np.sqrt((dm[0].px+dm[1].px)**2 + (dm[0].py+dm[1].py)**2)
-            MET = np.sqrt((med[0].px)**2 + (med[0].py)**2)
+            if len(med) == 1:
+                MET = np.sqrt((med[0].px)**2 + (med[0].py)**2)
+            elif len(dm) == 2:
+                MET = np.sqrt((dm[0].px+dm[1].px)**2 + (dm[0].py+dm[1].py)**2)
 
             if len(jetList) == 0:
                 continue
@@ -145,6 +144,7 @@ def getModelDict(inputFile):
                 continue
 
             totalweight_cut += weight
+            
 
     modelDict['x-sec (pb)'] = totalweight
     modelDict['x-sec pT-250 (pb)'] = totalweight_cut
