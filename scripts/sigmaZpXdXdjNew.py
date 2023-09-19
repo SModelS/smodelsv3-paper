@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 #/home/yoxara/2MDM/xsecZp.py
 base_path = "/home/yoxara/2MDM"
-file_path = f"{base_path}/scripts/sigmaZp.txt"
-MZp_values = list(range(500, 3500, 250))
+file_path = f"{base_path}/scripts/sigmaZpXdXdjNew.txt"
+MZp_values = list(range(250, 3500, 250))
 gqV_values = [0.1,0.25]
 with open(file_path, "w") as f:
     f.write(f"import {base_path}/models/Feynrules/2MDM/2MDMNLO -modelname\n")
     f.write("define p = g u c d s b u~ c~ d~ s~ b~\n")
     f.write("define j = p \n")
-    f.write("generate p p > zp \n")
-    f.write(f"output {base_path}/2mdm_sigmaZp\n")
-    f.write(f"launch {base_path}/2mdm_sigmaZp\n")
+    f.write("generate p p > zp > chi chi j\n")
+    f.write(f"output {base_path}/2mdm_sigmaZpXdXdjNew\n")
+    f.write(f"launch {base_path}/2mdm_sigmaZpXdXdjNew\n")
     #f.write(f"shower = Pythia8\n")
     #f.write(f"detector = Delphes\n")
     f.write("analysis = ExRoot\n")
@@ -45,6 +45,6 @@ with open(file_path, "w") as f:
             if i !=  MZp_values[-1] or j != gqV_values[-1] :
                 f.write("launch\n")
                 
-    f.write(f"launch {base_path}/2mdm_sigmaZp -i\n")
-    f.write(f"print_results --path={base_path}/data/sigmaZp.txt --format=short\n")
+    f.write(f"launch {base_path}/2mdm_sigmaZpXdXdjNew -i\n")
+    f.write(f"print_results --path={base_path}/data/sigmaZpXdXdjNew.txt --format=short\n")
     f.write("exit\n")

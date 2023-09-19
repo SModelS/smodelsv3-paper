@@ -1,9 +1,9 @@
 import /home/yoxara/2MDM/models/Feynrules/2MDM/2MDMNLO -modelname
 define p = g u c d s b u~ c~ d~ s~ b~
 define j = p 
-generate p p > zp 
-output /home/yoxara/2MDM/2mdm_sigmaZp
-launch /home/yoxara/2MDM/2mdm_sigmaZp
+generate p p > zp > chi chi j
+output /home/yoxara/2MDM/2mdm_sigmaZpXdXdjNew
+launch /home/yoxara/2MDM/2mdm_sigmaZpXdXdjNew
 analysis = ExRoot
 set run_card nevents 10000
 set run_card ebeam1 6500
@@ -23,8 +23,14 @@ set run_card maxjetflavor 5
 set param_card gZp 1
 set param_card gqA 0
 set param_card ychi 1
-set param_card Mchi 400
+set param_card Mchi 65
 set param_card gchi 1
+set run_cards tag_1 MZp250_gqV0.1
+set param_card MZp 250
+set param_card WZp auto
+set param_card gqV 0.1
+done
+launch
 set run_cards tag_1 MZp500_gqV0.1
 set param_card MZp 500
 set param_card WZp auto
@@ -95,6 +101,12 @@ set run_cards tag_1 MZp3250_gqV0.1
 set param_card MZp 3250
 set param_card WZp auto
 set param_card gqV 0.1
+done
+launch
+set run_cards tag_1 MZp250_gqV0.25
+set param_card MZp 250
+set param_card WZp auto
+set param_card gqV 0.25
 done
 launch
 set run_cards tag_1 MZp500_gqV0.25
@@ -168,6 +180,6 @@ set param_card MZp 3250
 set param_card WZp auto
 set param_card gqV 0.25
 done
-launch /home/yoxara/2MDM/2mdm_sigmaZp -i
-print_results --path=/home/yoxara/2MDM/data/sigmaZp.txt --format=short
+launch /home/yoxara/2MDM/2mdm_sigmaZpXdXdjNew -i
+print_results --path=/home/yoxara/2MDM/data/sigmaZpXdXdjNew.txt --format=short
 exit

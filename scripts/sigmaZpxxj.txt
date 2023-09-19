@@ -1,9 +1,9 @@
 import /home/yoxara/2MDM/models/Feynrules/2MDM/2MDMNLO -modelname
 define p = g u c d s b u~ c~ d~ s~ b~
 define j = p 
-generate p p > zp 
-output /home/yoxara/2MDM/2mdm_sigmaZp
-launch /home/yoxara/2MDM/2mdm_sigmaZp
+generate p p > zp > chi chi j
+output /home/yoxara/2MDM/2mdm_sigmaZpXdXdj
+launch /home/yoxara/2MDM/2mdm_sigmaZpXdXdj
 analysis = ExRoot
 set run_card nevents 10000
 set run_card ebeam1 6500
@@ -168,6 +168,6 @@ set param_card MZp 3250
 set param_card WZp auto
 set param_card gqV 0.25
 done
-launch /home/yoxara/2MDM/2mdm_sigmaZp -i
-print_results --path=/home/yoxara/2MDM/data/sigmaZp.txt --format=short
+launch /home/yoxara/2MDM/2mdm_sigmaZpXdXdj -i
+print_results --path=/home/yoxara/2MDM/data/sigmaZpXdXdj.txt --format=short
 exit
