@@ -11,5 +11,5 @@ Repository for storing the Two Mediator Dark Matter (2MDM) model, alongside with
 * [References](./References): Useful references.
 
 
-[Overview of the Two-Mediator Dark Matter Model (2MDM): Symmetries, Interactions, Parameters, and results](https://www.overleaf.com/5859392653ttmhcrtfxfxp)
+[Overview of the Two-Mediator Dark Matter Model (2MDM): Symmetries, Interactions, Parameters, and results](https://www.overleaf.com/read/xszpmbtnpmhn)
 
