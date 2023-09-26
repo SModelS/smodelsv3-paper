@@ -3,7 +3,7 @@
 import pandas as pd
 import os,glob
 
-def combineWidths(files, outputFile):
+def combineData(files, outputFile):
 
     if not files:
         print('No valid files found.')
@@ -12,8 +12,8 @@ def combineWidths(files, outputFile):
 
     allData = pd.read_pickle(files[0])
     for f in files[1:]:
-        widthData = pd.read_pickle(f)
-        allData = pd.concat((allData, widthData), ignore_index=True)
+        singleData = pd.read_pickle(f)
+        allData = pd.concat((allData, singleData), ignore_index=True)
 
     # allColumns = allData.columns.to_list()
     # orderColumns = ['Coupling', 'Mode', '$m_{med}', '$m_{DM}']
@@ -36,4 +36,4 @@ if __name__ == "__main__":
     inputFiles = args.inputFiles
     outputFile = args.outputFile
     
-    combineWidths(inputFiles,outputFile)
+    combineData(inputFiles,outputFile)
