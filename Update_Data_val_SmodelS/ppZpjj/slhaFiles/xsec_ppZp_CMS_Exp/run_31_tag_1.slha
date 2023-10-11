@@ -142,5 +142,5 @@ DECAY  5000001   1.133525e+03
 #
 #      PDG        Width
 DECAY  5000521   0.000000e+00
-XSECTION  1.30E+04  2212 2212 2 5000001 5000001 # 10000 events, [pb], pythia8 for LO
- 0  2  0  0  5  -5   0.0196426845 SModelS 3.0.0-beta
+XSECTION  1.30E+04  2212 2212 1 5000001 # 10000 events, [pb], pythia8 for LO
+ 0  0  0  0  0  0   0.0196426845 SModelS 3.0.0-beta
