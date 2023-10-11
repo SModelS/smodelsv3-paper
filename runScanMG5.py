@@ -203,6 +203,7 @@ def generateEvents(parser):
         commandsFileF.write('detector=Delphes\n')
     else:
         commandsFileF.write('detector=OFF\n')
+    commandsFileF.write('analysis=OFF\n')
 
     commandsFileF.write('done\n')
     comms = parser["MadGraphSet"]

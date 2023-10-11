@@ -18,17 +18,16 @@
 #*********************************************************************
 # Tag name for the run (one word)                                    *
 #*********************************************************************
-  tag_1     = run_tag ! name of the run 
+  axial     = run_tag ! name of the run 
 #*********************************************************************
 # Number of events and rnd seed                                      *
 # Warning: Do not generate more than 1M events in a single run       *
 #*********************************************************************
-  10000 = nevents ! Number of unweighted events requested 
+  25000 = nevents ! Number of unweighted events requested 
   0   = iseed   ! rnd seed (0=assigned automatically=default))
 #*********************************************************************
 # Collider type and energy                                           *
-# lpp: 0=No PDF, 1=proton, -1=antiproton,                            *
-#                2=elastic photon of proton/ion beam                 *
+# lpp: 0=No PDF, 1=proton, -1=antiproton, 2=elastic photon of proton,*
 #             +/-3=PDF of electron/positron beam                     *
 #             +/-4=PDF of muon/antimuon beam                         *
 #*********************************************************************
@@ -42,9 +41,7 @@
 # PDF CHOICE: this automatically fixes alpha_s and its evol.         *
 # pdlabel: lhapdf=LHAPDF (installation needed) [1412.7420]           *
 #          iww=Improved Weizsaecker-Williams Approx.[hep-ph/9310350] *
-#          eva=Effective W/Z/A Approx.       [2111.02442]            *
-#          edff=EDFF in gamma-UPC            [eq.(11) in 2207.03012] *
-#          chff=ChFF in gamma-UPC            [eq.(13) in 2207.03012] *
+#          eva=Effective W/Z/A Approx.       [21yy.zzzzz]            *
 #          none=No PDF, same as lhapdf with lppx=0                   *
 #*********************************************************************
      lhapdf    = pdlabel1     ! PDF type for beam #1
@@ -70,7 +67,25 @@
   False     = gridpack  !True = setting up the grid pack
   -1.0 = time_of_flight ! threshold (in mm) below which the invariant livetime is not written (-1 means not written)
   average =  event_norm       ! average/sum. Normalization of the weight in the LHEF
-# To see MLM/CKKW  merging options: type "update MLM" or "update CKKW"
+#*********************************************************************
+# Matching parameter (MLM only)
+#*********************************************************************
+ 1 = ickkw            ! 0 no matching, 1 MLM
+ 1.0 = alpsfact         ! scale factor for QCD emission vx
+ False = chcluster        ! cluster only according to channel diag
+ 5 = asrwgtflavor     ! highest quark flavor for a_s reweight
+ True  = auto_ptj_mjj  ! Automatic setting of ptj and mjj if xqcut >0
+                                   ! (turn off for VBF and single top processes)
+ 150.0   = xqcut   ! minimum kt jet measure between partons
+
+#***********************************************************************
+# Turn on either the ktdurham or ptlund cut to activate                *
+# CKKW(L) merging with Pythia8 [arXiv:1410.3012, arXiv:1109.4829]      *
+#***********************************************************************
+ -1.0  =  ktdurham
+ 0.4   =  dparameter
+ -1.0  =  ptlund
+ 1, 2, 3, 4, 5, 6, 21, 82  =  pdgs_for_merging_cut ! PDGs for two cuts above
 
 #*********************************************************************
 #
@@ -84,10 +99,12 @@
 			     ! 2 is new strategy (using only the denominator)
 # To see advanced option for Phase-Space optimization: type "update psoptim"			     
 #*********************************************************************
-# Customization (custom cuts/scale/bias/...)                         *
-# list of files containing fortran function that overwrite default   *
+# Generation bias, check the wiki page below for more information:   *
+#  'cp3.irmp.ucl.ac.be/projects/madgraph/wiki/LOEventGenerationBias' *
 #*********************************************************************
-  = custom_fcts ! List of files containing user hook function
+ None = bias_module  ! Bias type of bias, [None, ptj_bias, -custom_folder-]
+ {'ptj_bias_target_ptj': 100.0, 'ptj_bias_enhancement_power': 1.0} = bias_parameters ! Specifies the parameters of the module.
+#
 #*******************************                                                 
 # Parton level cuts definition *
 #*******************************
@@ -98,6 +115,11 @@
 # BW cutoff (M+/-bwcutoff*Gamma) ! Define on/off-shell for "$" and decay  
 #*********************************************************************
   15.0  = bwcutoff      ! (M+/-bwcutoff*Gamma)
+ #*********************************************************************
+ # Apply pt/E/eta/dr/mij/kt_durham cuts on decay products or not
+ # (note that etmiss/ptll/ptheavy/ht/sorted cuts always apply)
+ #*********************************************************************
+   False  = cut_decays    ! Cut decay products 
 #*********************************************************************
 # Standard Cuts                                                      *
 #*********************************************************************
@@ -140,7 +162,7 @@
 # Store info for systematics studies                                 *
 # WARNING: Do not use for interference type of computation           *
 #*********************************************************************
-   True  = use_syst      ! Enable systematics studies
+   False  = use_syst      ! Enable systematics studies
 #
 systematics = systematics_program ! none, systematics [python], SysCalc [depreceted, C++]
 ['--mur=0.5,1,2', '--muf=0.5,1,2', '--pdf=errorset'] = systematics_arguments ! see: https://cp3.irmp.ucl.ac.be/projects/madgraph/wiki/Systematics#Systematicspythonmodule
