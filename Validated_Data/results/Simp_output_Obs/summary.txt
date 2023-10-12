@@ -1,0 +1,35 @@
+#Global results summary (31 files)
+#The most constraining analysis corresponds to the one with largest observed r.
+#The most senstive (ATLAS/CMS) analysis corresponds to the one with largest expected r from those analyses for which this information is available.
+#filename          MostConstrainingAnalysis  r_max  r_exp   MostSensitive(ATLAS)  r(ATLAS)  r_exp(ATLAS)  MostSensitive(CMS)  r(CMS)  r_exp(CMS)  CombinedAnalyses
+run_01_tag_1.slha  CMS-EXO-19-012            0.241  0.307   N/A                   -1        -1            CMS-EXO-19-012      0.241   0.307       N/A             
+run_02_tag_1.slha  CMS-EXO-19-012            0.286  0.466   N/A                   -1        -1            CMS-EXO-19-012      0.286   0.466       N/A             
+run_03_tag_1.slha  CMS-EXO-19-012            0.293  0.476   N/A                   -1        -1            CMS-EXO-19-012      0.293   0.476       N/A             
+run_04_tag_1.slha  CMS-EXO-19-012            0.288  0.428   N/A                   -1        -1            CMS-EXO-19-012      0.288   0.428       N/A             
+run_05_tag_1.slha  CMS-EXO-19-012            0.221  0.162   N/A                   -1        -1            CMS-EXO-19-012      0.221   0.162       N/A             
+run_06_tag_1.slha  CMS-EXO-19-012            0.161  0.0518  N/A                   -1        -1            CMS-EXO-19-012      0.161   0.0518      N/A             
+run_07_tag_1.slha  CMS-EXO-19-012            0.185  0.0717  N/A                   -1        -1            CMS-EXO-19-012      0.185   0.0717      N/A             
+run_08_tag_1.slha  CMS-EXO-19-012            0.267  0.229   N/A                   -1        -1            CMS-EXO-19-012      0.267   0.229       N/A             
+run_09_tag_1.slha  CMS-EXO-19-012            0.313  0.39    N/A                   -1        -1            CMS-EXO-19-012      0.313   0.39        N/A             
+run_10_tag_1.slha  CMS-EXO-19-012            0.348  0.544   N/A                   -1        -1            CMS-EXO-19-012      0.348   0.544       N/A             
+run_11_tag_1.slha  CMS-EXO-19-012            0.373  0.669   N/A                   -1        -1            CMS-EXO-19-012      0.373   0.669       N/A             
+run_12_tag_1.slha  CMS-EXO-19-012            0.393  0.758   N/A                   -1        -1            CMS-EXO-19-012      0.393   0.758       N/A             
+run_13_tag_1.slha  CMS-EXO-19-012            0.418  0.879   N/A                   -1        -1            CMS-EXO-19-012      0.418   0.879       N/A             
+run_14_tag_1.slha  CMS-EXO-19-012            0.415  0.787   N/A                   -1        -1            CMS-EXO-19-012      0.415   0.787       N/A             
+run_15_tag_1.slha  CMS-EXO-19-012            0.396  0.585   N/A                   -1        -1            CMS-EXO-19-012      0.396   0.585       N/A             
+run_16_tag_1.slha  CMS-EXO-19-012            0.377  0.419   N/A                   -1        -1            CMS-EXO-19-012      0.377   0.419       N/A             
+run_17_tag_1.slha  CMS-EXO-19-012            0.4    0.459   N/A                   -1        -1            CMS-EXO-19-012      0.4     0.459       N/A             
+run_18_tag_1.slha  CMS-EXO-19-012            0.427  0.53    N/A                   -1        -1            CMS-EXO-19-012      0.427   0.53        N/A             
+run_19_tag_1.slha  CMS-EXO-19-012            0.46   0.689   N/A                   -1        -1            CMS-EXO-19-012      0.46    0.689       N/A             
+run_20_tag_1.slha  CMS-EXO-19-012            0.497  0.957   N/A                   -1        -1            CMS-EXO-19-012      0.497   0.957       N/A             
+run_21_tag_1.slha  CMS-EXO-19-012            0.511  1       N/A                   -1        -1            CMS-EXO-19-012      0.511   1           N/A             
+run_22_tag_1.slha  CMS-EXO-19-012            0.522  0.967   N/A                   -1        -1            CMS-EXO-19-012      0.522   0.967       N/A             
+run_23_tag_1.slha  CMS-EXO-19-012            0.531  0.807   N/A                   -1        -1            CMS-EXO-19-012      0.531   0.807       N/A             
+run_24_tag_1.slha  CMS-EXO-19-012            0.54   0.851   N/A                   -1        -1            CMS-EXO-19-012      0.54    0.851       N/A             
+run_25_tag_1.slha  CMS-EXO-19-012            0.524  0.575   N/A                   -1        -1            CMS-EXO-19-012      0.524   0.575       N/A             
+run_26_tag_1.slha  CMS-EXO-19-012            0.526  0.494   N/A                   -1        -1            CMS-EXO-19-012      0.526   0.494       N/A             
+run_27_tag_1.slha  CMS-EXO-19-012            0.546  0.525   N/A                   -1        -1            CMS-EXO-19-012      0.546   0.525       N/A             
+run_28_tag_1.slha  CMS-EXO-19-012            0.574  0.68    N/A                   -1        -1            CMS-EXO-19-012      0.574   0.68        N/A             
+run_29_tag_1.slha  CMS-EXO-19-012            0.586  0.66    N/A                   -1        -1            CMS-EXO-19-012      0.586   0.66        N/A             
+run_30_tag_1.slha  CMS-EXO-19-012            0.625  1.76    N/A                   -1        -1            CMS-EXO-19-012      0.625   1.76        N/A             
+run_31_tag_1.slha  CMS-EXO-19-012            0.627  1.68    N/A                   -1        -1            CMS-EXO-19-012      0.627   1.68        N/A             

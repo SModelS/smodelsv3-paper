@@ -1,0 +1,57 @@
+Input status: 1
+Decomposition output status: 1 #decomposition was successful
+# Input File: /home/yoxara/2MDM/Validated_Data/slhaFiles/xsec_ppZp_CMS_Obs/run_09_tag_1.slha
+# checkinput = True
+# combinesrs = False
+# computestatistics = True
+# docompress = True
+# doinvisible = True
+# eraseprompt = eCharge,colordim
+# experimentalfeatures = False
+# maxcond = 0.2
+# minmassgap = 50
+# model = smodels.share.models.ppZpjj
+# ncpus = 1
+# promptwidth = 1e-11
+# reportallsrs = False
+# sigmacut = 0.0
+# stablewidth = 1e-25
+# testcoverage = True
+# SModelS version: 3.0.0-beta
+# Database version: 3.0.0-beta
+================================================================================
+#Analysis  Sqrts  Cond_Violation  Theory_Value(fb)  Exp_limit(fb)  r  r_expected
+
+     CMS-EXO-19-012  1.30E+01    0.0  1.410E+01  4.508E+01  3.127E-01  3.896E-01
+ Signal Region:  (UL)
+ Txnames:  TRV1qq
+
+ 
+================================================================================
+The highest r value is = 0.31274 from CMS-EXO-19-012 (r_expected=0.38961)
+CMS analysis with highest available r_expected: CMS-EXO-19-012, r_expected=0.38961, r_obs=0.31274
+
+Total cross-section for missing topologies (fb):  3.098E+01
+Total cross-section for missing topologies with displaced decays (fb):  0.000E+00
+Total cross-section for missing topologies with prompt decays (fb):  4.508E+01
+Total cross-section for topologies outside the grid (fb):  0.000E+00
+
+#Full information on unconstrained cross sections
+================================================================================
+missing topologies with the highest cross sections (up to 10):
+Sqrts (TeV)   Weight (fb)                  SMS description
+ 13.0          2.393E+01    #                                            PV > (MET) 
+ 13.0          3.524E+00    #                                            PV > (b,b) 
+ 13.0          3.524E+00    #                                            PV > (t,t) 
+================================================================================
+No missing topologies with displaced decays found
+================================================================================
+missing topologies with prompt decays with the highest cross sections (up to 10):
+Sqrts (TeV)   Weight (fb)                  SMS description
+ 13.0          2.393E+01    #                                            PV > (MET) 
+ 13.0          1.410E+01    #                                        PV > (jet,jet) 
+ 13.0          3.524E+00    #                                            PV > (b,b) 
+ 13.0          3.524E+00    #                                            PV > (t,t) 
+================================================================================
+No topologies outside the grid found
+================================================================================
