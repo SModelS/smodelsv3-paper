@@ -8,3 +8,5 @@ nohup.out
 *.pyc
 *.pkl
 Tests/
+slha_files/
+slha_files_extra/
