@@ -41,7 +41,7 @@ BLOCK MASS #
       9000003 7.982436e+01 # ghwp : mw
       9000004 7.982436e+01 # ghwm : mw
       9000005 1.500000e+03 # ghzp : mzp
-      9900026 4.500000e+02 # sd : msd
+      9900026 1806.0 # sd : msd
 ###################################
 ## INFORMATION FOR SMINPUTS
 ###################################
@@ -227,12 +227,12 @@ DECAY  9900032   6.324645e+02
 
 
 
-XSECTION 1.300e+04 2212 2212 1 9900026 # xsec unit: pb xsec error: 1.602e-04 
+XSECTION 1.300e+04 2212 2212 1 9900032 # xsec unit: pb xsec error: 1.602e-04 
   0  0  0  0  0  303600  6.6783e-02 madgraph 3.5.1 
 
 
 
-XSECTION 1.300e+04 2212 2212 1 9900032 # xsec unit: pb xsec error: 1.548e-07 
+XSECTION 1.300e+04 2212 2212 1 9900026 # xsec unit: pb xsec error: 1.548e-07 
   0  0  0  0  0  303600  4.7856e-05 madgraph 3.5.1 
 
 
