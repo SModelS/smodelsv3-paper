@@ -477,7 +477,7 @@ M$ClassesDescription = {
   S[4]  == {
     ClassName       -> Sd,
     SelfConjugate   -> True,
-    Mass            -> {MSd, Internal},
+    Mass            -> {MSd, 450},
     Width           -> {WSd, 10},
     PropagatorLabel -> "Sd",
     PropagatorType  -> D,
@@ -657,12 +657,6 @@ M$Parameters = {
     TeX              -> Subscript[g,Zp],
     Value -> 1.0,
     Description -> "U(1)Y B coupling coustant at the Zp pole"
-  },
-  MSd == {
-    ParameterType -> External,
-    BlockName -> BLINPUTS,
-    Value -> 450.00,
-    Description -> "sd mass"
   },
   Sa == {
     ParameterType -> External,
