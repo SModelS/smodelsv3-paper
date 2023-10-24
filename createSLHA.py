@@ -6,6 +6,9 @@ import time,datetime
 
 import sys,os,glob,copy
 import numpy as np
+import pyslha
+import xml.etree.ElementTree as ET
+
 mg5Folder = os.path.abspath('../MG5')
 sys.path.append(mg5Folder)
 from madgraph.various.banner import Banner
@@ -15,14 +18,30 @@ def GetParams(banner_file):
     banner = Banner()
     banner.read_banner(banner_file)
     slhaData = banner['slha']
+
+    for b in [banner_file]:
+        xtree = ET.parse(b)
+        xroot = xtree.getroot()
+        slha = xroot.find('header').find('slha').text
+        pars = pyslha.readSLHA(slha)
+        msd = pars.blocks['BLINPUTS'][2]
+
+    for l in slhaData.split('\n'):
+        if not ' sd ' in l: continue
+        oldline = l
+        line = l.split()
+        line[1] = str(msd)
+        fixline = ' '.join(line)
+
+    slhaData = slhaData.replace(oldline, '      '+fixline)
     
     return slhaData
 
 # Function that obtains final states, cross section and x-section error for slha xsection block
 def GetXsection(banner_file):
     # particles of 2mdm model
-    pdg_zp = 9900026
-    pdg_sd = 9900032
+    pdg_zp = 9900032
+    pdg_sd = 9900026
     pdg_chi = 9000006
     
     banner = Banner()
