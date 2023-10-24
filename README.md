@@ -1,5 +1,8 @@
-# 2MDM
-Repository for storing the Two Mediator Dark Matter (2MDM) model, alongside with scripts used to obtain results on studies related to the model.
+# smodelsv3-paper
+
+A repository to store the code and data for the SModelS v3 physics paper,
+including the Two Mediator Dark Matter (2MDM) model.
+
 
 [Overview of the Two-Mediator Dark Matter Model (2MDM): Symmetries, Interactions, Parameters, and results](https://www.overleaf.com/read/xszpmbtnpmhn)
 
@@ -12,4 +15,33 @@ Repository for storing the Two Mediator Dark Matter (2MDM) model, alongside with
 * [References](./References): Useful references.
 
 
+## Scan Data ##
 
+The data for the 2MDM scan can be downloaded from CERNBox
+using:
+
+``
+wget https://cernbox.cern.ch/xxxx
+
+## Results and Plotting ##
+
+### 2MDM ###
+
+## Running the scans
+
+### Basic Installation ###
+
+The script installer.sh will try to fetch and install the following packages:
+
+  * [smodels](https://smodels.github.io/)
+
+
+
+### 2MDM scan ###
+
+The main scripts generating the SLHA files using SoftSUSY and computing the cross-sections (using SModelS or Prospino) are:
+
+The input of the above scripts are controlled by par (.ini) files stored in the [EWino](EWino) folder.    
+
+The SModelS output is computed using the runSModelS.py script with this [parameter file](EWino/smodels_parameters.ini)
+....
