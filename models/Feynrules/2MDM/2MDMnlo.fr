@@ -41,7 +41,7 @@ M$vevs = { {Phi[2],vev} };
 (* *****  Gauge groups  ***** *)
 (* ************************** *)
 M$GaugeGroups = {
-  U1BL == {
+  U1p == {
     Abelian          -> True,
     CouplingConstant -> gZp,
     GaugeBoson       -> Bp,
@@ -652,7 +652,7 @@ M$Parameters = {
  (***************B*****************)
   gZp == {
     ParameterType -> External,
-    BlockName -> BLINPUTS,
+    BlockName -> NPINPUTS,
     InteractionOrder -> {QED, 1},
     TeX              -> Subscript[g,Zp],
     Value -> 1.0,
@@ -660,7 +660,7 @@ M$Parameters = {
   },
   Sa == {
     ParameterType -> External,
-    BlockName -> BLINPUTS,
+    BlockName -> NPINPUTS,
     Value -> 0.1,
     Description -> "Sine of Higgses mixing angle"
   },
@@ -734,7 +734,7 @@ M$Parameters = {
   gchi == {
     ParameterType -> External,
     InteractionOrder -> {NP, 1},
-    BlockName -> ZPRIME,
+    BlockName -> NPINPUTS,
     TeX              -> Subscript[g,chi],
     Value -> 1.0,
     Description -> "gauge coupling of Zprime with the DM"
@@ -754,7 +754,7 @@ M$Parameters = {
   gqV== {
     ParameterType -> External,
     InteractionOrder -> {NP, 1},
-    BlockName -> ZPRIME,
+    BlockName -> NPINPUTS,
     TeX              -> Subscript[g,qV],
     Value -> 0.5,
     Description -> "Vector coupling of Zprime with the quarks"
@@ -762,7 +762,7 @@ M$Parameters = {
   gqA == {
     ParameterType -> External,
     InteractionOrder -> {NP, 1},
-    BlockName -> ZPRIME,
+    BlockName -> NPINPUTS,
     TeX              -> Subscript[g,qA],
     Value -> 0.1,
     Description -> "Axial coupling of Zprime with the quarks"
@@ -770,7 +770,7 @@ M$Parameters = {
   gqL == {
     ParameterType -> Internal,
     InteractionOrder -> {NP, 1},
-    BlockName -> ZPRIME,
+    BlockName -> NPINPUTS,
     TeX              -> Subscript[g,qL],
     Value       -> (gqV + gqA),
     Description -> "Left coupling of Zprime with the quarks"
@@ -778,7 +778,7 @@ M$Parameters = {
   gqR == {
     ParameterType    -> Internal,
     InteractionOrder -> {NP, 1},
-    BlockName        -> ZPRIME,
+    BlockName        -> NPINPUTS,
     TeX              -> Subscript[g,qA],
     Value            -> (gqV - gqA),
     Description      -> "Right coupling of Zprime with the quarks"
@@ -786,7 +786,7 @@ M$Parameters = {
   gsd == {
     ParameterType -> Internal,
     InteractionOrder -> {NP, 1},
-    BlockName -> ZPRIME,
+    BlockName -> NPINPUTS,
     TeX              -> Subscript[g,sd],
     Value       -> -2*gchi,
     Description -> "gauge coupling of Zprime with the leptons"
@@ -794,6 +794,7 @@ M$Parameters = {
   ychi == {
     ParameterType -> External,
     InteractionOrder -> {NP, 1},
+    BlockName -> NPINPUTS,
     Value   -> 1,
     InteractionOrder -> {QED, 1},
     ComplexParameter -> False,
@@ -803,7 +804,7 @@ M$Parameters = {
   Se == {
     ParameterType -> External,
     InteractionOrder -> {NP, 1},
-    BlockName -> BLINPUTS,
+    BlockName -> NPINPUTS,
     Value -> 0.0,
     Description -> "Sine of Zp-Z mixing angle"
   }, 
@@ -843,6 +844,7 @@ M$Parameters = {
   },
   Mnew == {
     ParameterType    -> Internal,
+    BlockName -> NPINPUTS,
     Value            -> Mchi + (ychi * vev2 )/ (2*Sqrt[2]),
     ParameterName    -> Mnew,
     InteractionOrder -> {QED, 2},
@@ -939,14 +941,14 @@ LYukawa := LYukawaSM + LYukawanew;
 (**********************END***************************)
 (*******************Eqn.(2.44) from 1106.4691******************************)
 (*****************B is an abelian group, DC->del, https://en.wikipedia.org/wiki/Faddeev%E2%80%93Popov_ghost**********)
-LGhost := Block[{LGh,LGhw,LGhs,LGhphi,LGhBp, LGhphiBL, mu, generators,gh,ghbar,Vectorize,phi1,phi2,togoldstones,doublet,doublet0},
+LGhost := Block[{LGh,LGhw,LGhs,LGhphi,LGhBp, LGhphinew, mu, generators,gh,ghbar,Vectorize,phi1,phi2,togoldstones,doublet,doublet0},
   (* Pure gauge piece *)  
   LGh = -ghBbar.del[DC[ghB,mu],mu];
   LGhw = -ghWibar[ii].del[DC[ghWi[ii],mu],mu];
   LGhs = -ghGbar[ii].del[DC[ghG[ii],mu],mu];
 (******************B***********************)
   LGhBp = - ghBpbar.del[del[ghBp, mu],mu];
-  LGhphiBL = -2*gp MZp (vev2-Sa*h+Ca*sd) ghZpbar.ghZp;
+  LGhphinew = -2*gp MZp (vev2-Sa*h+Ca*sd) ghZpbar.ghZp;
 (**********************END***************************)
   (* Scalar pieces: see Peskin pages 739-742 *)
   (* phi1 and phi2 are the real degrees of freedom of GP *)
@@ -960,6 +962,6 @@ LGhost := Block[{LGh,LGhw,LGhs,LGhphi,LGhBp, LGhphiBL, mu, generators,gh,ghbar,V
   togoldstones := {phi1 -> (GP + GPbar)/Sqrt[2], phi2 -> (-GP + GPbar)/(I Sqrt[2])};
   LGhphi=Plus@@Flatten[Table[-ghbar[[kkk]].gh[[lll]] Vectorize[generators[[kkk]].doublet0].Vectorize[generators[[lll]].(doublet+doublet0)],{kkk,4},{lll,4}]] /.togoldstones;
 
-ExpandIndices[ LGhs + If[FeynmanGauge, LGh + LGhw + LGhphi, 0], FlavorExpand->SU2W]]; (*LGhBp + LGhphiBL,*)
+ExpandIndices[ LGhs + If[FeynmanGauge, LGh + LGhw + LGhphi, 0], FlavorExpand->SU2W]]; (*LGhBp + LGhphinew,*)
 
 L2MDM:= LGauge + LFermions + LHiggs + LYukawa + LGhost + Lchi;
