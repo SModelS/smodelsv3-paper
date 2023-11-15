@@ -3,9 +3,6 @@
 A repository to store the code and data for the SModelS v3 physics paper,
 including the Two Mediator Dark Matter (2MDM) model.
 
-
-[Overview of the Two-Mediator Dark Matter Model (2MDM): Symmetries, Interactions, Parameters, and results](https://www.overleaf.com/read/xszpmbtnpmhn)
-
 ## Description
 
 * [Cards](./Cards): Cards for generating events with MadGraph5;
@@ -14,34 +11,28 @@ including the Two Mediator Dark Matter (2MDM) model.
 * [data](./data): Data files used for plotting;
 * [References](./References): Useful references.
 
+## External Packages
 
-## Scan Data ##
+Currently the following tools are necessary for running the scans:
 
-The data for the 2MDM scan can be downloaded from CERNBox
-using:
-
-``
-wget https://cernbox.cern.ch/xxxx
-
-## Results and Plotting ##
+  * [MadGraph5](https://launchpad.net/mg5amcnlo/)
+  * [SModelS v3](https://github.com/SModelS/smodels)
 
 ### 2MDM ###
 
+[Overview of the Two-Mediator Dark Matter Model (2MDM): Symmetries, Interactions, Parameters, and results](https://www.overleaf.com/read/xszpmbtnpmhn)
+
+
 ## Running the scans
+ In order to obtain the SLHA files and perform analysis using SModelS, one must first generate data points using the files with '.ini' extension. To generate its own data points, simply run the comand line on the terminal:
+```
+./runScanMG5.py -p <parameters-file.ini>
+```
+and then extracting relevant data for the SLHA file using the [createSLHA.py](./createSLHA.py) script:
+```
+./createSLHA.py -f <list of .lhe.gz or banner.txt files>
+```
+Finally, the SModelS is used in this (notebook)[./notebooks/SmodelS/getResults.ipynb] and the results are stored in a pandas dataframe.
 
-### Basic Installation ###
+Alternatively, multiple results from SModelS can be found in [smodels_results.tgz](./data/smodels_results.tgz), by simply extracting the compressed folder. These results are presented as a pandas DataFrame, and notebooks used to create relevant plots can be found in the [SmodelS](./notebooks/SmodelS) folder. 
 
-The script installer.sh will try to fetch and install the following packages:
-
-  * [smodels](https://smodels.github.io/)
-
-
-
-### 2MDM scan ###
-
-The main scripts generating the SLHA files using SoftSUSY and computing the cross-sections (using SModelS or Prospino) are:
-
-The input of the above scripts are controlled by par (.ini) files stored in the [EWino](EWino) folder.    
-
-The SModelS output is computed using the runSModelS.py script with this [parameter file](EWino/smodels_parameters.ini)
-....
