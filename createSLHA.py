@@ -16,8 +16,8 @@ import gzip
 def FixParams(slhaData):
     """
     Function that fixes the S mediator mass;
-    slhaData:  variable that contains relevant parameters for the slha file;
-    returns the slhaData with fixed S mediator mass.
+    :param slhaData:  variable that contains relevant parameters for the slha file;
+    :return: the slhaData with fixed S mediator mass.
     """
 #     banner = Banner()
 #     banner.read_banner(banner_file)
@@ -41,8 +41,8 @@ def FixParams(slhaData):
 def GetXsection(banner_file):
     """
     Function that obtain relevant info for the .slha file;
-    banner_file: file that contains info about the MG5 run, being either in the '_banner.txt' or in the '.lhe' format;
-    returns pdg codes for final and initial states, cross-sectios and its error, and center-of-mass energy.
+    :param banner_file: file that contains info about the MG5 run, being either in the '_banner.txt' or in the '.lhe' format;
+    :return: pdg codes for final and initial states, cross-sectios and its error, and center-of-mass energy.
     """
     
     # particles of 2mdm model
@@ -99,8 +99,8 @@ def GetXsection(banner_file):
 def GetSLHAname(banner_file):
     """
     Function that obtains the run_tag to name the slha file in the format 'run_*_{run_tag}.slha';
-    banner_file:  file that contains info about the MG5 run, being either in the '_banner.txt' or in the '.lhe' format;
-    returns the tag of the run.
+    :param banner_file:  file that contains info about the MG5 run, being either in the '_banner.txt' or in the '.lhe' format;
+    :return: the tag of the run.
     """
     
     banner = Banner()
