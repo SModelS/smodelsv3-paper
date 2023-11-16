@@ -32,7 +32,7 @@ and then extracting relevant data for the SLHA file using the [createSLHA.py](./
 ```
 ./createSLHA.py -f <list of .lhe.gz or banner.txt files>
 ```
-Finally, the SModelS is used in this (notebook)[./notebooks/SmodelS/getResults.ipynb] and the results are stored in a pandas dataframe.
+Finally, the SModelS is used in this [notebook](./notebooks/SmodelS/getResults.ipynb) and the results are stored in a pandas dataframe.
 
 Alternatively, multiple results from SModelS can be found in [smodels_results.tgz](./data/smodels_results.tgz), by simply extracting the compressed folder. These results are presented as a pandas DataFrame, and notebooks used to create relevant plots can be found in the [SmodelS](./notebooks/SmodelS) folder. 
 
