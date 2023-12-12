@@ -13,7 +13,7 @@ including the Two Mediator Dark Matter (2MDM) model.
 
 ## External Packages
 
-Currently the following tools are necessary for running the scans:
+Currently, the following tools are necessary for running the scans:
 
   * [MadGraph5](https://launchpad.net/mg5amcnlo/)
   * [SModelS v3](https://github.com/SModelS/smodels)
@@ -22,9 +22,10 @@ Currently the following tools are necessary for running the scans:
 
 [Overview of the Two-Mediator Dark Matter Model (2MDM): Symmetries, Interactions, Parameters, and results](https://www.overleaf.com/read/xszpmbtnpmhn)
 
+[Slides](https://www.overleaf.com/read/vgwmdhjrzsdm#c9e46c)
 
 ## Running the scans
- In order to obtain the SLHA files and perform analysis using SModelS, one must first generate data points using the files with '.ini' extension. To generate its own data points, simply run the comand line on the terminal:
+ To obtain and analyze the SLHA files using SModelS, one must first generate data points using the files with '.ini' extension. To generate its own data points, run the command line on the terminal:
 ```
 ./runScanMG5.py -p <parameters-file.ini>
 ```
@@ -32,7 +33,7 @@ and then extracting relevant data for the SLHA file using the [createSLHA.py](./
 ```
 ./createSLHA.py -f <list of .lhe.gz or banner.txt files>
 ```
-Finally, the SModelS is used in this [notebook](./notebooks/SmodelS/getResults.ipynb) and the results are stored in a pandas dataframe.
+Finally, the SModelS is used in this [notebook](./notebooks/SmodelS/getResults.ipynb), and the results are stored in the pandas dataframe.
 
 Alternatively, multiple results from SModelS can be found in [smodels_results.tgz](./data/smodels_results.tgz), by simply extracting the compressed folder. These results are presented as a pandas DataFrame, and notebooks used to create relevant plots can be found in the [SmodelS](./notebooks/SmodelS) folder. 
 
