@@ -245,7 +245,7 @@ def generateEvents(parser):
     paramfile = processFolder.split('/')[-1]
     paramfile = paramfile+'.dat'
     params = open(paramfile, "a")
-    params.write("(%1.1f, %1.1f, %1.2f, %1.2f), " %(comms['mzp'],comms['mchi'],comms['gqv'],comms['gchi']))
+    params.write("(%1.1f, %1.1f, %1.2f), " %(comms['mzp'],comms['msd'],comms['sa']))
     params.close()  
     
     os.remove(commandsFile)
@@ -342,7 +342,7 @@ def main(parfile,verbose):
     paramfile = paramfile+'.dat'
     params = open(paramfile, "a")
     params.write("Specified parameters for 2MDM model:\n")
-    params.write("(Format: (mzp, mchi, gqv, gchi))\n")
+    params.write("(Format: (mzp, msd, sa))\n")
     params.close()
 
     now = datetime.datetime.now()

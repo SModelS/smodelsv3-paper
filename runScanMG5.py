@@ -141,6 +141,10 @@ def generateEvents(parser):
     
     t0 = time.time()
     pars = parser["MadGraphPars"]
+
+    comms = parser["MadGraphSet"]
+    # Set the MadGraph parameters defined in the ini file
+ 
     if not 'runFolder' in pars:
         logger.error('Run folder not defined.')
         return False        
