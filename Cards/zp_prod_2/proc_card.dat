@@ -44,4 +44,4 @@ import /home/yoxara/2MDM/models/Feynrules/2MDM/2MDMNLO_2 -modelname
 define p = 21 2 4 1 3 -2 -4 -1 -3 5 -5 # pass to 5 flavors
 define j = p
 generate p p > zp 
-output 2mdm_test2
+output 2mdm_zp_prod_2_random_8TeV_V2
