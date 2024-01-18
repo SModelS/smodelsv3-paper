@@ -14,3 +14,6 @@ slha_files_br_copy/
 data/smodels_results/
 notebooks/SmodelS/smodels.log
 
+*.smodels
+notebooks/Untitled.ipynb
+data/smodels-results/results.pcl
