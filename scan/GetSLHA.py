@@ -17,31 +17,28 @@ FORMAT = '%(levelname)s in %(module)s.%(funcName)s(): %(message)s at %(asctime)s
 logging.basicConfig(format=FORMAT,datefmt='%m/%d/%Y %I:%M:%S %p')
 logger = logging.getLogger('SLHAScan')
 
-def GetXSection(Mmed=2000, pid=9900032, s=13):
+def getXSection(mMed=2000, pid='9900032', s=13):
     '''
     Function that obtains the cross sections from interpolation given the input mass for the 2MDM model
 
     :param Mmed: mediator particle mass (in GeV)
-    :param pid: mediator id 
+    :param pid: mediator id - string
     :param s: center of mass energy, default is 13 TeV
 
-    :return: mediator production cross-section (in pb)
+    :return: mediator production cross-section (in pb) and energy
     '''
 
-    dataScan = pd.read_pickle('./data/smodels-results/results.pcl')
+    xsecLabel = 'xsec'+s+'TeV(fb).'+str(pid)
+    dataScan = pd.read_pickle(s+'TeV/mg5_scan_results.pcl')
 
-    if s == 13:
-        xsecLabel = 'xsec13TeV(fb).'+str(pid)
-    elif s == 8:
-        xsecLabel = 'xsec8TeV(fb).'+str(pid)
     xsecScan = dataScan[['mass.'+str(pid), xsecLabel]]
     xsecFunction = interpolate.interp1d(xsecScan['mass.'+str(pid)], xsecScan[xsecLabel])
 
-    xsecNew = int(xsecFunction(Mmed))/1000
+    xsecNew = int(xsecFunction(mMed))/1000
 
-    return xsecNew
+    return xsecNew, int(s)
 
-def GetBR(pars):
+def getBR(pars):
     '''
     Function that obtains the branching ratio for given parameters for the 2MDM model
 
@@ -49,14 +46,14 @@ def GetBR(pars):
 
     :return: dictionary with possible branching ratios and widths
     '''
-    MZp = pars["mzp"]
-    MSd = pars["msd"]
-    Mchi = pars["mchi"]
-    gqA = pars["gqa"]
-    gqV = pars["gqv"]
-    gchi = pars["gchi"]
-    Sa = pars["sa"]
-    ychi = pars["ychi"]
+    MZp = float(pars['mzp'])
+    MSd = float(pars['msd'])
+    Mchi = float(pars['mchi'])
+    gqA = float(pars['gqa'])
+    gqV = float(pars['gqv'])
+    gchi = float(pars['gchi'])
+    Sa = float(pars['sa'])
+    ychi = float(pars['ychi'])
 
     ## define constants
 
@@ -212,13 +209,111 @@ def GetBR(pars):
     BRs = {'9900032': BR_ZP, '9900026': BR_Sd}
     widths = {'9900032': GammaZP, '9900026': GammaS}
 
+    # sort BR from largest to smallest
+    for pdg in BRs.keys():
+        BRs[pdg] = dict(sorted(BRs[pdg].items(), key=lambda item: item[1], reverse=True))
+
+    # write in scientific notation
+    for pdg in BRs.keys():
+        for finalstate, value in BRs[pdg].items():
+            BRs[pdg][finalstate] = '{:e}'.format(BRs[pdg][finalstate])
+
+    for pdg in widths.keys():
+        widths[pdg] = '{:e}'.format(widths[pdg])
+
+
     return BRs, widths
 
-def writeXsecBlock(pars):
-    pass
+def writeXsecBlock(filename, pars, energy):
+    '''
+    Function that writes the cross section for particles of interest based on given parameters, rescaled with the couplings
+    :param pars: parameters given in parameters file
+    :param filename: SLHA filename
+    '''
+    pdgInitial = ['2212', '2212']
+    finalState = {'mzp': '9900032', 'msd': '9900026'}
+    gq = 0.25
+    sa = 0.25
+    file = open(filename, 'a')
+    for med in finalState.keys():
+        xsec, sqrt = getXSection(mMed=int(pars[med]), pid=finalState[med], s=energy)
+        # rescale xsec with couplings
+        if med == 'mzp':
+            if pars['gqv'] == 0:
+                gqNew = pars['gqa']
+            elif pars['gqa'] == 0:
+                gqNew = pars['gqv']
+            xsec = xsec*(gqNew/gq)**2
+        elif med == 'msd':
+            xsec = xsec*(pars['sa']/sa)**2
+        xsecLine = "\nXSECTION %1.3e " %(sqrt)
+        xsecLine += " ".join([pdg for pdg in pdgInitial])
+        xsecLine += " 1 " 
+        xsecLine += "".join(finalState[med])
+        file.write(xsecLine+'\n')
+        file.write("  0  0  0  0  0  303600  %1.4e madgraph 3.5.1 \n" %xsec)
+        file.write('\n\n')
+    file.close()
 
-def writeBRsBlock(pars):
-    pass
+def writeBRsBlock(filename, pars):
+    '''
+    Function that writes the Branching Ratio for particles of interest based on given parameters
+    :param pars: parameters given in parameters file
+    :param filename: SLHA filename
+    '''
+    # get slha data from file
+    file = open(filename, 'rt')
+    slhaData = file.read()
+    file.close()
+
+    # get BRs and widths
+    BRs, widths = getBR(pars)
+
+    # change width
+    for l in slhaData.split('\n'):
+        for pdg in widths.keys():
+            if not 'DECAY ' in l: continue
+            if not pdg in l: continue
+            oldline = l
+            line = l.split()
+            line[2] = ' '+str(widths[pdg])
+            fixline = '  '.join(line)
+            slhaData = slhaData.replace(oldline, fixline)
+
+    for l in slhaData.split('\n'):
+        for pdg in BRs.keys():
+            if not 'DECAY ' in l: continue
+            if not pdg in l: continue
+            oldline = l
+            line = '\n#  BR             NDA  ID1    ID2   ...\n'
+            for finalstate, value in BRs[pdg].items():
+                line += '   '+str(value)+'   2    '+finalstate+'\n'
+            fixline = oldline+line
+            slhaData = slhaData.replace(oldline, fixline)
+
+    file = open(filename, 'wt')
+    file.write(slhaData)
+    file.close
+            
+def fixParams(data, oldParam, newParam):
+     '''
+     Function that changes the parameter in the SLHA file by the correct value
+     :param data: data from SLHA file
+     :string oldParam: name of the parameter that needs to be fixed
+     :string newParam: correct value for parameter
+
+     :return: fixed slha data
+     '''
+     slhaData = data
+     for l in slhaData.split('\n'):
+        if not oldParam in l: continue
+        oldline = l
+        line = l.split()
+        line[1] = newParam
+        fixline = ' '.join(line)
+     slhaData = slhaData.replace(oldline, '      '+fixline)
+
+     return slhaData
 
 def createSLHA(parser, energy):
     '''
@@ -226,8 +321,14 @@ def createSLHA(parser, energy):
     :param parser: ConfigParser object with all parameters needed
     :param energy: Center of mass energy, in TeV. Default is 13 TeV
     '''
-    filename = ''.join(random.sample(string.ascii_lowercase, 8))+'.slha'
+    filename = str(energy)+'TeV/'+''.join(random.sample(string.ascii_lowercase, 8))+'.slha'
     pars = parser.toDict(raw=False)["ParamsSet"]
+    baseParams = {'mzp': 2000.0, 'mchi': 65.0, 'msd': 1000.0, 'gqv': 0.0, 'gqa': 0.25,
+                  'gchi': 1.6, 'ychi': 1.0, 'sa': 0.25, 'se': 0.0}
+    for par in baseParams.keys():
+        if par not in pars.keys():
+            pars[par] = baseParams[par]
+
     
     # Create file and based on banner
     bannerFile = './default_banner.txt'
@@ -235,12 +336,18 @@ def createSLHA(parser, energy):
     banner.read_banner(bannerFile)
     slhaData = banner['slha']
 
+    # change values in banner
+    slhaData = fixParams(data=slhaData, oldParam=' sd ', newParam=str('{:e}'.format(pars['msd'])))
+    for param in pars.keys():
+        if param != 'msd':
+            slhaData = fixParams(data=slhaData, oldParam=' '+param, newParam=str('{:e}'.format(pars[param])))
+
     slhaF = open(filename, 'a')
     slhaF.write(slhaData)
     slhaF.close()
 
     # Remove BRs from file
-    with open(filename, "r+") as file:
+    with open(filename, 'r+') as file:
         lines = file.readlines()
         file.seek(0)
         isBRblock = False
@@ -256,10 +363,10 @@ def createSLHA(parser, energy):
         file.close()
 
     # write BRs based on given parameters
-    writeBRsBlock(pars)
+    writeBRsBlock(filename, pars)
 
     # write Xsection block for given parameters
-    writeXsecBlock(pars, energy)
+    writeXsecBlock(filename, pars, energy)
 
 
 
@@ -290,7 +397,6 @@ def main(parfile, energy, verbose):
     for par in baseParams.keys():
         if par not in params.keys():
             logger.info("Parameter %s not set in %s, using default value: %1.2f." %(par, args.parfile, baseParams[par]))
-            params[par] = baseParams[par]
 
 
     now = datetime.datetime.now()
