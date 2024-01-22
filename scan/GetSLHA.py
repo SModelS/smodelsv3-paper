@@ -246,7 +246,7 @@ def writeXsecBlock(filename, pars, energy):
             xsec = xsec*(gqNew/gq)**2
         elif med == 'msd':
             xsec = xsec*(pars['sa']/sa)**2
-        xsecLine = "\nXSECTION %1.3e " %(sqrt)
+        xsecLine = "\nXSECTION %1.3e " %(sqrt*1000)
         xsecLine += " ".join([pdg for pdg in pdgInitial])
         xsecLine += " 1 " 
         xsecLine += "".join(finalState[med])
@@ -321,8 +321,8 @@ def createSLHA(parser, energy):
     :param parser: ConfigParser object with all parameters needed
     :param energy: Center of mass energy, in TeV. Default is 13 TeV
     '''
-    # filename = str(energy)+'TeV/slha_files/'+''.join(random.sample(string.ascii_lowercase, 8))+'.slha'
-    filename = str(energy)+'TeV/test.slha'
+    filename = str(energy)+'TeV/slha_files/'+''.join(random.sample(string.ascii_lowercase, 8))+'.slha'
+    # filename = str(energy)+'TeV/test.slha'
     pars = parser.toDict(raw=False)["ParamsSet"]
     baseParams = {'mzp': 2000.0, 'mchi': 65.0, 'msd': 1000.0, 'gqv': 0.0, 'gqa': 0.25,
                   'gchi': 1.6, 'ychi': 1.0, 'sa': 0.25, 'se': 0.0}
