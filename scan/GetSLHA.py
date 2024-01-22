@@ -46,14 +46,14 @@ def getBR(pars):
 
     :return: dictionary with possible branching ratios and widths
     '''
-    MZp = float(pars['mzp'])
-    MSd = float(pars['msd'])
-    Mchi = float(pars['mchi'])
-    gqA = float(pars['gqa'])
-    gqV = float(pars['gqv'])
-    gchi = float(pars['gchi'])
-    Sa = float(pars['sa'])
-    ychi = float(pars['ychi'])
+    MZp = pars['mzp']
+    MSd = pars['msd']
+    Mchi = pars['mchi']
+    gqA = pars['gqa']
+    gqV = pars['gqv']
+    gchi = pars['gchi']
+    Sa = pars['sa']
+    ychi = pars['ychi']
 
     ## define constants
 
@@ -329,7 +329,6 @@ def createSLHA(parser, energy):
         if par not in pars.keys():
             pars[par] = baseParams[par]
 
-    
     # Create file and based on banner
     bannerFile = './default_banner.txt'
     banner = Banner()
@@ -339,10 +338,10 @@ def createSLHA(parser, energy):
     # change values in banner
     slhaData = fixParams(data=slhaData, oldParam=' sd ', newParam=str('{:e}'.format(pars['msd'])))
     for param in pars.keys():
-        if param != 'msd':
-            slhaData = fixParams(data=slhaData, oldParam=' '+param, newParam=str('{:e}'.format(pars[param])))
+            slhaData = fixParams(data=slhaData, oldParam='# '+param, newParam=str('{:e}'.format(pars[param])))
 
-    slhaF = open(filename, 'a')
+    
+    slhaF = open(filename, 'wt')
     slhaF.write(slhaData)
     slhaF.close()
 
