@@ -1,26 +1,21 @@
-import sys, os
+#!/usr/bin/env python3
+
+import sys, os, time, datetime
+import logging
+sys.path.append('../')
+mg5Folder = os.path.abspath('../../MonoXSMS/MG5')
+sys.path.append(mg5Folder)
+from madgraph.various.banner import Banner
 from configParserWrapper import ConfigParserExt
+import random
+import string
 from scipy import interpolate
 import pandas as pd
 import numpy as np
-import logging,shutil
-import subprocess
-import tempfile
-import time,datetime
-import itertools
-import multiprocessing
-from collections import OrderedDict
 
-def GetProcess(finalState, initialStates=['p','p']):
-    '''
-    Function that obtains the process of interest and returns as string with the process
-
-    :param finalState: list of final string or PDG (e.g. ['zp'])
-    :param initalStates: list of inital state string, default is ['p','p']
-
-    :return: Process string
-    '''
-    pass
+FORMAT = '%(levelname)s in %(module)s.%(funcName)s(): %(message)s at %(asctime)s'
+logging.basicConfig(format=FORMAT,datefmt='%m/%d/%Y %I:%M:%S %p')
+logger = logging.getLogger('SLHAScan')
 
 def GetXSection(Mmed=2000, pid=9900032, s=13):
     '''
@@ -46,28 +41,27 @@ def GetXSection(Mmed=2000, pid=9900032, s=13):
 
     return xsecNew
 
-def GetBR(MSd=1000, MZp=2000, Mchi=65, gqV=0.25, gchi=1.6, Sa=0.25, ychi=1.0):
+def GetBR(pars):
     '''
     Function that obtains the branching ratio for given parameters for the 2MDM model
 
-    :param MZp: spin-1 mediator particle mass in GeV
-    :param MSd: spin-0 mediator particle mass in GeV
-    :param pid: mediator id 
-    :param Mchi: dark matter mass in GeV
-    :param gq: mediator coupling to quarks
-    :param gq: mediator coupling to dm
+    :param pars: dictionary to all important parameters: masses, couplings, etc
 
     :return: dictionary with possible branching ratios and widths
     '''
+    MZp = pars["mzp"]
+    MSd = pars["msd"]
+    Mchi = pars["mchi"]
+    gqA = pars["gqa"]
+    gqV = pars["gqv"]
+    gchi = pars["gchi"]
+    Sa = pars["sa"]
+    ychi = pars["ychi"]
+
     ## define constants
 
     # mass for quarks
-    MU = 0
-    MC = 0
     MT = 172
-    MD = 0
-    MS = 0
-    MB = 0
 
     # tau lepton mass
     MTA = 1.777
@@ -89,18 +83,16 @@ def GetBR(MSd=1000, MZp=2000, Mchi=65, gqV=0.25, gchi=1.6, Sa=0.25, ychi=1.0):
 
     # vevs
     vev = (2*MW*sw)/ee
-    gchi = 1.0
     vev2 = MZp/(2*gchi)
 
     # couplings
     yt = np.sqrt(2)*MT/vev
     ytau = np.sqrt(2)*MTA/vev
-    gqA = 0.0
     gZp = 1.0
 
     ### spin-1 mediator ###
-    gqL = (gqA + gqA)
-    gqR = (-gqA + gqA)
+    gqL = (gqA + gqV)
+    gqR = (-gqA + gqV)
 
     # Zp to t 
     if MZp < 2*MT:
@@ -221,50 +213,112 @@ def GetBR(MSd=1000, MZp=2000, Mchi=65, gqV=0.25, gchi=1.6, Sa=0.25, ychi=1.0):
     widths = {'9900032': GammaZP, '9900026': GammaS}
 
     return BRs, widths
+
+def writeXsecBlock(pars):
+    pass
+
+def writeBRsBlock(pars):
+    pass
+
+def createSLHA(parser, energy):
+    '''
+    Creates SLHA file with cross-section and branching ratio for parameters given in parser
+    :param parser: ConfigParser object with all parameters needed
+    :param energy: Center of mass energy, in TeV. Default is 13 TeV
+    '''
+    filename = ''.join(random.sample(string.ascii_lowercase, 8))+'.slha'
+    pars = parser.toDict(raw=False)["ParamsSet"]
     
+    # Create file and based on banner
+    bannerFile = './default_banner.txt'
+    banner = Banner()
+    banner.read_banner(bannerFile)
+    slhaData = banner['slha']
 
-def writeParticleBlock(slhaDir):
-    '''
-    Function that writes block with parameters of the slha file, such as mass, couplings, quantum numbers, etc
-    '''
+    slhaF = open(filename, 'a')
+    slhaF.write(slhaData)
+    slhaF.close()
 
-    pass
+    # Remove BRs from file
+    with open(filename, "r+") as file:
+        lines = file.readlines()
+        file.seek(0)
+        isBRblock = False
+        for line in lines:
+            if 'BR' in line:
+                isBRblock = True
+                continue
+            elif line.startswith('#'):
+                isBRblock = False
+            if not isBRblock:
+                file.write(line)
+        file.truncate()
+        file.close()
 
-def writeBRsBlock(slhaDir):
-    '''
-    Function that writes branching ratios and widths block on slha file
-    '''
-    pass
+    # write BRs based on given parameters
+    writeBRsBlock(pars)
 
-def writeXsecBlock(xsecNew, finalState, initialSates=['p','p'],slhaDir):
-    '''
-    Function that writes cross section block on slha file
-    '''
-    pass
+    # write Xsection block for given parameters
+    writeXsecBlock(pars, energy)
 
 
-# def GetXSection(Mmed=[2000], finalStates=[9900032]):
-#     '''
-#     Function that obtains the cross sections from interpolation given the input mass
 
-#     :param Mmed: mediator particle mass (in GeV)
-#     :param finalStatse: list of final string or PDG (e.g. ['zp'])
 
-#     :return: mediator production cross-section (in pb)
-#     '''
+def main(parfile, energy, verbose):
 
-#     masses = {pid: 0 for pid in finalStates}
-#     xsecNew = {pid: 0 for pid in finalStates}
-#     for i, m in enumerate(Mmed):
-#         masses[finalStates[i]] = m
+    level = verbose
+    levels = {'debug': logging.DEBUG, 'info': logging.INFO, 
+              'warning': logging.WARNING, 'error': logging.ERROR}
+    if not level in levels:
+        logger.error('Unknown log level "%s" supplied' %level)
+        sys.exit()
+    logger.setLevel(level = levels[level])
 
-#     dataScan = pd.read_pickle('./data/smodels-results/results.pcl')
+    parser = ConfigParserExt(inline_comment_prefixes='#')
+    ret = parser.read(parfile)
+    if ret == []:
+        logger.error('No such file or directory: "%s"' %args.parfile)
+        sys.exit()
 
-#     xsecScan = dataScan[['mass.'+str(finalStates[0]), 'xsec13TeV(fb).'+str(finalStates[0])]]
-#     xsecFunction = interpolate.interp1d(xsecScan['mass.'+str(finalStates[0])], xsecScan['xsec13TeV(fb).'+str(finalStates[0])])
+    # If loops have been defined, get a list of parsers
+    parserList = parser.expandLoops()
 
-#     for i, m in enumerate(Mmed):
-#         xsecNew[finalStates[i]] = int(xsecFunction(m))/1000
+    params = parser.toDict(raw=False)["ParamsSet"]
+    baseParams = {"mzp": 2000.0, "mchi": 65.0, "msd": 1000.0, "gqv": 0.0, "gqa": 0.25,
+                  "gchi": 1.6, "ychi": 1.0, "sa": 0.25, "se": 0.0}
 
-#     return xsecNew
+    for par in baseParams.keys():
+        if par not in params.keys():
+            logger.info("Parameter %s not set in %s, using default value: %1.2f." %(par, args.parfile, baseParams[par]))
+            params[par] = baseParams[par]
+
+
+    now = datetime.datetime.now()
+    for i,newParser in enumerate(parserList):
+        r = createSLHA(newParser, energy)
+        logger.info("Created SLHA file number %i/%i at %s" %(i,len(parserList),now.strftime("%Y-%m-%d %H:%M")))
+
+    logger.info("Created all SLHA files (%i) at %s" %(len(parserList),now.strftime("%Y-%m-%d %H:%M")))
+
+if __name__ == '__main__':
+    import argparse
+    ap = argparse.ArgumentParser(description=
+                                 "Generates a SLHA file for the parameters defined in the parameters file.")
+    ap.add_argument('-p', '--parfile', default='scan_parameters_2mdm.ini',
+                    help='path to the parameters file, default is [scan_parameters_2mdm.ini].')
+    ap.add_argument('-s', '--energy', default='13',
+                    help='center of mass energy to obtain cross section (in TeV), default is 13 TeV')
+    ap.add_argument('-v', '--verbose', default='info',
+                    help='verbose level (debug, info, warning or error). Default is info.')
+    
+    t0 = time.time()
+
+    args = ap.parse_args()
+    output = main(args.parfile, args.energy, args.verbose)
+
+    print('\n\nDone in %3.2f min' %((time.time()-t0)/60.))
+
+
+
+
 
