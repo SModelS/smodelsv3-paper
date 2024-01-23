@@ -17,26 +17,26 @@ FORMAT = '%(levelname)s in %(module)s.%(funcName)s(): %(message)s at %(asctime)s
 logging.basicConfig(format=FORMAT,datefmt='%m/%d/%Y %I:%M:%S %p')
 logger = logging.getLogger('SLHAScan')
 
-def getXSection(mMed=2000, pid='9900032', s=13):
+def getXSection(mMed=2000, pid='9900032'):
     '''
     Function that obtains the cross sections from interpolation given the input mass for the 2MDM model
 
     :param Mmed: mediator particle mass (in GeV)
     :param pid: mediator id - string
-    :param s: center of mass energy, default is 13 TeV
 
-    :return: mediator production cross-section (in pb) and energy
+    :return: mediator production cross-section (in pb) for each center of mass energy
     '''
+    xsecNew = {'13': 0, '8': 0}
+    for s in xsecNew.keys():
+        xsecLabel = 'xsec'+s+'TeV(fb).'+str(pid)
+        dataScan = pd.read_pickle('mg5_scan_'+s+'TeV.pcl')
 
-    xsecLabel = 'xsec'+s+'TeV(fb).'+str(pid)
-    dataScan = pd.read_pickle(s+'TeV/mg5_scan_results.pcl')
+        xsecScan = dataScan[['mass.'+str(pid), xsecLabel]]
+        xsecFunction = interpolate.interp1d(xsecScan['mass.'+str(pid)], xsecScan[xsecLabel])
+        
+        xsecNew[s] = xsecFunction(mMed)/1000
 
-    xsecScan = dataScan[['mass.'+str(pid), xsecLabel]]
-    xsecFunction = interpolate.interp1d(xsecScan['mass.'+str(pid)], xsecScan[xsecLabel])
-
-    xsecNew = int(xsecFunction(mMed))/1000
-
-    return xsecNew, int(s)
+    return xsecNew
 
 def getBR(pars):
     '''
@@ -116,8 +116,11 @@ def getBR(pars):
     ZPbb = (MZp**2 * (6 * gqL**2 * gZp**2 * MZp**2 + 6 * gqR**2 * gZp**2 * MZp**2))/(48. * np.pi * abs(MZp)**3)
 
     # Zp to DM
-    ZPchichi = ((-16 * gchi **2 * Mchi**2 + 4 * gchi**2 * MZp**2)
-                *np.sqrt(-4 * Mchi**2 * MZp**2 + MZp**4))/(96. * np.pi * abs(MZp)**3)
+    if MZp < 2*Mchi:
+        ZPchichi = 0
+    else:
+        ZPchichi = ((-16 * gchi **2 * Mchi**2 + 4 * gchi**2 * MZp**2)
+                    *np.sqrt(-4 * Mchi**2 * MZp**2 + MZp**4))/(96. * np.pi * abs(MZp)**3)
 
     # Zp total width
     GammaZP = ZPuu + ZPcc + ZPtt + ZPdd + ZPss + ZPbb + ZPchichi
@@ -145,8 +148,11 @@ def getBR(pars):
                 *np.sqrt(-4 * MH**2 * MSd**2 + MSd**4))/(32. * np.pi * abs(MSd)**3)
 
     # S to DM
-    Schichi = ((-4 * Ca**2 * Mchi**2 * ychi**2 + Ca**2 * MSd**2 * ychi**2)
-                *np.sqrt(-4* Mchi**2 * MSd**2 + MSd**4))/(32. * np.pi * abs(MSd)**3)
+    if MSd < 2*Mchi:
+        Schichi = 0
+    else:
+        Schichi = ((-4 * Ca**2 * Mchi**2 * ychi**2 + Ca**2 * MSd**2 * ychi**2)
+                    *np.sqrt(-4* Mchi**2 * MSd**2 + MSd**4))/(32. * np.pi * abs(MSd)**3)
 
     # S to tau
     Stautau = ((MSd**2 * Sa**2 * ytau**2 - 4 * MTA**2 * Sa**2 * ytau**2)
@@ -224,7 +230,7 @@ def getBR(pars):
 
     return BRs, widths
 
-def writeXsecBlock(filename, pars, energy):
+def writeXsecBlock(filename, pars):
     '''
     Function that writes the cross section for particles of interest based on given parameters, rescaled with the couplings
     :param pars: parameters given in parameters file
@@ -236,23 +242,24 @@ def writeXsecBlock(filename, pars, energy):
     sa = 0.25
     file = open(filename, 'a')
     for med in finalState.keys():
-        xsec, sqrt = getXSection(mMed=int(pars[med]), pid=finalState[med], s=energy)
-        # rescale xsec with couplings
-        if med == 'mzp':
-            if pars['gqv'] == 0:
-                gqNew = pars['gqa']
-            elif pars['gqa'] == 0:
-                gqNew = pars['gqv']
-            xsec = xsec*(gqNew/gq)**2
-        elif med == 'msd':
-            xsec = xsec*(pars['sa']/sa)**2
-        xsecLine = "\nXSECTION %1.3e " %(sqrt*1000)
-        xsecLine += " ".join([pdg for pdg in pdgInitial])
-        xsecLine += " 1 " 
-        xsecLine += "".join(finalState[med])
-        file.write(xsecLine+'\n')
-        file.write("  0  0  0  0  0  303600  %1.4e madgraph 3.5.1 \n" %xsec)
-        file.write('\n\n')
+        xsecs = getXSection(mMed=int(pars[med]), pid=finalState[med])
+        for energy, xsec in xsecs.items():
+            # rescale xsec with couplings
+            if med == 'mzp':
+                if pars['gqv'] == 0:
+                    gqNew = pars['gqa']
+                elif pars['gqa'] == 0:
+                    gqNew = pars['gqv']
+                xsec = xsec*(gqNew/gq)**2
+            elif med == 'msd':
+                xsec = xsec*(pars['sa']/sa)**2
+            xsecLine = "\nXSECTION %1.3e " %(int(energy)*1000)
+            xsecLine += " ".join([pdg for pdg in pdgInitial])
+            xsecLine += " 1 " 
+            xsecLine += "".join(finalState[med])
+            file.write(xsecLine+'\n')
+            file.write("  0  0  0  0  0  303600  %1.4e madgraph 3.5.1 \n" %xsec)
+            file.write('\n\n')
     file.close()
 
 def writeBRsBlock(filename, pars):
@@ -287,6 +294,7 @@ def writeBRsBlock(filename, pars):
             oldline = l
             line = '\n#  BR             NDA  ID1    ID2   ...\n'
             for finalstate, value in BRs[pdg].items():
+                if float(value) == 0.0: continue
                 line += '   '+str(value)+'   2    '+finalstate+'\n'
             fixline = oldline+line
             slhaData = slhaData.replace(oldline, fixline)
@@ -315,14 +323,13 @@ def fixParams(data, oldParam, newParam):
 
      return slhaData
 
-def createSLHA(parser, energy):
+def createSLHA(parser):
     '''
     Creates SLHA file with cross-section and branching ratio for parameters given in parser
     :param parser: ConfigParser object with all parameters needed
-    :param energy: Center of mass energy, in TeV. Default is 13 TeV
     '''
-    filename = str(energy)+'TeV/slha_files/'+''.join(random.sample(string.ascii_lowercase, 8))+'.slha'
-    # filename = str(energy)+'TeV/test.slha'
+    filename = 'slha_files/'+''.join(random.sample(string.ascii_lowercase, 8))+'.slha'
+    # filename = 'test.slha'
     pars = parser.toDict(raw=False)["ParamsSet"]
     baseParams = {'mzp': 2000.0, 'mchi': 65.0, 'msd': 1000.0, 'gqv': 0.0, 'gqa': 0.25,
                   'gchi': 1.6, 'ychi': 1.0, 'sa': 0.25, 'se': 0.0}
@@ -365,12 +372,12 @@ def createSLHA(parser, energy):
     writeBRsBlock(filename, pars)
 
     # write Xsection block for given parameters
-    writeXsecBlock(filename, pars, energy)
+    writeXsecBlock(filename, pars)
 
 
 
 
-def main(parfile, energy, verbose):
+def main(parfile, verbose):
 
     level = verbose
     levels = {'debug': logging.DEBUG, 'info': logging.INFO, 
@@ -400,7 +407,7 @@ def main(parfile, energy, verbose):
 
     now = datetime.datetime.now()
     for i,newParser in enumerate(parserList):
-        r = createSLHA(newParser, energy)
+        r = createSLHA(newParser)
         logger.info("Created SLHA file number %i/%i at %s" %(i,len(parserList),now.strftime("%Y-%m-%d %H:%M")))
 
     logger.info("Created all SLHA files (%i) at %s" %(len(parserList),now.strftime("%Y-%m-%d %H:%M")))
@@ -411,15 +418,13 @@ if __name__ == '__main__':
                                  "Generates a SLHA file for the parameters defined in the parameters file.")
     ap.add_argument('-p', '--parfile', default='scan_parameters_2mdm.ini',
                     help='path to the parameters file, default is [scan_parameters_2mdm.ini].')
-    ap.add_argument('-s', '--energy', default='13',
-                    help='center of mass energy to obtain cross section (in TeV), default is 13 TeV')
     ap.add_argument('-v', '--verbose', default='info',
                     help='verbose level (debug, info, warning or error). Default is info.')
     
     t0 = time.time()
 
     args = ap.parse_args()
-    output = main(args.parfile, args.energy, args.verbose)
+    output = main(args.parfile, args.verbose)
 
     print('\n\nDone in %3.2f min' %((time.time()-t0)/60.))
 
