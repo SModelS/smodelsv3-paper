@@ -11,7 +11,6 @@ import subprocess
 import multiprocessing
 import tempfile
 import time,datetime
-import numpy as np
 
 FORMAT = '%(levelname)s in %(module)s.%(funcName)s(): %(message)s at %(asctime)s'
 logging.basicConfig(format=FORMAT,datefmt='%m/%d/%Y %I:%M:%S %p')
@@ -30,7 +29,7 @@ def generateProcess(parser):
     """
     
     #Check if run card, delphes card and pythia card exist
-    pars = parser["MadGraphPars"]
+    pars = parser["MadGraphPars"]    
     runCard = os.path.abspath(pars["runcard"]) 
     paramCard = os.path.abspath(pars["paramcard"]) 
     delphesCard = os.path.abspath(pars["delphescard"])
@@ -142,6 +141,10 @@ def generateEvents(parser):
     
     t0 = time.time()
     pars = parser["MadGraphPars"]
+
+    comms = parser["MadGraphSet"]
+    # Set the MadGraph parameters defined in the ini file
+ 
     if not 'runFolder' in pars:
         logger.error('Run folder not defined.')
         return False        
@@ -240,14 +243,7 @@ def generateEvents(parser):
 
     logger.debug('MG5 event error:\n %s \n' %errorMsg)
     logger.debug('MG5 event output:\n %s \n' %output)
-
-    # put in .txt file the parameters to reproduce data
-    paramfile = processFolder.split('/')[-1]
-    paramfile = paramfile+'.dat'
-    params = open(paramfile, "a")
-    params.write("(%1.1f, %1.1f, %1.2f), " %(comms['mzp'],comms['msd'],comms['sa']))
-    params.close()  
-    
+      
     os.remove(commandsFile)
 
     
@@ -280,7 +276,6 @@ def moveFolders(runInfo):
     runFolder = os.path.abspath(runInfo['runFolder'])
     runNumber = int(runInfo['runNumber'])
     processFolder = os.path.abspath(runInfo['processFolder'])
-
     # If run folder and process folder are the same, do nothing
     if runFolder == processFolder:
         return
@@ -333,18 +328,6 @@ def main(parfile,verbose):
     else:
         logger.info('Running in series with a single process')
 
-    # create file for parameters
-    for newParser in parserList:
-        processFolder = newParser.get('MadGraphPars','processFolder')
-        processFolder = os.path.abspath(processFolder)
-
-    paramfile = processFolder.split('/')[-1]
-    paramfile = paramfile+'.dat'
-    params = open(paramfile, "a")
-    params.write("Specified parameters for 2MDM model:\n")
-    params.write("(Format: (mzp, msd, sa))\n")
-    params.close()
-
     now = datetime.datetime.now()
     children = []
     for irun,newParser in enumerate(parserList):
@@ -396,20 +379,9 @@ if __name__ == "__main__":
             help='path to the parameters file [scan_parameters.ini].')
     ap.add_argument('-v', '--verbose', default='info',
             help='verbose level (debug, info, warning or error). Default is info')
-            
-    # First make sure the correct env variables have been set:
-    LDPATH = subprocess.check_output('echo $LD_LIBRARY_PATH',shell=True,text=True)
-    ROOTINC = subprocess.check_output('echo $ROOT_INCLUDE_PATH',shell=True,text=True)
-    print(ROOTINC)
-    pythiaDir = os.path.abspath('../MG5/HEPTools/pythia8/lib')
-    delphesDir = os.path.abspath('../MG5/Delphes/external')
-    if pythiaDir not in LDPATH or delphesDir not in ROOTINC:
-        print('Enviroment variables not properly set. Run source setenv.sh first.')
-        sys.exit()
 
 
     t0 = time.time()
-
 
     args = ap.parse_args()
     output = main(args.parfile,args.verbose)
