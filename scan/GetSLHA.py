@@ -7,11 +7,11 @@ mg5Folder = os.path.abspath('../../MonoXSMS/MG5')
 sys.path.append(mg5Folder)
 from madgraph.various.banner import Banner
 from configParserWrapper import ConfigParserExt
-import random
-import string
 from scipy import interpolate
 import pandas as pd
 import numpy as np
+import tempfile
+import progressbar as P
 
 FORMAT = '%(levelname)s in %(module)s.%(funcName)s(): %(message)s at %(asctime)s'
 logging.basicConfig(format=FORMAT,datefmt='%m/%d/%Y %I:%M:%S %p')
@@ -31,8 +31,13 @@ def getXSection(mMed=2000, pid='9900032'):
         xsecLabel = 'xsec'+s+'TeV(fb).'+str(pid)
         dataScan = pd.read_pickle('mg5_scan_'+s+'TeV.pcl')
 
+        if mMed < dataScan['mass.'+str(pid)].min() or mMed > dataScan['mass.'+str(pid)].max():
+            logger.error('Mediator %s mass (%1.2f GeV) is outside bounds, please use mass values between %1.1f and %1.1f GeV.'
+                         %(str(pid), mMed, dataScan['mass.'+str(pid)].min(), dataScan['mass.'+str(pid)].max()))
+            sys.exit()
+
         xsecScan = dataScan[['mass.'+str(pid), xsecLabel]]
-        xsecFunction = interpolate.interp1d(xsecScan['mass.'+str(pid)], xsecScan[xsecLabel])
+        xsecFunction = interpolate.interp1d(xsecScan['mass.'+str(pid)], xsecScan[xsecLabel], kind='linear')
         
         xsecNew[s] = xsecFunction(mMed)/1000
 
@@ -328,14 +333,20 @@ def createSLHA(parser):
     Creates SLHA file with cross-section and branching ratio for parameters given in parser
     :param parser: ConfigParser object with all parameters needed
     '''
-    filename = 'slha_files/'+''.join(random.sample(string.ascii_lowercase, 8))+'.slha'
-    # filename = 'test.slha'
-    pars = parser.toDict(raw=False)["ParamsSet"]
+    pars = parser.toDict(raw=False)['slhaCreator']
+    slhaFolder = pars['outputFolder']
+    try:
+         os.makedirs(slhaFolder)
+    except:
+         pass
+
+    filename = tempfile.NamedTemporaryFile(mode= 'w+b', prefix='scan_', suffix='.slha', delete=False, dir=slhaFolder).name
+    params = parser.toDict(raw=False)['ParamsSet']
     baseParams = {'mzp': 2000.0, 'mchi': 65.0, 'msd': 1000.0, 'gqv': 0.0, 'gqa': 0.25,
                   'gchi': 1.6, 'ychi': 1.0, 'sa': 0.25, 'se': 0.0}
     for par in baseParams.keys():
-        if par not in pars.keys():
-            pars[par] = baseParams[par]
+        if par not in params.keys():
+            params[par] = baseParams[par]
 
     # Create file and based on banner
     bannerFile = './default_banner.txt'
@@ -344,9 +355,9 @@ def createSLHA(parser):
     slhaData = banner['slha']
 
     # change values in banner
-    slhaData = fixParams(data=slhaData, oldParam=' sd ', newParam=str('{:e}'.format(pars['msd'])))
-    for param in pars.keys():
-            slhaData = fixParams(data=slhaData, oldParam='# '+param, newParam=str('{:e}'.format(pars[param])))
+    slhaData = fixParams(data=slhaData, oldParam=' sd ', newParam=str('{:e}'.format(params['msd'])))
+    for param in params.keys():
+            slhaData = fixParams(data=slhaData, oldParam='# '+param, newParam=str('{:e}'.format(params[param])))
 
     slhaF = open(filename, 'wt')
     slhaF.write(slhaData)
@@ -369,10 +380,10 @@ def createSLHA(parser):
         file.close()
 
     # write BRs based on given parameters
-    writeBRsBlock(filename, pars)
+    writeBRsBlock(filename, params)
 
     # write Xsection block for given parameters
-    writeXsecBlock(filename, pars)
+    writeXsecBlock(filename, params)
 
 
 
@@ -406,16 +417,26 @@ def main(parfile, verbose):
 
 
     now = datetime.datetime.now()
+    progressbar = P.ProgressBar(widgets=["Creating SLHA file(s): ", P.Percentage(),
+                                P.Bar(marker=P.RotatingMarker()), P.ETA()])
+    progressbar.maxval = len(parserList)
+    progressbar.start()
+        
     for i,newParser in enumerate(parserList):
+        progressbar.update(i)
         r = createSLHA(newParser)
-        logger.info("Created SLHA file number %i/%i at %s" %(i,len(parserList),now.strftime("%Y-%m-%d %H:%M")))
+        # logger.info("Created SLHA file number %i/%i at %s" %(i,len(parserList),now.strftime("%Y-%m-%d %H:%M")))
 
-    logger.info("Created all SLHA files (%i) at %s" %(len(parserList),now.strftime("%Y-%m-%d %H:%M")))
+    progressbar.finish()
+
+    logger.info("\nCreated all SLHA files (%i) at %s" %(len(parserList),now.strftime("%Y-%m-%d %H:%M")))
 
 if __name__ == '__main__':
     import argparse
     ap = argparse.ArgumentParser(description=
-                                 "Generates a SLHA file for the parameters defined in the parameters file.")
+                                 'Generates a SLHA file for the parameters defined in the parameters file.'
+                                +' The cross-sections are obtained from an 1D interpolation using base values generated with MG5, '
+                                +'and then rescaled (if necessary) according to given coupling between mediators and quarks.')
     ap.add_argument('-p', '--parfile', default='scan_parameters_2mdm.ini',
                     help='path to the parameters file, default is [scan_parameters_2mdm.ini].')
     ap.add_argument('-v', '--verbose', default='info',
