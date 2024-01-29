@@ -5,11 +5,10 @@ including the Two Mediator Dark Matter (2MDM) model.
 
 ## Description
 
-* [Cards](./Cards): Cards for generating events with MadGraph5;
-* [models](./models): UFO and FeynRules files for the implemented model;
-* [notebooks](./notebooks): Jupyter notebooks for some plots and  to gather other data;
 * [data](./data): Data files used for plotting;
-* [References](./References): Useful references.
+* [notebooks](./notebooks): Jupyter notebooks for some plots and  to gather other data;
+* [References](./References): Useful references;
+* [scan](./scan/): Information about scan perfomed to obtain SLHA files used to obtain results with SModelS v3.
 
 ## External Packages
 
@@ -24,16 +23,8 @@ Currently, the following tools are necessary for running the scans:
 
 [Slides](https://www.overleaf.com/read/vgwmdhjrzsdm#c9e46c)
 
-## Running the scans
- To obtain and analyze the SLHA files using SModelS, one must first generate data points using the files with '.ini' extension. To generate its own data points, run the command line on the terminal:
-```
-./runScanMG5.py -p <parameters-file.ini>
-```
-and then extracting relevant data for the SLHA file using the [createSLHA.py](./createSLHA.py) script:
-```
-./createSLHA.py -f <list of .lhe.gz or banner.txt files>
-```
-Finally, the SModelS is used in this [notebook](./notebooks/SmodelS/getResults.ipynb), and the results are stored in the pandas dataframe.
+## Results
+We used [MG5](https://launchpad.net/mg5amcnlo/) to obtain the production cross-section of both mediators of the 2MDM model, then we used the cross-sections from MG5 in the SLHA format as input for [SModelS v3](https://github.com/SModelS/smodels) in this [notebook](./notebooks/SmodelS/getResults.ipynb), and the results are stored in the pandas dataframe.
 
-Alternatively, multiple results from SModelS can be found in [smodels_results.tgz](./data/smodels_results.tgz), by simply extracting the compressed folder. These results are presented as a pandas DataFrame, and notebooks used to create relevant plots can be found in the [SmodelS](./notebooks/SmodelS) folder. 
+We provide also multiple results from SModelS in [smodels_results.tgz](./data/smodels_results.tgz). These results are presented as a pandas DataFrame, and notebooks used to create relevant plots can be found in the [SmodelS](./notebooks/SmodelS) folder. 
 
