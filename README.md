@@ -8,7 +8,8 @@ including the Two Mediator Dark Matter (2MDM) model.
 * [data](./data): Data files used for plotting;
 * [notebooks](./notebooks): Jupyter notebooks for some plots and  to gather other data;
 * [References](./References): Useful references;
-* [scan](./scan/): Information about scan perfomed to obtain SLHA files used to obtain results with SModelS v3.
+* [scan](./scan/): Information about scan perfomed to obtain SLHA files used to obtain results with SModelS v3;
+* [parameters_2mdm.ini](./parameters_2mdm.ini): Parameters file for the 2MDM model used in SModelS.
 
 ## External Packages
 
