@@ -5,6 +5,7 @@
 
 from __future__ import print_function
 import sys,os,glob
+sys.path.append('../')
 from configParserWrapper import ConfigParserExt
 import logging,shutil
 import subprocess
