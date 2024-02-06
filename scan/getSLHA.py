@@ -2,10 +2,6 @@
 
 import sys, os, time, datetime
 import logging
-sys.path.append('../')
-mg5Folder = os.path.abspath('../../MG5')
-sys.path.append(mg5Folder)
-from madgraph.various.banner import Banner
 from configParserWrapper import ConfigParserExt
 from scipy import interpolate
 import pandas as pd
@@ -17,31 +13,6 @@ FORMAT = '%(levelname)s in %(module)s.%(funcName)s(): %(message)s at %(asctime)s
 logging.basicConfig(format=FORMAT,datefmt='%m/%d/%Y %I:%M:%S %p')
 logger = logging.getLogger('SLHAScan')
 
-def getXSection(mMed=2000, pid='9900032'):
-    '''
-    Function that obtains the cross sections from interpolation given the input mass for the 2MDM model
-
-    :param Mmed: mediator particle mass (in GeV)
-    :param pid: mediator id - string
-
-    :return: mediator production cross-section (in pb) for each center of mass energy
-    '''
-    xsecNew = {'13': 0, '8': 0}
-    for s in xsecNew.keys():
-        xsecLabel = 'xsec'+s+'TeV(fb).'+str(pid)
-        dataScan = pd.read_pickle('mg5_scan_'+s+'TeV.pcl')
-
-        if mMed < dataScan['mass.'+str(pid)].min() or mMed > dataScan['mass.'+str(pid)].max():
-            logger.error('Mediator %s mass (%1.2f GeV) is outside bounds, please use mass values between %1.1f and %1.1f GeV.'
-                         %(str(pid), mMed, dataScan['mass.'+str(pid)].min(), dataScan['mass.'+str(pid)].max()))
-            sys.exit()
-
-        xsecScan = dataScan[['mass.'+str(pid), xsecLabel]]
-        xsecFunction = interpolate.interp1d(xsecScan['mass.'+str(pid)], xsecScan[xsecLabel], kind='linear')
-        
-        xsecNew[s] = xsecFunction(mMed)/1000
-
-    return xsecNew
 
 def getBR(pars):
     '''
@@ -235,20 +206,25 @@ def getBR(pars):
 
     return BRs, widths
 
-def writeXsecBlock(filename, pars):
+def writeXsecBlock(filename, pars, xsecs):
     '''
     Function that writes the cross section for particles of interest based on given parameters, rescaled with the couplings
     :param pars: parameters given in parameters file
     :param filename: SLHA filename
+    :param xsecs: dictionary with interpolation functions for cross-section
     '''
     pdgInitial = ['2212', '2212']
     finalState = {'mzp': '9900032', 'msd': '9900026'}
+    mMeds = {'mzp': pars['mzp'], 'msd': pars['msd']}
     gq = 0.25
     sa = 0.25
     file = open(filename, 'a')
-    for med in finalState.keys():
-        xsecs = getXSection(mMed=int(pars[med]), pid=finalState[med])
-        for energy, xsec in xsecs.items():
+    # iterates over final state mediators and their respective IDs 
+    for med, particle in finalState.items():
+        # iterates over CoM energies and the xsecs functions dictionary
+        for energy, xsecDict in xsecs.items():
+            # gets the xsec value for a particle ID at given CoM energy. divides the number by 1000 so the result is in pb
+            xsec = xsecDict[particle](mMeds[med])/1000 
             # rescale xsec with couplings
             if med == 'mzp':
                 if pars['gqv'] == 0:
@@ -261,9 +237,9 @@ def writeXsecBlock(filename, pars):
             xsecLine = "\nXSECTION %1.3e " %(int(energy)*1000)
             xsecLine += " ".join([pdg for pdg in pdgInitial])
             xsecLine += " 1 " 
-            xsecLine += "".join(finalState[med])
+            xsecLine += "".join(particle)
             file.write(xsecLine+'\n')
-            file.write("  0  0  0  0  0  303600  %1.4e madgraph 3.5.1 \n" %xsec)
+            file.write("  0  0  0  0  0  0  %1.4e madgraph 3.5.3 \n" %xsec)
             file.write('\n\n')
     file.close()
 
@@ -328,7 +304,7 @@ def fixParams(data, oldParam, newParam):
 
      return slhaData
 
-def createSLHA(parser):
+def createSLHA(parser, xsecs):
     '''
     Creates SLHA file with cross-section and branching ratio for parameters given in parser
     :param parser: ConfigParser object with all parameters needed
@@ -348,11 +324,15 @@ def createSLHA(parser):
         if par not in params.keys():
             params[par] = baseParams[par]
 
-    # Create file and based on banner
-    bannerFile = './default_banner.txt'
-    banner = Banner()
-    banner.read_banner(bannerFile)
-    slhaData = banner['slha']
+    # make sure all parameters are floats
+    for par in params.keys():
+        params[par] = float(params[par])
+
+    # Create slha file based on template
+    template = open('template.slha', 'r')
+    slhaData = template.read()
+    template.close()
+    
 
     # change values in banner
     slhaData = fixParams(data=slhaData, oldParam=' sd ', newParam=str('{:e}'.format(params['msd'])))
@@ -363,27 +343,11 @@ def createSLHA(parser):
     slhaF.write(slhaData)
     slhaF.close()
 
-    # Remove BRs from file
-    with open(filename, 'r+') as file:
-        lines = file.readlines()
-        file.seek(0)
-        isBRblock = False
-        for line in lines:
-            if 'BR' in line:
-                isBRblock = True
-                continue
-            elif line.startswith('#'):
-                isBRblock = False
-            if not isBRblock:
-                file.write(line)
-        file.truncate()
-        file.close()
-
     # write BRs based on given parameters
     writeBRsBlock(filename, params)
 
     # write Xsection block for given parameters
-    writeXsecBlock(filename, params)
+    writeXsecBlock(filename, params, xsecs)
 
 
 
@@ -407,25 +371,41 @@ def main(parfile, verbose):
     # If loops have been defined, get a list of parsers
     parserList = parser.expandLoops()
 
+
+    # define default parameters
     params = parser.toDict(raw=False)["ParamsSet"]
     baseParams = {"mzp": 2000.0, "mchi": 65.0, "msd": 1000.0, "gqv": 0.0, "gqa": 0.25,
                   "gchi": 1.6, "ychi": 1.0, "sa": 0.25, "se": 0.0}
+
+ 
 
     for par in baseParams.keys():
         if par not in params.keys():
             logger.info("Parameter %s not set in %s, using default value: %1.2f." %(par, args.parfile, baseParams[par]))
 
 
+
+    # initialize progressbar
     now = datetime.datetime.now()
     progressbar = P.ProgressBar(widgets=["Creating SLHA file(s): ", P.Percentage(),
                                 P.Bar(marker=P.RotatingMarker()), P.ETA()])
     progressbar.maxval = len(parserList)
     progressbar.start()
+    
+    # obtain function for cross-section
+    xsecData = pd.read_pickle('mg5_scan.pcl')
+
+    xsecs = {'13': {},'8': {}}
+    pid = ['9900026', '9900032']
+    # create dictionary that contains for each CoM energy another dict with the particles IDs as keys and their respective xsec function as element
+    for s in xsecs.keys():
+        for particle in pid:
+            xsecs[s][particle] = interpolate.interp1d(xsecData['mass.'+particle], xsecData['xsec'+s+'TeV(fb).'+particle], 
+                                                     kind='linear', bounds_error=True)
         
     for i,newParser in enumerate(parserList):
         progressbar.update(i)
-        r = createSLHA(newParser)
-        # logger.info("Created SLHA file number %i/%i at %s" %(i,len(parserList),now.strftime("%Y-%m-%d %H:%M")))
+        r = createSLHA(newParser, xsecs)
 
     progressbar.finish()
 

@@ -19,3 +19,4 @@ notebooks/Untitled.ipynb
 data/smodels-results/results.pcl
 *smodels_results/
 *.crash
+/scan/smodels_results*/
