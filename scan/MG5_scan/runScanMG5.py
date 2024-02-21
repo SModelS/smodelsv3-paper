@@ -270,7 +270,6 @@ def moveFolders(runInfo):
     to the process folder.
     """
 
-    print(runInfo)
     logger.info('Finished event generation for run %i in %1.2f min' 
                 %(int(runInfo['runNumber']),runInfo['time (s)']/60.))
 

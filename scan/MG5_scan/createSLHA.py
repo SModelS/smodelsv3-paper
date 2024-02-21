@@ -206,7 +206,7 @@ if __name__ == "__main__":
                     xsecLine += " %i " %len(finalStates)
                     xsecLine += " ".join([str(pdg) for pdg in finalStates])
                     slhaF.write(xsecLine+' '+comment+' \n')        
-                    slhaF.write("  0  0  0  0  0  303600  %1.4e madgraph 3.5.1 \n" %xsec) 
+                    slhaF.write("  0  0  0  0  0  303600  %1.4e madgraph 3.5.3 \n" %xsec) 
                     slhaF.write('\n\n')
 
     slhaF.close()
