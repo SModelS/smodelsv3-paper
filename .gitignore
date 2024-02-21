@@ -7,6 +7,7 @@
 nohup.out
 *.pyc
 *.pkl
+*.pcl
 Tests/
 slha_files*/
 slha_files_extra/
