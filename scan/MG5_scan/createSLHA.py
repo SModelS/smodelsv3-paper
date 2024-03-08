@@ -69,7 +69,7 @@ def GetXsection(banner_file):
         elif 'sd' in l:
             finalStates.append(pdg_sd)
         elif 'chi' in l:
-            finalStates.append([pdg_chi, pdg_chi])
+            finalStates = [pdg_chi, pdg_chi]
 
     # get process information
     info = banner['init'].split('\n')[0].split()
