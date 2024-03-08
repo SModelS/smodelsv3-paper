@@ -20,5 +20,5 @@ notebooks/Untitled.ipynb
 data/smodels-results/results.pcl
 *smodels_results/
 *.crash
-/scan/smodels_results*/
 /scan/figures/ratios_wm.png
+*smodels_results*/
