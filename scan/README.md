@@ -18,7 +18,7 @@ In order to obtain the SLHA files, one must simply run the [getSLHA.py](./getSLH
 ```
 ./getSLHA.py -p scan_parameters_2mdm.ini
 ```
-As mentioned previously, the MG5 package is required even though no Monte Carlo simulation is performed. Therefore, the respective MG5 path must be indicated in the line 6 of the [getSLHA.py](./getSLHA.py) script. The parameters used to create the SLHA files are set in [scan_parameters_2mdm.ini](./scan_parameters_2mdm.ini), such as the mediators and dark matter masses, the coupling parameters, as well as the output folder of the SLHA files. The cross-sections are obtained via 1D interpolation, and rescaled for the selected couplings if necessary. Cross sections for 13TeV and 8TeV are provided for both mediators, as well as the Branching Ratios for the possible 2-body decays. 
+The parameters used to create the SLHA files are set in [scan_parameters_2mdm.ini](./scan_parameters_2mdm.ini), such as the mediators and dark matter masses, the coupling parameters, as well as the output folder of the SLHA files. The cross-sections are obtained via 1D interpolation, and rescaled for the selected couplings if necessary. Cross sections for 13TeV and 8TeV are provided for both mediators, as well as the Branching Ratios for the possible 2-body decays. 
 
 ## Alternative: use compressed data
 
