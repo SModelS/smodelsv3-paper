@@ -22,5 +22,5 @@ As mentioned previously, the MG5 package is required even though no Monte Carlo 
 
 ## Alternative: use compressed data
 
-It is also possible to decompress the [data.tar.gz](./data.tar.gz) file that contais folders with .pcl files or slha files, the former were used to generate plots found in [notebooks](../notebooks/). The latter can be used as input for SModelS.
+It is also possible to decompress the [data.tar.gz](./data.tar.gz) file that contains folders with .pcl files or slha files, the former were used to generate plots found in [notebooks](../notebooks/). The latter can be used as input for SModelS.
 
