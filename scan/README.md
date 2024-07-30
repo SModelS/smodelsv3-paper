@@ -6,7 +6,8 @@ This folder is dedicated to create the SLHA files used to obtain the results of 
 * [configParserWrapper.py](./configParserWrapper.py): Auxiliar code for parsing through elements in [parameters file](./scan_parameters_2mdm.ini);
 * [getSLHA.py](./getSLHA.py): script to obtain SLHA files with production cross-section without running MG5;
 * [default_banner.txt](./default_banner.txt): text file in SLHA format used as template for SLHA files creation;
-* [mg5_scan.pcl]: Pickle file containing the two mediatiors production cross-sections used as data points for interpolation in [getSLHA.py](./getSLHA.py); 
+* [mg5_scan.pcl](./mg5_scan.pcl): Pickle file containing the two mediatiors production cross-sections used as data points for interpolation in [getSLHA.py](./getSLHA.py), that way, the SLHA files can be generated for any mediator mass within a selected range;
+* [data.tar.gz](./data.tar.gz) compressed folder containing .pcl files used for plots and also slha files used as input for SModelS.
 
 
 Here one finds all files necessary to obtain SLHA files for the 2MDM model, including the cross-section for production of both mediators. The SLHA files can be generated using the [createSLHA.py](./createSLHA.py) script, or using MadGraph5 (MG5) via the script [runScanMG5.py](./MG5_scan/runScanMG5.py). The former option is the fastest one, since no MG5 run is needed to be perfomed, however, in both cases the installation of MG5 is required.
@@ -18,4 +19,8 @@ In order to obtain the SLHA files, one must simply run the [getSLHA.py](./getSLH
 ./getSLHA.py -p scan_parameters_2mdm.ini
 ```
 As mentioned previously, the MG5 package is required even though no Monte Carlo simulation is performed. Therefore, the respective MG5 path must be indicated in the line 6 of the [getSLHA.py](./getSLHA.py) script. The parameters used to create the SLHA files are set in [scan_parameters_2mdm.ini](./scan_parameters_2mdm.ini), such as the mediators and dark matter masses, the coupling parameters, as well as the output folder of the SLHA files. The cross-sections are obtained via 1D interpolation, and rescaled for the selected couplings if necessary. Cross sections for 13TeV and 8TeV are provided for both mediators, as well as the Branching Ratios for the possible 2-body decays. 
+
+## Alternative: use compressed data
+
+It is also possible to decompress the [data.tar.gz](./data.tar.gz) file that contais folders with .pcl files or slha files, the former were used to generate plots found in [notebooks](../notebooks/). The latter can be used as input for SModelS.
 
