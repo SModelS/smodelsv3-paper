@@ -94,7 +94,7 @@ IndexStyle[Generation, f];
 (* ************************** *)
 
 M$InteractionOrderLimit = {
- {NP, 2}
+ {NP, 3}
 };
 
 M$InteractionOrderHierarchy = {
