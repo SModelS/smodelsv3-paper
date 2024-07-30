@@ -15,7 +15,6 @@ including the Two Mediator Dark Matter (2MDM) model.
 
 Currently, the following tools are necessary for running the scans:
 
-  * [MadGraph5](https://launchpad.net/mg5amcnlo/)
   * [SModelS v3](https://github.com/SModelS/smodels)
 
 ### 2MDM ###
