@@ -22,3 +22,4 @@ data/smodels-results/results.pcl
 *.crash
 /scan/figures/ratios_wm.png
 *smodels_results*/
+*.pyc

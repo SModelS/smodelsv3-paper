@@ -1,0 +1,6 @@
+import model ../../models/simplified_models/DMsimp_Spin1
+define darkmatter xd
+generate relic_density
+output ../../maddm_DMsimp_Spin1
+launch
+exit

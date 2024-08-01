@@ -1,0 +1,6 @@
+import model ../../models/2MDM/2MDMNLO_UFO
+define darkmatter chi
+generate relic_density
+output ../../maddm_2MDM
+launch
+exit
