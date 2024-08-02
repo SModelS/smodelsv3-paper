@@ -397,7 +397,7 @@ M$ClassesDescription = {
     Indices        -> {Index[SU2D], Index[Generation], Index[Colour]},
     FlavorIndex    -> SU2D,
     SelfConjugate  -> False,
-    QuantumNumbers -> {Y -> 1/6, QB -> gqL},
+    QuantumNumbers -> {Y -> 1/6, QB -> gqV},
     Definitions    -> { 
       QL[sp1_,1,ff_,cc_] :> Module[{sp2}, ProjM[sp1,sp2] uq[sp2,ff,cc]], 
       QL[sp1_,2,ff_,cc_] :> Module[{sp2,ff2}, CKM[ff,ff2] ProjM[sp1,sp2] dq[sp2,ff2,cc]] }
@@ -408,7 +408,7 @@ M$ClassesDescription = {
     Indices        -> {Index[Generation], Index[Colour]},
     FlavorIndex    -> Generation,
     SelfConjugate  -> False,
-    QuantumNumbers -> {Y -> 2/3, QB -> gqR},
+    QuantumNumbers -> {Y -> 2/3, QB -> gqV},
     Definitions    -> { uR[sp1_,ff_,cc_] :> Module[{sp2}, ProjP[sp1,sp2] uq[sp2,ff,cc]] }
   },
   F[15] == { 
@@ -417,7 +417,7 @@ M$ClassesDescription = {
     Indices        -> {Index[Generation], Index[Colour]},
     FlavorIndex    -> Generation,
     SelfConjugate  -> False,
-    QuantumNumbers -> {Y -> -1/3, QB -> gqR},
+    QuantumNumbers -> {Y -> -1/3, QB -> gqV},
     Definitions    -> { dR[sp1_,ff_,cc_] :> Module[{sp2}, ProjP[sp1,sp2] dq[sp2,ff,cc]] }
   },
 
@@ -472,7 +472,7 @@ M$ClassesDescription = {
     FlavorIndex    -> SU2D,
     SelfConjugate  -> False,
     QuantumNumbers -> {Y -> 1/2},
-    Definitions    -> { Phi[1] -> -I GP, Phi[2] -> (vev + Ca*h + Sa*Sd + I G0)/Sqrt[2]  }
+    Definitions    -> { Phi[1] -> -I GP, Phi[2] -> (vev + cosa*h + sina*Sd + I G0)/Sqrt[2]  }
   },
   S[4]  == {
     ClassName       -> Sd,
@@ -491,7 +491,7 @@ M$ClassesDescription = {
     Unphysical      -> True,
     SelfConjugate   -> False,
     QuantumNumbers  -> {Y -> 0, QB -> -2*gchi},
-    Definitions     -> { Phi2 -> (vev2 - Sa*h + Ca*Sd + I phip)/Sqrt[2]
+    Definitions     -> { Phi2 -> (vev2 - sina*h + cosa*Sd + I phip)/Sqrt[2]
     }
   },
   S[5]  == {
@@ -651,14 +651,13 @@ M$Parameters = {
   },
  (***************B*****************)
   gZp == {
-    ParameterType -> External,
-    BlockName -> NPINPUTS,
-    InteractionOrder -> {QED, 2},
+    ParameterType -> Internal,
+    InteractionOrder -> {NP, 1},
     TeX              -> Subscript[g,Zp],
-    Value -> 1.0,
+    Value -> MZp/(2*vev2*gchi),
     Description -> "U(1)Y B coupling coustant at the Zp pole"
   },
-  Sa == {
+  sina == {
     ParameterType -> External,
     BlockName -> NPINPUTS,
     Value -> 0.1,
@@ -742,48 +741,32 @@ M$Parameters = {
   },   
   vev2 == {
     ParameterType    -> Internal,
-    Value            -> MZp/(2*gchi),
+    Value            -> Sqrt[2]*Mchi/(ychi),
     InteractionOrder -> {QED, -1},
     Description      -> "sd VEV"
   },
-  Ca == {
+  cosa == {
     ParameterType    -> Internal,
-    Value            -> Sqrt[1-Sa^2],
-    ParameterName    -> Ca,
+    Value            -> Sqrt[1-sina^2],
+    ParameterName    -> cosa,
     Description      -> "Cosine of Higgses mixing angle"
   },
-  gqV== {
+  gq == {
     ParameterType -> External,
     InteractionOrder -> {NP, 1},
     BlockName -> NPINPUTS,
-    TeX              -> Subscript[g,qV],
-    Value -> 0.5,
+    TeX              -> Subscript[g,q],
+    Value -> 0.25,
     Description -> "Vector coupling of Zprime with the quarks"
   },
-  gqA == {
-    ParameterType -> External,
-    InteractionOrder -> {NP, 1},
-    BlockName -> NPINPUTS,
-    TeX              -> Subscript[g,qA],
-    Value -> 0.1,
-    Description -> "Axial coupling of Zprime with the quarks"
-  },
-  gqL == {
+  gqV== {
     ParameterType -> Internal,
     InteractionOrder -> {NP, 1},
     BlockName -> NPINPUTS,
-    TeX              -> Subscript[g,qL],
-    Value       -> (gqV + gqA),
-    Description -> "Left coupling of Zprime with the quarks"
-  },  
-  gqR == {
-    ParameterType    -> Internal,
-    InteractionOrder -> {NP, 1},
-    BlockName        -> NPINPUTS,
-    TeX              -> Subscript[g,qA],
-    Value            -> (gqV - gqA),
-    Description      -> "Right coupling of Zprime with the quarks"
-  },  
+    TeX              -> Subscript[g,qV],
+    Value -> gq/gZp,
+    Description -> "Vector coupling of Zprime with the quarks"
+  },
   gsd == {
     ParameterType -> Internal,
     InteractionOrder -> {NP, 1},
@@ -811,44 +794,38 @@ M$Parameters = {
   (**************Higgs Potential*******************)
   lam1 == {
     ParameterType    -> Internal,
-    Value            ->  Mh^2/(2*vev^2)*Ca^2 + MSd^2/(2*vev^2)*Sa^2,
+    Value            ->  Mh^2/(2*vev^2)*cosa^2 + MSd^2/(2*vev^2)*sina^2,
     ParameterName    -> lam1,
     InteractionOrder -> {QED, 2},
     Description      -> "Higgs quartic coupling piece for h"
   },
   lam2 == {
     ParameterType    -> Internal,
-    Value            ->  Mh^2/(2*vev2^2)*Sa^2 + MSd^2/(2*vev2^2)*Ca^2,
+    Value            ->  Mh^2/(2*vev2^2)*sina^2 + MSd^2/(2*vev2^2)*cosa^2,
     ParameterName    -> lam2,
     InteractionOrder -> {QED,2},
     Description      -> "Higgs quartic coupling piece for Sd"
   },
   lam3 == {
     ParameterType    -> Internal,
-    Value            -> (MSd^2 - Mh^2)/(vev2*vev)*Sa*Ca,
+    Value            -> (MSd^2 - Mh^2)/(vev2*vev)*sina*cosa,
     ParameterName    -> lam3,
     InteractionOrder -> {QED, 2},
     Description      -> "Mixing part"
   },
   mu2h == {
     ParameterType -> Internal,
-    Value         -> lam1 * vev^2 + (lam3 /2) * vev2^2, 
+    Value         -> -lam1 * vev^2 - (lam3 /2) * vev2^2, 
     TeX           -> \[Mu],
     Description   -> "Coefficient of the quadratic piece of the h potential"
   },
-  mu2Sd == {
+  mu2sd == {
     ParameterType   -> Internal,
-    Value           -> (lam3 * vev^2 /2)  + lam2 * vev2^2,
+    Value           -> -(lam3 * vev^2 /2)  - lam2 * vev2^2,
     TeX             -> \[Mu]prime,
     Description     -> "Coefficient of the quadratic piece of the Sd potential"
   },
- (* Mnew == {
-    ParameterType    -> Internal,
-    BlockName -> NPINPUTS,
-    Value            -> Mchi + (ychi * vev2 )/ (2*Sqrt[2]),
-    ParameterName    -> Mnew,
-    Description      -> "Mass of the new scalar"
-  },*)
+ 
   (******************END*********************)
   (******************Yukawa******************)
   (******************END*********************)
@@ -934,7 +911,7 @@ LYukawaSM := Block[{sp,ii,jj,cc,ff1,ff2,ff3,yuk,feynmangaugerules},
   yuk+HC[yuk]/.feynmangaugerules
   ];
 (**********************B***************************)
-LYukawanew := - 1/2 ychi (chibar.ProjM.Phi2.chi) - 1/2 ychi (chibar.ProjP.Phi2bar.chi); (* + (1/2) Mnew (chibar.chi);*)
+LYukawanew := - 1/2 ychi (chibar.ProjM.Phi2.chi) - 1/2 ychi (chibar.ProjP.Phi2bar.chi);
 (**********************END***************************)
 LYukawa := LYukawaSM + LYukawanew;
 (**********************END***************************)
@@ -947,7 +924,7 @@ LGhost := Block[{LGh,LGhw,LGhs,LGhphi,LGhBp, LGhphinew, mu, generators,gh,ghbar,
   LGhs = -ghGbar[ii].del[DC[ghG[ii],mu],mu];
 (******************B***********************)
   LGhBp = - ghBpbar.del[del[ghBp, mu],mu];
-  LGhphinew = -2*gp MZp (vev2-Sa*h+Ca*sd) ghZpbar.ghZp;
+  LGhphinew = -2*gp MZp (vev2-sina*h+cosa*sd) ghZpbar.ghZp;
 (**********************END***************************)
   (* Scalar pieces: see Peskin pages 739-742 *)
   (* phi1 and phi2 are the real degrees of freedom of GP *)
