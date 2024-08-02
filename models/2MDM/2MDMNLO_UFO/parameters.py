@@ -1,6 +1,6 @@
 # This file was automatically created by FeynRules 2.3.49
 # Mathematica version: 13.2.1 for Linux x86 (64-bit) (January 28, 2023)
-# Date: Fri 2 Aug 2024 15:07:54
+# Date: Fri 2 Aug 2024 17:01:18
 
 
 
@@ -82,6 +82,14 @@ aS = Parameter(name = 'aS',
                lhablock = 'SMINPUTS',
                lhacode = [ 3 ])
 
+ymb = Parameter(name = 'ymb',
+                nature = 'external',
+                type = 'real',
+                value = 4.7,
+                texname = '\\text{ymb}',
+                lhablock = 'YUKAWA',
+                lhacode = [ 5 ])
+
 ymt = Parameter(name = 'ymt',
                 nature = 'external',
                 type = 'real',
@@ -129,6 +137,14 @@ MT = Parameter(name = 'MT',
                texname = '\\text{MT}',
                lhablock = 'MASS',
                lhacode = [ 6 ])
+
+MB = Parameter(name = 'MB',
+               nature = 'external',
+               type = 'real',
+               value = 4.7,
+               texname = '\\text{MB}',
+               lhablock = 'MASS',
+               lhacode = [ 5 ])
 
 Mh = Parameter(name = 'Mh',
                nature = 'external',
@@ -330,6 +346,12 @@ lam3 = Parameter(name = 'lam3',
                  value = '(cosa*(-Mh**2 + MSd**2)*sina)/(vev*vev2)',
                  texname = '\\text{lam3}')
 
+yb = Parameter(name = 'yb',
+               nature = 'internal',
+               type = 'real',
+               value = '(ymb*cmath.sqrt(2))/vev',
+               texname = '\\text{yb}')
+
 yt = Parameter(name = 'yt',
                nature = 'internal',
                type = 'real',
@@ -354,6 +376,12 @@ mu2sd = Parameter(name = 'mu2sd',
                   value = '-0.5*(lam3*vev**2) - lam2*vev2**2',
                   texname = '\\mu _2')
 
+I1a33 = Parameter(name = 'I1a33',
+                  nature = 'internal',
+                  type = 'complex',
+                  value = 'yb',
+                  texname = '\\text{I1a33}')
+
 I2a33 = Parameter(name = 'I2a33',
                   nature = 'internal',
                   type = 'complex',
@@ -365,4 +393,10 @@ I3a33 = Parameter(name = 'I3a33',
                   type = 'complex',
                   value = 'yt',
                   texname = '\\text{I3a33}')
+
+I4a33 = Parameter(name = 'I4a33',
+                  nature = 'internal',
+                  type = 'complex',
+                  value = 'yb',
+                  texname = '\\text{I4a33}')
 
