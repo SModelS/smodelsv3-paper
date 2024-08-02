@@ -101,7 +101,7 @@ M$InteractionOrderHierarchy = {
   (************SM***************)
   {QCD, 1},
   {QED, 2},
-  {NP, 1}    
+  {NP, 2}    
 };
 
 (* ************************** *)
@@ -353,7 +353,7 @@ M$ClassesDescription = {
     AntiParticleName -> {"u~", "c~", "t~"},
     FullName         -> {"u-quark", "c-quark", "t-quark"}
   },
-    (* Quarks (d): I_3 = -1/2, Q = -1/3, QB=gq *) 
+    (* Quarks (d): I_3 = -1/2, Q = -1/3, QB=QBq *) 
   F[4] == {
     ClassName        -> dq,
     ClassMembers     -> {d, s, b},
@@ -397,7 +397,7 @@ M$ClassesDescription = {
     Indices        -> {Index[SU2D], Index[Generation], Index[Colour]},
     FlavorIndex    -> SU2D,
     SelfConjugate  -> False,
-    QuantumNumbers -> {Y -> 1/6, QB -> gqV},
+    QuantumNumbers -> {Y -> 1/6, QB -> QBq},
     Definitions    -> { 
       QL[sp1_,1,ff_,cc_] :> Module[{sp2}, ProjM[sp1,sp2] uq[sp2,ff,cc]], 
       QL[sp1_,2,ff_,cc_] :> Module[{sp2,ff2}, CKM[ff,ff2] ProjM[sp1,sp2] dq[sp2,ff2,cc]] }
@@ -408,7 +408,7 @@ M$ClassesDescription = {
     Indices        -> {Index[Generation], Index[Colour]},
     FlavorIndex    -> Generation,
     SelfConjugate  -> False,
-    QuantumNumbers -> {Y -> 2/3, QB -> gqV},
+    QuantumNumbers -> {Y -> 2/3, QB -> QBq},
     Definitions    -> { uR[sp1_,ff_,cc_] :> Module[{sp2}, ProjP[sp1,sp2] uq[sp2,ff,cc]] }
   },
   F[15] == { 
@@ -417,7 +417,7 @@ M$ClassesDescription = {
     Indices        -> {Index[Generation], Index[Colour]},
     FlavorIndex    -> Generation,
     SelfConjugate  -> False,
-    QuantumNumbers -> {Y -> -1/3, QB -> gqV},
+    QuantumNumbers -> {Y -> -1/3, QB -> QBq},
     Definitions    -> { dR[sp1_,ff_,cc_] :> Module[{sp2}, ProjP[sp1,sp2] dq[sp2,ff,cc]] }
   },
 
@@ -490,7 +490,7 @@ M$ClassesDescription = {
     ClassName       -> Phi2,
     Unphysical      -> True,
     SelfConjugate   -> False,
-    QuantumNumbers  -> {Y -> 0, QB -> -2*gchi},
+    QuantumNumbers  -> {Y -> 0, QB -> QBphi},
     Definitions     -> { Phi2 -> (vev2 - sina*h + cosa*Sd + I phip)/Sqrt[2]
     }
   },
@@ -515,7 +515,7 @@ M$ClassesDescription = {
     Mass             -> {Mchi, 50},
     Width            -> {Wchi, 0.0},
     PropagatorLabel  -> {"chi"},
-    (*QuantumNumbers -> {Y -> 0, QB-> gchi},    *)
+    (*QuantumNumbers -> {Y -> 0, QB-> QBchi},    *)
     PropagatorType   -> Straight,
     PropagatorArrow  -> None
     PDG              -> {9910012},
@@ -649,28 +649,14 @@ M$Parameters = {
     TeX           -> Subscript[\[Theta], c],
     Description   -> "Cabibbo angle"
   },
- (***************B*****************)
-  gZp == {
-    ParameterType -> Internal,
-    InteractionOrder -> {NP, 1},
-    TeX              -> Subscript[g,Zp],
-    Value -> MZp/(2*vev2*gchi),
-    Description -> "U(1)Y B coupling coustant at the Zp pole"
-  },
-  sina == {
-    ParameterType -> External,
-    BlockName -> NPINPUTS,
-    Value -> 0.1,
-    InteractionOrder -> {QED, 2},
-    Description -> "Sine of Higgses mixing angle"
-  },
+ 
   (* Internal Parameters *)
   aEW == {
     ParameterType    -> Internal,
     Value            -> 1/aEWM1,
     InteractionOrder -> {QED,2},
     TeX              -> Subscript[\[Alpha], EW],
-    Description      -> "Electroweak coupling contant"
+    Description      -> "Electroweak coupling constant"
   },
   MW == { 
     ParameterType -> Internal, 
@@ -730,7 +716,8 @@ M$Parameters = {
     InteractionOrder -> {QED,-1},
     Description      -> "Higgs vacuum expectation value"
   },
-  (*****************B********************)
+
+  (****** External BSM Parameters **************)
   gchi == {
     ParameterType -> External,
     InteractionOrder -> {NP, 1},
@@ -739,51 +726,21 @@ M$Parameters = {
     Value -> 1.0,
     Description -> "gauge coupling of Zprime with the DM"
   },   
-  vev2 == {
-    ParameterType    -> Internal,
-    Value            -> Sqrt[2]*Mchi/(ychi),
-    InteractionOrder -> {QED, -1},
-    Description      -> "sd VEV"
-  },
-  cosa == {
-    ParameterType    -> Internal,
-    Value            -> Sqrt[1-sina^2],
-    ParameterName    -> cosa,
-    Description      -> "Cosine of Higgses mixing angle"
-  },
   gq == {
     ParameterType -> External,
     InteractionOrder -> {NP, 1},
     BlockName -> NPINPUTS,
-    TeX              -> Subscript[g,q],
+    TeX   -> Subscript[g,q],
     Value -> 0.25,
     Description -> "Vector coupling of Zprime with the quarks"
   },
-  gqV== {
-    ParameterType -> Internal,
-    InteractionOrder -> {NP, 1},
-    BlockName -> NPINPUTS,
-    TeX              -> Subscript[g,qV],
-    Value -> gq/gZp,
-    Description -> "Vector coupling of Zprime with the quarks"
-  },
-  gsd == {
-    ParameterType -> Internal,
-    InteractionOrder -> {NP, 1},
-    BlockName -> NPINPUTS,
-    TeX              -> Subscript[g,sd],
-    Value       -> -2*gchi,
-    Description -> "gauge coupling of Zprime with the leptons"
-  },  
-  ychi == {
+  sina == {
     ParameterType -> External,
-    InteractionOrder -> {NP, 1},
     BlockName -> NPINPUTS,
-    Value   -> 1,
-    ComplexParameter -> False,
-    ParameterName -> ychi,
-    Description -> "Ychi coupling"
-  },  
+    Value -> 0.2,
+    InteractionOrder -> {NP, 1},
+    Description -> "Sine of Higgses mixing angle"
+  },
   Se == {
     ParameterType -> External,
     InteractionOrder -> {NP, 1},
@@ -791,7 +748,56 @@ M$Parameters = {
     Value -> 0.0,
     Description -> "Sine of Zp-Z mixing angle"
   }, 
-  (**************Higgs Potential*******************)
+
+  (****** Internal BSM Parameters **************)
+  gZp == {
+    ParameterType -> Internal,
+    InteractionOrder -> {NP, 1},
+    TeX              -> Subscript[g,Zp],
+    Value -> 1,
+    Description -> "U(1)Y B coupling constant at the Zp pole"
+  },
+  vev2 == {
+    ParameterType    -> Internal,
+    InteractionOrder -> {NP, -1},
+    Value            -> MZp/(2*gchi),
+    Description      -> "Phi2 VEV"
+  },
+  cosa == {
+    ParameterType    -> Internal,
+    Value            -> Sqrt[1-sina^2],
+    ParameterName    -> cosa,
+    Description      -> "Cosine of Higgses mixing angle"
+  },
+  QBq== {
+    ParameterType -> Internal,
+    TeX   -> Subscript[QB,q],
+    Value -> gq/gZp,
+    Description -> "Quark QB charge"
+  },
+  QBchi== {
+    ParameterType -> Internal,
+    TeX   -> Subscript[QB,chi],
+    Value -> gchi/gZp,
+    Description -> "Chi QB charge"
+  },
+  QBphi== {
+    ParameterType -> Internal,
+    TeX   -> Subscript[QB,phi],
+    Value -> -2*gchi/gZp,
+    Description -> "Phi2 QB charge"
+  },
+  ychi == {
+    ParameterType -> Internal,
+    InteractionOrder -> {NP, 1},
+    TeX   -> Subscript[y,chi],
+    Value   -> 2*Sqrt[2]*gchi*Mchi/MZp,
+    ComplexParameter -> False,
+    ParameterName -> ychi,
+    Description -> "Dark Scalar-Chi coupling"
+  },  
+  
+  (**************Scalar Potential*******************)
   lam1 == {
     ParameterType    -> Internal,
     Value            ->  Mh^2/(2*vev^2)*cosa^2 + MSd^2/(2*vev^2)*sina^2,
@@ -816,13 +822,13 @@ M$Parameters = {
   mu2h == {
     ParameterType -> Internal,
     Value         -> -lam1 * vev^2 - (lam3 /2) * vev2^2, 
-    TeX           -> \[Mu],
+    TeX           -> Subscript[\[Mu],H],
     Description   -> "Coefficient of the quadratic piece of the h potential"
   },
   mu2sd == {
     ParameterType   -> Internal,
     Value           -> -(lam3 * vev^2 /2)  - lam2 * vev2^2,
-    TeX             -> \[Mu]prime,
+    TeX             -> Subscript[\[Mu],2],
     Description     -> "Coefficient of the quadratic piece of the Sd potential"
   },
  
