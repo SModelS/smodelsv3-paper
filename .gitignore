@@ -23,3 +23,5 @@ data/smodels-results/results.pcl
 /scan/figures/ratios_wm.png
 *smodels_results*/
 *.pyc
+.lastrun
+.keepme
