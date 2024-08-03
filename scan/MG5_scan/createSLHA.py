@@ -8,7 +8,7 @@ import sys,os,glob,copy
 import pyslha
 import xml.etree.ElementTree as ET
 
-mg5Folder = os.path.abspath('~/Users/ramos/MonoXSMS/MG5/')
+mg5Folder = os.path.abspath('/Users/ramos/MonoXSMS/MG5/')
 sys.path.append(mg5Folder)
 from madgraph.various.banner import Banner
 import gzip

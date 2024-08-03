@@ -34,6 +34,7 @@ def getBR(pars):
 
     # mass for quarks
     MT = 172
+    MB = 4.7
 
     # tau lepton mass
     MTA = 1.777
@@ -43,7 +44,7 @@ def getBR(pars):
     MZ = 91.1876
 
     # higgs boson mass
-    MH = 125.0
+    Mh = 125.0
 
     aEWM1 = 127.9
     aEW = 1 / aEWM1
@@ -63,8 +64,8 @@ def getBR(pars):
     gZp = 1.0
 
     ### spin-1 mediator ###
-    gqL = (gqA + gqV)
-    gqR = (-gqA + gqV)
+#    gqL = (gqA + gqV)
+#    gqR = (-gqA + gqV)
     QBphi = (-2 * gchi) / gZp
     QBq = gq / gZp
     QBchi = gchi / gZp
@@ -108,7 +109,7 @@ def getBR(pars):
     lam3 = (cosa * (-Mh**2 + MSd**2) * sina)/(vev * vev2)
 
     # S to Higgs
-    if MSd < 2 * MH:
+    if MSd < 2 * Mh:
         Shh = 0
     else:
         Shh = ((36 * cosa**4 * lam1**2 * sina**2 * vev**2 - 24 * cosa**4 * lam1 * lam3 * sina**2 * vev**2 + 4 * cosa**4 * lam3**2 * sina**2 * vev**2 + 12 * cosa**2 * lam1 * lam3 * sina**4 * vev**2 - 4 * cosa**2 * lam3**2 * sina**4 * vev**2 + lam3**2 * sina**6 * vev**2 + 12 * cosa**5 * lam1 * lam3 * sina * vev * vev2 - 4 * cosa**5 * lam3**2 * sina * vev * vev2 + 72 * cosa**3 * lam1 * lam2 * sina**3 * vev * vev2 - 24 * cosa**3 * lam1 * lam3 * sina**3 * vev * vev2 - 24 * cosa**3 * lam2 * lam3 * sina**3 * vev * vev2 + 10 * cosa**3 * lam3**2 * sina**3 * vev * vev2 + 12 * cosa * lam2 * lam3 * sina**5 * vev * vev2 - 4 * cosa * lam3**2 * sina**5 * vev * vev2 + cosa**6 * lam3**2 * vev2**2 + 12 * cosa**4 * lam2 * lam3 * sina**2 * vev2**2 - 4 * cosa**4 * lam3**2 * sina**2 * vev2**2 + 36 * cosa**2 * lam2**2 * sina**4 * vev2**2 - 24 * cosa**2 * lam2 * lam3 * sina**4 * vev2**2 + 4 * cosa**2 * lam3**2 * sina**4 * vev2**2) * np.sqrt(-4 * Mh**2 * MSd**2 + MSd**4))/(32. * np.pi * abs(MSd)**3)
@@ -207,9 +208,7 @@ def writeXsecBlock(filename, pars, xsecs):
             xsec = xsecDict[particle](mMeds[med])/1000 
             # rescale xsec with couplings
             if med == 'mzp':
-                if pars['gq'] == 0:
-                    gqNew = pars['gq']']
-                xsec = xsec*(gqNew/gq)**2
+                xsec = xsec*(pars['gq']/gq)**2
             elif med == 'msd':
                 xsec = xsec*(pars['sina']/sina)**2
             xsecLine = "\nXSECTION %1.3e " %(int(energy)*1000)
@@ -294,10 +293,10 @@ def createSLHA(parser, xsecs):
     except:
          pass
 
-    filename = tempfile.NamedTemporaryFile(mode= 'w+b', prefix='scan_', suffix='.slha', delete=False, dir=slhaFolder).name
+    filename = tempfile.NamedTemporaryFile(mode= 'w+b', prefix='scan_1_', suffix='.slha', delete=False, dir=slhaFolder).name
     params = parser.toDict(raw=False)['ParamsSet']
     baseParams = {'mzp': 2000.0, 'mchi': 65.0, 'msd': 1000.0, 'gq': 0.25,
-                  'gchi': 1.414214, 'sina': 0.2, 'se': 0.0}
+                  'gchi': 1.414214, 'sina': 0.25, 'se': 0.0}
     for par in baseParams.keys():
         if par not in params.keys():
             params[par] = baseParams[par]
@@ -313,7 +312,7 @@ def createSLHA(parser, xsecs):
     
 
     # change values in banner
-    slhaData = fixParams(data=slhaData, oldParam=' sd ', newParam=str('{:e}'.format(params['msd'])))
+#    slhaData = fixParams(data=slhaData, oldParam=' sd ', newParam=str('{:e}'.format(params['msd'])))
     for param in params.keys():
             slhaData = fixParams(data=slhaData, oldParam='# '+param, newParam=str('{:e}'.format(params[param])))
 

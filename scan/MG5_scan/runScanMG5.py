@@ -5,7 +5,9 @@
 
 from __future__ import print_function
 import sys,os,glob
-sys.path.append('../../../')
+#module_path = os.path.abspath(os.path.join('/Users/ramos/smodels-develop/')) # or the path to your source code
+#sys.path.insert(0, module_path)
+sys.path.append('/Users/ramos/MonoXSMS/MG5')
 from configParserWrapper import ConfigParserExt
 import logging,shutil
 import subprocess
