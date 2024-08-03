@@ -25,11 +25,10 @@ def getBR(pars):
     MZp = pars['mzp']
     MSd = pars['msd']
     Mchi = pars['mchi']
-    gqA = pars['gqa']
-    gqV = pars['gqv']
+    gq = pars['gq']
     gchi = pars['gchi']
-    Sa = pars['sa']
-    ychi = pars['ychi']
+    sina = pars['sina']
+    ychi = 2 * np.sqrt(2) * gchi * Mchi / MZp
 
     ## define constants
 
@@ -47,128 +46,108 @@ def getBR(pars):
     MH = 125.0
 
     aEWM1 = 127.9
-    aEW = 1/aEWM1
-    ee = 2*np.sqrt(aEW)*np.sqrt(np.pi)
+    aEW = 1 / aEWM1
+    ee = 2 * np.sqrt(aEW) * np.sqrt(np.pi)
 
-    sw2 = 1 - MW**2/MZ**2
+    sw2 = 1 - MW**2 / MZ**2
     sw = np.sqrt(sw2)
     cw = np.sqrt(1 - sw2)
 
     # vevs
-    vev = (2*MW*sw)/ee
+    vev = (2 * MW * sw) / ee
     vev2 = MZp/(2*gchi)
 
     # couplings
-    yt = np.sqrt(2)*MT/vev
-    ytau = np.sqrt(2)*MTA/vev
+    yt = np.sqrt(2) * MT / vev
+    ytau = np.sqrt(2) * MTA / vev
     gZp = 1.0
 
     ### spin-1 mediator ###
     gqL = (gqA + gqV)
     gqR = (-gqA + gqV)
+    QBphi = (-2 * gchi) / gZp
+    QBq = gq / gZp
+    QBchi = gchi / gZp
 
     # Zp to t 
     if MZp < 2*MT:
         ZPtt = 0
     else:
-        ZPtt = ((-6 * gqL**2 * gZp**2 *MT**2 + 36 * gqL * gqR * gZp**2 * MT**2 - 6 * gqR**2 *gZp**2 * MT**2 
-                 + 6 * gqL**2 * gZp**2 * MZp**2 + 6 * gqR**2 * gZp**2 * MZp**2)
-                    *np.sqrt(-4 * MT**2 * MZp**2 + MZp**4))/(48. * np.pi * abs(MZp)**3) 
+        ZPtt = ((24 * gZp**2 * MT**2 * QBq**2 + 12 * gZp**2 * MZp**2 * QBq**2)*np.sqrt(-4 * MT**2 * MZp**2 + MZp**4))/(48. * np.pi * abs(MZp)**3)
 
         
     # Zp to u
-    ZPuu = (MZp**2 * (6 * gqL**2 * gZp**2 * MZp**2 + 6 * gqR**2 * gZp**2 * MZp**2))/(48. * np.pi * abs(MZp)**3)
+    ZPuu = (gZp**2 * MZp**4 * QBq**2)/(4. * np.pi * abs(MZp)**3)
 
     # Zp to c
-    ZPcc = (MZp**2 * (6 * gqL**2 * gZp**2 * MZp**2 + 6 * gqR**2 * gZp**2 * MZp**2))/(48. * np.pi * abs(MZp)**3)
+    ZPcc = (gZp**2 * MZp**4 * QBq**2)/(4. * np.pi * abs(MZp)**3)
 
     # Zp to d
-    ZPdd = (MZp**2 * (6 * gqL**2 * gZp**2 * MZp**2 + 6 * gqR**2 * gZp**2 * MZp**2))/(48. * np.pi * abs(MZp)**3)
-
+    ZPdd = (gZp**2 * MZp**4 * QBq**2)/(4. * np.pi * abs(MZp)**3)
+    
     # Zp to s
-    ZPss = (MZp**2 * (6 * gqL**2 * gZp**2 * MZp**2 + 6 * gqR**2 * gZp**2 * MZp**2))/(48. * np.pi * abs(MZp)**3)
-
+    ZPss = (gZp**2 * MZp**4 * QBq**2)/(4. * np.pi * abs(MZp)**3)
+    
     # Zp to b
-    ZPbb = (MZp**2 * (6 * gqL**2 * gZp**2 * MZp**2 + 6 * gqR**2 * gZp**2 * MZp**2))/(48. * np.pi * abs(MZp)**3)
+    ZPbb = ((24 * gZp**2 * MB**2 * QBq**2 + 12 * gZp**2 * MZp**2 * QBq**2)*np.sqrt(-4 * MB**2 * MZp**2 + MZp**4))/(48. * np.pi * abs(MZp)**3)
 
     # Zp to DM
     if MZp < 2*Mchi:
         ZPchichi = 0
     else:
-        ZPchichi = ((-16 * gchi **2 * Mchi**2 + 4 * gchi**2 * MZp**2)
-                    *np.sqrt(-4 * Mchi**2 * MZp**2 + MZp**4))/(96. * np.pi * abs(MZp)**3)
+        ZPchichi = ((-16 * gchi**2 * Mchi**2 + 4 * gchi**2 * MZp**2) * np.sqrt(-4 * Mchi**2 * MZp**2 + MZp**4))/(96. * np.pi * abs(MZp)**3)
 
     # Zp total width
     GammaZP = ZPuu + ZPcc + ZPtt + ZPdd + ZPss + ZPbb + ZPchichi
 
 
     ### spin-0 mediator ###
-    Ca = np.sqrt(1 - Sa**2)
-    lam1 = (Ca**2 * MH**2)/(2. * vev**2) + (MSd**2 * Sa**2)/(2. * vev**2)
-    lam2 = (Ca**2 * MSd**2)/(2. * vev2**2) + (MH**2 * Sa**2)/(2. * vev2**2)
-    lam3 = (Ca * (-MH**2 + MSd**2) * Sa)/(vev * vev2)
+    cosa = np.sqrt(1 - sina**2)
+    lam1 = (cosa**2 * Mh**2)/(2. * vev**2) + (MSd**2 * sina**2)/(2. * vev**2)
+    lam2 = (cosa**2 * MSd**2)/(2. * vev2**2) + (Mh**2 * sina**2)/(2. * vev2**2)
+    lam3 = (cosa * (-Mh**2 + MSd**2) * sina)/(vev * vev2)
 
     # S to Higgs
     if MSd < 2 * MH:
         Shh = 0
     else:
-        Shh = ((36 * Ca**4 * lam1**2 * Sa**2 * vev**2 - 24 * Ca**4 * lam1 * lam3 * Sa**2 * vev**2 
-                + 4 * Ca**4 * lam3**2 * Sa**2 * vev**2 + 12 * Ca**2 * lam1 * lam3 * Sa**4 * vev**2 
-                - 4 * Ca**2 * lam3**2 * Sa**4 * vev**2 + lam3**2 * Sa**6 * vev**2 + 12 * Ca**5 * lam1 * lam3 * Sa * vev * vev2 
-                - 4 * Ca**5 * lam3**2 * Sa * vev * vev2 + 72 * Ca**3 * lam1 * lam2 * Sa**3 * vev * vev2 
-                - 24 * Ca**3 * lam1 * lam3 * Sa**3 * vev * vev2 - 24 * Ca**3 * lam2 * lam3 * Sa**3 * vev * vev2 
-                + 10 * Ca**3 * lam3**2 * Sa**3 * vev * vev2 + 12 * Ca * lam2 * lam3 * Sa**5 * vev * vev2 
-                - 4 * Ca * lam3**2 * Sa**5 * vev * vev2 + Ca**6 * lam3**2 * vev2**2 + 12 * Ca**4 * lam2 * lam3 * Sa**2 * vev2**2 
-                - 4 * Ca**4 * lam3**2 * Sa**2 * vev2**2 + 36 * Ca**2 * lam2**2 * Sa**4 * vev2**2 
-                - 24 * Ca**2 * lam2 * lam3 * Sa**4 * vev2**2 + 4 * Ca**2 * lam3**2 * Sa**4 * vev2**2)
-                *np.sqrt(-4 * MH**2 * MSd**2 + MSd**4))/(32. * np.pi * abs(MSd)**3)
+        Shh = ((36 * cosa**4 * lam1**2 * sina**2 * vev**2 - 24 * cosa**4 * lam1 * lam3 * sina**2 * vev**2 + 4 * cosa**4 * lam3**2 * sina**2 * vev**2 + 12 * cosa**2 * lam1 * lam3 * sina**4 * vev**2 - 4 * cosa**2 * lam3**2 * sina**4 * vev**2 + lam3**2 * sina**6 * vev**2 + 12 * cosa**5 * lam1 * lam3 * sina * vev * vev2 - 4 * cosa**5 * lam3**2 * sina * vev * vev2 + 72 * cosa**3 * lam1 * lam2 * sina**3 * vev * vev2 - 24 * cosa**3 * lam1 * lam3 * sina**3 * vev * vev2 - 24 * cosa**3 * lam2 * lam3 * sina**3 * vev * vev2 + 10 * cosa**3 * lam3**2 * sina**3 * vev * vev2 + 12 * cosa * lam2 * lam3 * sina**5 * vev * vev2 - 4 * cosa * lam3**2 * sina**5 * vev * vev2 + cosa**6 * lam3**2 * vev2**2 + 12 * cosa**4 * lam2 * lam3 * sina**2 * vev2**2 - 4 * cosa**4 * lam3**2 * sina**2 * vev2**2 + 36 * cosa**2 * lam2**2 * sina**4 * vev2**2 - 24 * cosa**2 * lam2 * lam3 * sina**4 * vev2**2 + 4 * cosa**2 * lam3**2 * sina**4 * vev2**2) * np.sqrt(-4 * Mh**2 * MSd**2 + MSd**4))/(32. * np.pi * abs(MSd)**3)
 
     # S to DM
     if MSd < 2*Mchi:
         Schichi = 0
     else:
-        Schichi = ((-4 * Ca**2 * Mchi**2 * ychi**2 + Ca**2 * MSd**2 * ychi**2)
-                    *np.sqrt(-4* Mchi**2 * MSd**2 + MSd**4))/(32. * np.pi * abs(MSd)**3)
+        Schichi = ((-4 * cosa**2 * Mchi**2 * ychi**2 + cosa**2 * MSd**2 * ychi**2) * np.sqrt(-4 * Mchi**2 * MSd**2 + MSd**4))/(32. * np.pi * abs(MSd)**3)
+                    
 
     # S to tau
-    Stautau = ((MSd**2 * Sa**2 * ytau**2 - 4 * MTA**2 * Sa**2 * ytau**2)
-                *np.sqrt(MSd**4 - 4 * MSd**2 * MTA**2))/(16. * np.pi * abs(MSd)**3)
+    Stautau = ((MSd**2 * sina**2 * ytau**2 - 4 * MTA**2 * sina**2 * ytau**2) * np.sqrt(MSd**4 - 4 * MSd**2 * MTA**2))/(16. * np.pi * abs(MSd)**3)
 
     # S to top
     if MSd < 2*MT:
         Stt = 0
     else:
-        Stt = ((3 * MSd**2 * Sa**2 * yt**2 - 12 * MT**2 * Sa**2 * yt**2)
-                *np.sqrt(MSd**4 - 4 * MSd**2 * MT**2))/(16. * np.pi * abs(MSd)**3)
+        Stt = ((3 * MSd**2 * sina**2 * yt**2 - 12 * MT**2 * sina**2 * yt**2) * np.sqrt(MSd**4 - 4 * MSd**2 * MT**2))/(16. * np.pi * abs(MSd)**3)
 
     # S to W
     if MSd < 2*MW:
         Sww = 0
     else:
-        Sww = (((3 * ee**4 * Sa**2 * vev**2)/(4. * sw**4) + (ee**4 * MSd**4 * Sa**2 * vev**2)/(16. * MW**4 * sw**4) 
-                - (ee**4 * MSd**2 * Sa**2 * vev**2)/(4. * MW**2 * sw**4))
-                *np.sqrt(MSd**4 - 4 * MSd**2 * MW**2))/(16. * np.pi * abs(MSd)**3)
+        Sww = (((3 *ee**4 * sina**2 * vev**2)/(4. * sw**4) + (ee**4 * MSd**4 * sina**2 * vev**2)/(16. * MW**4 * sw**4) - (ee**4 * MSd**2 * sina**2 * vev**2)/(4. * MW**2 * sw**4)) * np.sqrt(MSd**4 - 4 * MSd**2 * MW**2))/(16. * np.pi * abs(MSd)**3)
 
     # S to Z
     if MSd < 2 * MZ:
         Szz = 0
     else:
-        Szz = (((9 * ee**4 * Sa**2 * vev**2)/2. + (3 * ee**4 * MSd**4 * Sa**2 * vev**2)
-                /(8. * MZ**4) - (3 * ee**4 * MSd**2 * Sa**2 * vev**2)/(2. * MZ**2) 
-                + (3 * cw**4 * ee**4 * Sa**2 * vev**2)/(4. * sw**4) + (cw**4 * ee**4 * MSd**4 * Sa**2 * vev**2)
-                /(16. * MZ**4 * sw**4) - (cw**4 * ee**4 * MSd**2 * Sa**2 * vev**2)
-                /(4. * MZ**2 * sw**4) + (3 * cw**2 * ee**4 * Sa**2 * vev**2)/sw**2 
-                + (cw**2 * ee**4 * MSd**4 * Sa**2 * vev**2)/(4. * MZ**4 * sw**2) 
-                - (cw**2 * ee**4 * MSd**2 * Sa**2 * vev**2)/(MZ**2 * sw**2) + (3* ee**4 * Sa**2 * sw**2 * vev**2)/cw**2 
-                + (ee**4 * MSd**4 * Sa**2 * sw**2 * vev**2)/(4. * cw**2*MZ**4) 
-                - (ee**4 * MSd**2 * Sa**2 * sw**2 * vev**2)/(cw**2 * MZ**2) + (3 * ee**4 * Sa**2 * sw**4 * vev**2)/(4. * cw**4) 
-                + (ee**4 * MSd**4 * Sa**2 * sw**4 * vev**2)/(16. * cw**4 * MZ**4) 
-                - (ee**4 * MSd**2 * Sa**2 * sw**4 * vev**2)/(4. * cw**4 * MZ**2))
-                *np.sqrt(MSd**4 - 4 * MSd**2 * MZ**2))/(32. * np.pi * abs(MSd)**3)
+        Szz = (((9 * ee**4 * sina**2 * vev**2)/2. + (3 * ee**4 * MSd**4 * sina**2 * vev**2)/(8. * MZ**4) - (3 * ee**4 * MSd**2 * sina**2 * vev**2)/(2. * MZ**2) + (3 * cw**4 * ee**4 * sina**2 * vev**2)/(4. * sw**4) + (cw**4 * ee**4 * MSd**4 * sina**2 * vev**2)/(16. * MZ**4 * sw**4) - (cw**4 * ee**4 * MSd**2 * sina**2 * vev**2)/(4. * MZ**2 * sw**4) + (3 * cw**2 * ee**4 * sina**2 * vev**2)/sw**2 + (cw**2 * ee**4 * MSd**4 * sina**2 * vev**2)/(4. * MZ**4 * sw**2) - (cw**2 * ee**4 * MSd**2 * sina**2 * vev**2)/(MZ**2 * sw**2) + (3 * ee**4 * sina**2 * sw**2 * vev**2)/cw**2 + (ee**4 * MSd**4 * sina**2 * sw**2 * vev**2)/(4. * cw**2 * MZ**4) - (ee**4 * MSd**2 * sina**2 * sw**2 * vev**2)/(cw**2 * MZ**2) + (3 * ee**4 * sina**2 * sw**4 * vev**2)/(4. * cw**4) + (ee**4 * MSd**4 * sina**2 * sw**4 * vev**2)/(16. * cw**4 * MZ**4) - (ee**4 * MSd**2 * sina**2 * sw**4 * vev**2)/(4. * cw**4 * MZ**2)) * np.sqrt(MSd**4 - 4 * MSd**2 * MZ**2))/(32. * np.pi * abs(MSd)**3)
+    if MSd < 2 * MZp:
+         Szpzp = 0
+    else:
+         Szpzp = ((12 * cosa**2 * gZp**4 * QBphi**4 * vev2**2 + (cosa**2 * gZp**4 * MSd**4 * QBphi**4 * vev2**2)/MZp**4 - (4 * cosa**2 * gZp**4 * MSd**2 * QBphi**4 * vev2**2)/MZp**2) * np.sqrt(MSd**4 - 4 * MSd**2 * MZp**2))/(32. * np.pi * abs(MSd)**3)
 
 
     #  S Total width
-    GammaS = Shh + Schichi + Stautau + Stt + Sww + Szz
+    GammaS = Shh + Schichi + Stautau + Stt + Sww + Szz + Szpzp
 
 
     # get BRs together in a dict
@@ -186,7 +165,8 @@ def getBR(pars):
              '23  23': Szz/GammaS,
              '6  -6': Stt/GammaS,
              '15  -15': Stautau/GammaS,
-             '9000006  9000006': Schichi/GammaS}
+             '9000006  9000006': Schichi/GammaS,
+             '9900032  9900032': Szpzp/GammaS}
 
     BRs = {'9900032': BR_ZP, '9900026': BR_Sd}
     widths = {'9900032': GammaZP, '9900026': GammaS}
@@ -217,7 +197,7 @@ def writeXsecBlock(filename, pars, xsecs):
     finalState = {'mzp': '9900032', 'msd': '9900026'}
     mMeds = {'mzp': pars['mzp'], 'msd': pars['msd']}
     gq = 0.25
-    sa = 0.25
+    sina = 0.2
     file = open(filename, 'a')
     # iterates over final state mediators and their respective IDs 
     for med, particle in finalState.items():
@@ -227,13 +207,11 @@ def writeXsecBlock(filename, pars, xsecs):
             xsec = xsecDict[particle](mMeds[med])/1000 
             # rescale xsec with couplings
             if med == 'mzp':
-                if pars['gqv'] == 0:
-                    gqNew = pars['gqa']
-                elif pars['gqa'] == 0:
-                    gqNew = pars['gqv']
+                if pars['gq'] == 0:
+                    gqNew = pars['gq']']
                 xsec = xsec*(gqNew/gq)**2
             elif med == 'msd':
-                xsec = xsec*(pars['sa']/sa)**2
+                xsec = xsec*(pars['sina']/sina)**2
             xsecLine = "\nXSECTION %1.3e " %(int(energy)*1000)
             xsecLine += " ".join([pdg for pdg in pdgInitial])
             xsecLine += " 1 " 
@@ -318,8 +296,8 @@ def createSLHA(parser, xsecs):
 
     filename = tempfile.NamedTemporaryFile(mode= 'w+b', prefix='scan_', suffix='.slha', delete=False, dir=slhaFolder).name
     params = parser.toDict(raw=False)['ParamsSet']
-    baseParams = {'mzp': 2000.0, 'mchi': 65.0, 'msd': 1000.0, 'gqv': 0.0, 'gqa': 0.25,
-                  'gchi': 1.6, 'ychi': 1.0, 'sa': 0.25, 'se': 0.0}
+    baseParams = {'mzp': 2000.0, 'mchi': 65.0, 'msd': 1000.0, 'gq': 0.25,
+                  'gchi': 1.414214, 'sina': 0.2, 'se': 0.0}
     for par in baseParams.keys():
         if par not in params.keys():
             params[par] = baseParams[par]
@@ -374,8 +352,8 @@ def main(parfile, verbose):
 
     # define default parameters
     params = parser.toDict(raw=False)["ParamsSet"]
-    baseParams = {"mzp": 2000.0, "mchi": 65.0, "msd": 1000.0, "gqv": 0.0, "gqa": 0.25,
-                  "gchi": 1.6, "ychi": 1.0, "sa": 0.25, "se": 0.0}
+    baseParams = {"mzp": 2000.0, "mchi": 65.0, "msd": 1000.0, "gq": 0.25,
+                  "gchi": 1.414214, "sina": 0.25, "se": 0.0}
 
  
 
