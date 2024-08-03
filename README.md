@@ -5,26 +5,26 @@ including the Two Mediator Dark Matter (2MDM) model.
 
 ## Description
 
-* [data](./data): Data files used for plotting;
-* [notebooks](./notebooks): Jupyter notebooks for some plots and  to gather other data;
+* [data](./data): data files used to obtain the paper results (SLHA files, SModelS output, MadDM output,...)
+* [notebooks](./notebooks): Jupyter notebooks for plotting and processing data;
 * [References](./References): Useful references;
-* [scan](./scan/): Information about scan perfomed to obtain SLHA files used to obtain results with SModelS v3;
-* [parameters_2mdm.ini](./parameters_2mdm.ini): Parameters file for the 2MDM model used in SModelS.
+* [scan](./scan/): Files and auxiliary code for generating the SLHA files used;
 
 ## External Packages
 
 Currently, the following tools are necessary for running the scans:
 
   * [SModelS v3](https://github.com/SModelS/smodels)
+  * [MadGraph5](https://launchpad.net/mg5amcnlo)
+  * [MadDM](https://launchpad.net/maddm)
+
+A slightly modified version of MadDM converted to run with Python3 is available [here](MG5_aMC_v3_5_4_maddm.tar.gz).
 
 ### 2MDM ###
 
-[Overview of the Two-Mediator Dark Matter Model (2MDM): Symmetries, Interactions, Parameters, and results](https://www.overleaf.com/read/xszpmbtnpmhn)
-
-[Slides](https://www.overleaf.com/read/vgwmdhjrzsdm#c9e46c)
-
 ## Results
+
 We used [MG5](https://launchpad.net/mg5amcnlo/) to obtain the production cross-section of both mediators of the 2MDM model, then we used the cross-sections from MG5 in the SLHA format as input for [SModelS v3](https://github.com/SModelS/smodels) in this [notebook](./notebooks/SmodelS/getResults.ipynb), and the results are stored in the pandas dataframe.
 
-We provide also multiple results from SModelS in [smodels_results.tgz](./data/smodels_results.tgz). These results are presented as a pandas DataFrame, and notebooks used to create relevant plots can be found in the [SmodelS](./notebooks/SmodelS) folder. 
+We provide also multiple results from SModelS in [data/smodelsOutput](./data/smodelsOutput). These results are then converted to a pandas DataFrame, which is used to obtain the plots using the Jupyter notebooks in the [notebooks folder](./notebooks). 
 
