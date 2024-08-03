@@ -8,34 +8,34 @@ import sys,os,glob,copy
 import pyslha
 import xml.etree.ElementTree as ET
 
-mg5Folder = os.path.abspath('../../../MG5')
+mg5Folder = os.path.abspath('~/Users/ramos/MonoXSMS/MG5/')
 sys.path.append(mg5Folder)
 from madgraph.various.banner import Banner
 import gzip
 
-def FixParams(slhaData):
-    """
-    Function that fixes the S mediator mass;
-    :param slhaData:  variable that contains relevant parameters for the slha file;
-    :return: the slhaData with fixed S mediator mass.
-    """
-#     banner = Banner()
-#     banner.read_banner(banner_file)
-#     slhaData = banner['slha']
-    
-    pars = pyslha.readSLHA(slhaData)
-    msd = pars.blocks['BLINPUTS'][2]
-    
-    for l in slhaData.split('\n'):
-        if not ' sd ' in l: continue
-        oldline = l
-        line = l.split()
-        line[1] = str(msd)
-        fixline = ' '.join(line)
-    slhaData = slhaData.replace(oldline, '      '+fixline)
-    
-    
-    return slhaData
+#def FixParams(slhaData):
+#    """
+#    Function that fixes the S mediator mass;
+#    :param slhaData:  variable that contains relevant parameters for the slha file;
+#    :return: the slhaData with fixed S mediator mass.
+#    """
+##     banner = Banner()
+##     banner.read_banner(banner_file)
+##     slhaData = banner['slha']
+#    
+#    pars = pyslha.readSLHA(slhaData)
+#    msd = pars.blocks['BLINPUTS'][2]
+#    
+#    for l in slhaData.split('\n'):
+#        if not ' sd ' in l: continue
+#        oldline = l
+#        line = l.split()
+#        line[1] = str(msd)
+#        fixline = ' '.join(line)
+#    slhaData = slhaData.replace(oldline, '      '+fixline)
+#    
+#    
+#    return slhaData
     
 
 def GetXsection(banner_file):
@@ -152,14 +152,14 @@ if __name__ == "__main__":
             banner = Banner()
             banner.read_banner(f)
             slhaData = banner['slha']
-            slhaData = FixParams(slhaData)
+#            slhaData = FixParams(slhaData)
             
     elif '.txt' in inputFile[0]:
         run_tag = GetSLHAname(inputFile[0])
         banner = Banner()
         banner.read_banner(inputFile[0])
         slhaData = banner['slha']
-        slhaData = FixParams(slhaData)
+#        slhaData = FixParams(slhaData)
 
     if outputFile is None:
 
