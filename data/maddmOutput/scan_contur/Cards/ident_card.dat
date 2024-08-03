@@ -1,0 +1,89 @@
+ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+c      written by the UFO converter
+ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+
+effblock 1 mdl_sSIe
+
+effblock 2 mdl_fSIe
+
+effblock 3 mdl_vSIe
+
+effblock 4 mdl_fSDe
+
+effblock 5 mdl_vSDe
+
+loop 1 MU_R
+
+mass 1 mdl_MD
+
+mass 2 mdl_MU
+
+mass 3 mdl_MS
+
+mass 4 mdl_MC
+
+mass 5 mdl_MB
+
+mass 6 mdl_MT
+
+mass 15 mdl_MTA
+
+mass 23 mdl_MZ
+
+mass 25 mdl_Mh
+
+mass 9000006 mdl_Mchi
+
+mass 9900026 mdl_MSd
+
+mass 9900032 mdl_MZp
+
+mass 999000006 mdl_sdmm
+
+mass 999000007 mdl_MFsdm
+
+mass 999000009 mdl_vdmm
+
+mass 999000010 mdl_MFvdm
+
+npinputs 1 mdl_gchi
+
+npinputs 2 mdl_gq
+
+npinputs 3 mdl_sina
+
+npinputs 4 mdl_Se
+
+sminputs 1 aEWM1
+
+sminputs 2 mdl_Gf
+
+sminputs 3 aS
+
+yukawa 5 mdl_ymb
+
+yukawa 6 mdl_ymt
+
+yukawa 15 mdl_ymtau
+
+decay 6 mdl_WT
+
+decay 23 mdl_WZ
+
+decay 24 mdl_WW
+
+decay 25 mdl_Wh
+
+decay 9000006 mdl_Wchi
+
+decay 9900026 mdl_WSd
+
+decay 9900032 mdl_WZp
+
+decay 999000006 mdl_Wsdm
+
+decay 999000007 mdl_WFsdm
+
+decay 999000009 mdl_Wvdm
+
+decay 999000010 mdl_WFvdm
