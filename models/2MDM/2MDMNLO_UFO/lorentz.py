@@ -1,6 +1,6 @@
 # This file was automatically created by FeynRules 2.3.49
 # Mathematica version: 13.2.1 for Linux x86 (64-bit) (January 28, 2023)
-# Date: Fri 2 Aug 2024 17:01:18
+# Date: Tue 6 Aug 2024 18:03:01
 
 
 from object_library import all_lorentz, Lorentz
@@ -14,21 +14,17 @@ except ImportError:
 
 FF1 = Lorentz(name = 'FF1',
               spins = [ 2, 2 ],
-              structure = 'P(-1,1)*Gamma(-1,2,1)')
+              structure = 'ProjM(2,1)')
 
 FF2 = Lorentz(name = 'FF2',
               spins = [ 2, 2 ],
-              structure = 'ProjM(2,1)')
+              structure = 'P(-1,1)*Gamma(-1,2,-2)*ProjM(-2,1)')
 
 FF3 = Lorentz(name = 'FF3',
               spins = [ 2, 2 ],
-              structure = 'P(-1,1)*Gamma(-1,2,-2)*ProjM(-2,1)')
-
-FF4 = Lorentz(name = 'FF4',
-              spins = [ 2, 2 ],
               structure = 'ProjP(2,1)')
 
-FF5 = Lorentz(name = 'FF5',
+FF4 = Lorentz(name = 'FF4',
               spins = [ 2, 2 ],
               structure = 'P(-1,1)*Gamma(-1,2,-2)*ProjP(-2,1)')
 
