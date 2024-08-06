@@ -519,7 +519,7 @@ M$ClassesDescription = {
     PropagatorType   -> Straight,
     PropagatorArrow  -> None
     PDG              -> {9910012},
-    ParticleName     -> {"chi"},
+    ParticleName     -> {"~chi"},
     FullName         -> {"dark matter fermion"}
     }
 };
