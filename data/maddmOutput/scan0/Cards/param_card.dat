@@ -53,7 +53,7 @@ BLOCK MASS #
 BLOCK NPINPUTS # 
       1 1.000000e+00 # gchi
       2 2.500000e-01 # gq
-      3 2.000000e-01 # sina
+      3 0.000000e+00 # sina
       4 0.000000e+00 # se
 ###################################
 ## INFORMATION FOR SMINPUTS
