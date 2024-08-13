@@ -3,6 +3,8 @@ import numpy as np
 import itertools
 from scipy.interpolate import  griddata, interp1d
 from matplotlib import pyplot as plt
+import re
+import pandas as pd
 
 
 atlasCurve1 = np.array(list(zip([112.70553064275038, 178.77428998505232, 268.16143497757844, 342.0029895366218, 423.61733931240656, 509.118086696562, 563.5276532137518, 617.9372197309417, 680.1195814648729, 726.7563527653214, 788.9387144992526, 847.2346786248131, 1053.2137518684603, 1173.6920777279522, 1282.5112107623318, 1402.9895366218236, 1573.9910313901344, 1752.7653213751867, 1915.9940209267563, 2129.745889387145],[4.267425320056899, 19.203413940256045, 46.941678520625885, 72.54623044096728, 108.81934566145091, 136.55761024182075, 155.7610241820768, 174.96443812233284, 181.3655761024182, 204.83641536273115, 226.17354196301562, 258.17923186344234, 358.4637268847795, 422.47510668563297, 477.95163584637265, 535.5618776671407, 612.375533428165, 695.5903271692745, 772.4039829302986, 872.6884779516357])))
@@ -41,6 +43,25 @@ def LZlimit(mChi):
     """
 
     return LZ_limitF(mChi)
+
+def readMadDMsummary(scanSummary):
+
+    with open(scanSummary,'r') as f:
+        headerLines = [l for l in f.readlines() if l.strip() and l.strip()[0] == '#']
+    columnLabels = {eval(re.sub(r'\b0', '',h.split(':')[0].replace('[','').replace(']','').replace('#',''))) : 
+                        h.split(':')[1].replace('\n','').strip().replace('%','pc') for h in headerLines}
+    header = ['']*len(columnLabels)
+    for i,label in columnLabels.items():
+        header[i-1] = label
+    relicData = pd.read_csv(scanSummary,names=header,
+                            comment='#',delimiter='\t',index_col=False)
+    # Remove unused columns:
+    relicData.drop(columns=[c for c in relicData.columns if 'pc_relic' in c]+['Nevents','smearing','xsi','x_f','sigmav(xf)'],inplace=True)
+    # Rename columns:
+    renameDict = {'Omegah^2' : 'Omegah2', 'mass#9000006' : 'mChi', 'mass#9900032' : 'mZp', 'mass#9900026' : 'mS'}
+    relicData.rename(columns=renameDict,inplace=True)
+    
+    return relicData
 
 def interpolateData(x,y,z,nx=200,ny=200,method='linear',fill_value=np.nan,xnew=None,ynew=None):
 
