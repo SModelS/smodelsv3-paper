@@ -4,5 +4,6 @@ generate relic_density
 add direct_detection
 output ../../maddm_2MDM
 launch
+2
 done
 exit
