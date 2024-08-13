@@ -143,7 +143,6 @@ def main(parfile,verbose):
 
     now = datetime.datetime.now()
     children = []
-    parserList = parserList[:17]
     for irun,newParser in enumerate(parserList):
         maddmFolder = newParser.get('MadDMPars','maddmFolder')
         maddmFolder = os.path.abspath(maddmFolder)
