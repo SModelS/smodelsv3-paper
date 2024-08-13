@@ -22,5 +22,5 @@ The parameters used to create the SLHA files are set in [scan_parameters_2mdm.in
 
 ## Alternative: use compressed data
 
-It is also possible to decompress the [data.tar.gz](./data.tar.gz) file that contains folders with .pcl files or slha files, the former were used to generate plots found in [notebooks](../notebooks/). The latter can be used as input for SModelS.
+It is also possible to decompress the files in the [data](../data) directory that contain folders with .pcl files or slha files, the former were used to generate plots found in [notebooks](../notebooks/). The latter can be used as input for SModelS.
 

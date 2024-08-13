@@ -2,6 +2,8 @@ ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c      written by the UFO converter
 ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
+ckmblock 1 mdl_cabi
+
 effblock 1 mdl_sSIe
 
 effblock 2 mdl_fSIe
@@ -25,6 +27,10 @@ mass 4 mdl_MC
 mass 5 mdl_MB
 
 mass 6 mdl_MT
+
+mass 11 mdl_Me
+
+mass 13 mdl_MMU
 
 mass 15 mdl_MTA
 
@@ -60,7 +66,21 @@ sminputs 2 mdl_Gf
 
 sminputs 3 aS
 
+yukawa 1 mdl_ymdo
+
+yukawa 2 mdl_ymup
+
+yukawa 3 mdl_yms
+
+yukawa 4 mdl_ymc
+
+yukawa 5 mdl_ymb
+
 yukawa 6 mdl_ymt
+
+yukawa 11 mdl_yme
+
+yukawa 13 mdl_ymm
 
 yukawa 15 mdl_ymtau
 

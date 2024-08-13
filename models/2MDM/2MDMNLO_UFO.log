@@ -1,6 +1,6 @@
 # This file was automatically created by FeynRules 2.3.49
 # Mathematica version: 13.2.1 for Linux x86 (64-bit) (January 28, 2023)
-# Date: Fri 2 Aug 2024 17:00:50
+# Date: Tue 6 Aug 2024 18:02:23
 
 
 # 
@@ -24,7 +24,7 @@
    * Assigned PDG number 9000003 to particle ghWp
    * Assigned PDG number 9000004 to particle ghWm
    * Assigned PDG number 9000005 to particle ghZp
-   * Assigned PDG number 9000006 to particle chi
+   * Assigned PDG number 9000006 to particle ~chi
 
 
 # Compulsory PDG codes:
@@ -41,8 +41,8 @@
 
 # Vertices
    * Calling FeynmanRules for 1 Lagrangians.
-   * Number of classes vertices: 209
-   * Number of flavored vertices: 201
+   * Number of classes vertices: 233
+   * Number of flavored vertices: 251
    * Saved vertices in InterfaceRun[ 1 ].
    * Checked QNumber conservation.
       - Quantum number GhostNumber conserved in all vertices.
@@ -56,23 +56,23 @@
 # Vertex definitions
 #
 
-   * 209 vertices written.
+   * 259 vertices written.
    * vertices.py written.
 #
 # Lorentz structure definitions
 #
 
-   * 38 lorentz structures written.
+   * 37 lorentz structures written.
    * lorentz.py written.
 #
 # Coupling definitions
 #
 
-   >>>> Non positive interaction order NP found for coupling GC_129.
-   >>>> Non positive interaction order NP found for coupling GC_130.
-   >>>> Non positive interaction order NP found for coupling GC_131.
-   >>>> Non positive interaction order NP found for coupling GC_132.
-   * 159 couplings written.
+   >>>> Non positive interaction order NP found for coupling GC_170.
+   >>>> Non positive interaction order NP found for coupling GC_171.
+   >>>> Non positive interaction order NP found for coupling GC_172.
+   >>>> Non positive interaction order NP found for coupling GC_173.
+   * 237 couplings written.
    * couplings.py written.
 #
 # Coupling order definitions
@@ -84,17 +84,17 @@
 # Decay definitions
 #
 
-   * 8 decays written.
+   * 14 decays written.
    * decay.py not written
 #
 # CTCoupling definitions
 #
 
-   * 195 CTcouplings written.
+   * 410 CTcouplings written.
    * CT_couplings.py written.
 #
 # CTVertex definitions
 #
 
-   * 107 CTvertices written.
+   * 159 CTvertices written.
    * CT_vertices.py written.

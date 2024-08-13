@@ -1,0 +1,9 @@
+import model ../../models/2MDM/2MDMNLO_UFO
+define darkmatter ~chi
+generate relic_density
+add direct_detection
+output ../../maddm_2MDM_scan1
+launch
+../../Cards/2MDM/param_card_relic_scan1.dat
+done
+exit
