@@ -12,7 +12,7 @@ used to obtain the results for the 2MDM model. It contains the following structu
 * [xsecs_table.pcl](./xsecs_table.pcl): pickle file containing a Pandas DataFrame holding pre-computed cross-sections for the spin-1 and spin-0 production;
 * [2mdm_example.slha](./2mdm_example.slha): SLHA file used to define the model (BSM particles and QNUMBERS) when running SModelS;
 * [smodels_parameters_2mdm.ini](./smodels_parameters_2mdm.ini): parameter file for running SModelS.
-
+* [extractResults.ipynb](./extractResults.ipynb): Jupyter notebooks used to create a Pandas DataFrame from SLHA files and SModelS output files and save it to a pickle file.
 
 ## Creating SLHA files
 

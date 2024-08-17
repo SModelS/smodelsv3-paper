@@ -38,7 +38,7 @@ pbTocmm2 = 1e-36
 @np.vectorize
 def sigmaz_gev(mChi,msd,mZp,sina,gB=None,gchi=None,gq=None):
     """
-    Analytical expression for sigma_{\chiN}(Zp) from 2405.03749 (Eq.14).
+    Analytical expression for sigma_{chiN}(Zp) from 2405.03749 (Eq.14).
     Note that the equation from 2405.03749 assumes the conventions gchi = -(3/2)*gZp and gq = (gZp/3).
     """
 
@@ -50,15 +50,15 @@ def sigmaz_gev(mChi,msd,mZp,sina,gB=None,gchi=None,gq=None):
     return sv*GeVm2Tocmm2
 
 
-### LZ limits
-LZ_curve = np.genfromtxt('../data/LZ_2207.03764_SI_limits.txt',names=True)
-LZ_limitF = np.vectorize(interp1d(LZ_curve['mass'],LZ_curve['limit']))
-def LZlimit(mChi):
-    """
-    Spin-independent limits from 2207.03764
-    """
+# ### LZ limits
+# LZ_curve = np.genfromtxt('../data/LZ_2207.03764_SI_limits.txt',names=True)
+# LZ_limitF = np.vectorize(interp1d(LZ_curve['mass'],LZ_curve['limit']))
+# def LZlimit(mChi):
+#     """
+#     Spin-independent limits from 2207.03764
+#     """
 
-    return LZ_limitF(mChi)
+#     return LZ_limitF(mChi)
 
 def readMadDMsummary(scanSummary):
 

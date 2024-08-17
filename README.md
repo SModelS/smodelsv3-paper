@@ -5,7 +5,7 @@ A repository to store the code and data for the SModelS v3 paper.
 ## Description
 
 * [data](./data): data files used to obtain the paper results (SLHA files and SModelS output)
-* [models](./models): UFO and FeynRules files for the implemented model;
+* [models](./models): UFO and FeynRules files for the 2MDM model;
 * [notebooks](./notebooks): Jupyter notebooks for plotting and processing data;
 * [scan](./scan/): Files and auxiliary code for generating the SLHA files used;
 
