@@ -5,6 +5,7 @@ A repository to store the code and data for the SModelS v3 paper.
 ## Description
 
 * [data](./data): data files used to obtain the paper results (SLHA files and SModelS output)
+* [models](./models): UFO and FeynRules files for the implemented model;
 * [notebooks](./notebooks): Jupyter notebooks for plotting and processing data;
 * [scan](./scan/): Files and auxiliary code for generating the SLHA files used;
 
@@ -16,9 +17,7 @@ Currently, the following tools are necessary for running the scans:
   * [MadGraph5](https://launchpad.net/mg5amcnlo)
 
 
-### 2MDM ###
-
-## Results
+## 2MDM Results
 
 We used [MG5](https://launchpad.net/mg5amcnlo/) to obtain the production cross-section of both mediators of the 2MDM model, then we used the cross-sections from MG5 in the SLHA format as input for [SModelS v3](https://github.com/SModelS/smodels) in this [notebook](./notebooks/SmodelS/getResults.ipynb), and the results are stored in the pandas dataframe.
 

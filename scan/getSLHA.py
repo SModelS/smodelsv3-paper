@@ -370,7 +370,7 @@ def main(parfile, verbose):
     progressbar.start()
     
     # obtain function for cross-section
-    xsecData = pd.read_pickle('mg5_scan.pcl')
+    xsecData = pd.read_pickle('xsecs_table.pcl')
 
     xsecs = {'13': {},'8': {}}
     pid = ['9900026', '9900032']
