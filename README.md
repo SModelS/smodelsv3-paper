@@ -1,13 +1,11 @@
 # smodelsv3-paper
 
-A repository to store the code and data for the SModelS v3 physics paper,
-including the Two Mediator Dark Matter (2MDM) model.
+A repository to store the code and data for the SModelS v3 paper.
 
 ## Description
 
-* [data](./data): data files used to obtain the paper results (SLHA files, SModelS output, MadDM output,...)
+* [data](./data): data files used to obtain the paper results (SLHA files and SModelS output)
 * [notebooks](./notebooks): Jupyter notebooks for plotting and processing data;
-* [References](./References): Useful references;
 * [scan](./scan/): Files and auxiliary code for generating the SLHA files used;
 
 ## External Packages
@@ -16,9 +14,7 @@ Currently, the following tools are necessary for running the scans:
 
   * [SModelS v3](https://github.com/SModelS/smodels)
   * [MadGraph5](https://launchpad.net/mg5amcnlo)
-  * [MadDM](https://launchpad.net/maddm)
 
-A slightly modified version of MadDM converted to run with Python3 is available [here](MG5_aMC_v3_5_4_maddm.tar.gz).
 
 ### 2MDM ###
 
