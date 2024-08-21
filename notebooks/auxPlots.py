@@ -6,6 +6,28 @@ from matplotlib import pyplot as plt
 import re
 import pandas as pd
 
+defaultPars = {'figure.figsize': (5, 4),
+               'lines.markersize' : 4,
+               'axes.titlesize' : 13,
+               'font.size' : 11,
+               'axes.labelsize' : 16,
+               'xtick.labelsize' : 13,
+               'ytick.labelsize' : 13,
+               'legend.fontsize' : 10,
+               "text.usetex": True,
+               "font.family": "sans-serif",
+               "font.sans-serif": ["Helvetica"],
+               'font.family':'Times New Roman', 
+               'font.serif':'Times New Roman',
+               "savefig.dpi" : 300,
+               'contour.linewidth' : 2.0,
+               'lines.linewidth' : 2.0,
+               'axes.grid' : True,
+               'grid.linewidth' : 0.5,
+               'grid.color' : 'lightgray',
+               'axes.axisbelow' : True
+               }
+
 colorDict = {'ATLAS-EXOT-2019-03': '#db5f57', 
              'ATLAS-EXOT-2013-11': '#dbd057', 
              'CMS-EXO-19-012': '#75db57', 
