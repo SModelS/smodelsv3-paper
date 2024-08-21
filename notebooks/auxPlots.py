@@ -6,6 +6,22 @@ from matplotlib import pyplot as plt
 import re
 import pandas as pd
 
+colorDict = {'ATLAS-EXOT-2019-03': '#db5f57', 
+             'ATLAS-EXOT-2013-11': '#dbd057', 
+             'CMS-EXO-19-012': '#75db57', 
+             'ATLAS-EXOT-2018-48': '#57dbaa', 
+             'CMS-EXO-12-059': '#579bdb', 
+             'CMS-EXO-20-008': '#8557db', 
+             'CMS-EXO-16-057': '#db57c0', 
+             'ATLAS-SUSY-2018-22-multibin,CMS-EXO-20-004': '#4c72b0', 
+             'ATLAS-SUSY-2018-22-multibin': '#dd8452', 
+             'CMS-EXO-20-004': '#55a868', 
+             'ATLAS-SUSY-2018-22': '#9467bd', 
+             'ATLAS-EXOT-2018-06': '#c44e52', 
+             }
+colorDict['CombinedAna'] = colorDict['ATLAS-SUSY-2018-22-multibin,CMS-EXO-20-004']
+colorDict['met'] = colorDict['ATLAS-SUSY-2018-22-multibin,CMS-EXO-20-004']
+colorDict['diquark'] = colorDict['CMS-EXO-19-012']
 
 columnsDict = {'mass#9000006' : 'mChi', 
                'mass#9900032' : 'mZp', 
