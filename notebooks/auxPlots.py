@@ -9,7 +9,7 @@ import pandas as pd
 defaultPars = {'figure.figsize': (5, 4),
                'lines.markersize' : 4,
                'axes.titlesize' : 13,
-               'font.size' : 11,
+               'font.size' : 13,
                'axes.labelsize' : 16,
                'xtick.labelsize' : 13,
                'ytick.labelsize' : 13,
