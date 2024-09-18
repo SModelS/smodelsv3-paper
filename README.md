@@ -17,9 +17,11 @@ Currently, the following tools are necessary for running the scans:
   * [MadGraph5](https://launchpad.net/mg5amcnlo)
 
 
-## 2MDM Results
+## 2MDM Results and Scan
 
-We used [MG5](https://launchpad.net/mg5amcnlo/) to obtain the production cross-section of both mediators of the 2MDM model, then we used the cross-sections from MG5 in the SLHA format as input for [SModelS v3](https://github.com/SModelS/smodels) in this [notebook](./scan/extractResults.ipynb), and the results are stored in the pandas dataframe.
+We used [MG5](https://launchpad.net/mg5amcnlo/) to compute the production cross-sections and branching ratios for the 2MDM model.
+The results were converted to the SLHA format and used as input for [SModelS v3](https://github.com/SModelS/smodels).
+See [scan](./scan) for more information.
 
-We provide also multiple results from SModelS in [data/smodelsOutput](./data/smodelsOutput). These results are then converted to a pandas DataFrame, which is used to obtain the plots using the Jupyter notebooks in the [notebooks folder](./notebooks). 
+The scan results are stored in the [data](./data) folder. The SModelS output was converted to a pandas DataFrame, which was then used to obtain the plots using the Jupyter notebooks in the [notebooks folder](./notebooks). 
 
